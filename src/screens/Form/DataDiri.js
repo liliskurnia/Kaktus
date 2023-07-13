@@ -49,30 +49,26 @@ export default function DataDiri() {
                         <Text>
                             Nama Anggota Keluarga
                         </Text>
-                        <Input style={{ width: 310 }}>
-                        </Input>
+                        <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Fulan" />
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
                         <Text>
                             NIK
                         </Text>
-                        <Input style={{ width: 310 }}>
-                        </Input>
+                        <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="1234567890987654" />
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
                             <Text>
                                 Jenis Kelamin 
                             </Text>
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Laki-laki" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
                             <Text>
                                 Tanggal Lahir
                             </Text >
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="DD/MM/YYYY" />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
@@ -80,23 +76,20 @@ export default function DataDiri() {
                             <Text>
                                 Status Hubungan 
                             </Text>
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Kepala Keluarga" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
                             <Text>
                                Kepesertaan JKN
                             </Text >
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="BPJS" />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>
                         <Text>
                             Mutasi Anggota Keluarga
                         </Text>
-                        <Input style={{ width: 310, backgroundColor:'#EEEEEE' }}>
-                        </Input>
+                        <TextInput style={{ padding: 8, width: 310, backgroundColor: '#EEEEEE', borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('TambahDataKeluarga')}

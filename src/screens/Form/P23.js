@@ -18,9 +18,9 @@ import { useData, useTheme, useTranslation } from '../../hooks';
 export default function P23() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
-    const [jamban, setJamban] = React.useState('first');
+    const [jamban, setJamban] = React.useState('');
     const [selectedJamban, setSelectedJamban] = useState('');
-    const [verval, setVerval] = React.useState('first');
+    const [verval, setVerval] = React.useState('');
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -92,12 +92,12 @@ export default function P23() {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P22')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P31')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>

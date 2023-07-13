@@ -91,15 +91,13 @@ export default function TambahDataKeluarga() {
                             <Text>
                                 RW
                             </Text>
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="001" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
                             <Text>
                                 RT
                             </Text >
-                            <Input style={{ width: 150 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="001" />
                         </View>
                     </View>
                     {/* <View style={{ flexDirection: 'row', marginBottom: 10 }}>
@@ -123,8 +121,7 @@ export default function TambahDataKeluarga() {
                             <Text>
                                 No. Telepon
                             </Text>
-                            <Input style={{ width: 310 }}>
-                            </Input>
+                            <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="084554997744" />
                         </View>
                         {/* <View style={{ flexDirection: 'column' }}>
               <Text>
@@ -138,8 +135,7 @@ export default function TambahDataKeluarga() {
                         <Text>
                             Alamat
                         </Text>
-                        <Input style={{ width: 310 }}>
-                        </Input>
+                        <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Jl.Pemuda No.10" />
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
                         <Text>

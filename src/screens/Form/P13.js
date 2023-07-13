@@ -8,7 +8,8 @@ import {
     Text as TextRn,
     View,
     Alert,
-    StyleSheet
+    StyleSheet,
+    TextInput
 } from 'react-native';
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -18,8 +19,9 @@ import { useData, useTheme, useTranslation } from '../../hooks';
 export default function P13() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
-    const [hamil, setHamil] = React.useState('first');
-    const [verval, setVerval] = React.useState('first');
+    const [hamil, setHamil] = React.useState('');
+    const [verval, setVerval] = React.useState('');
+    const [usiaKehamilan, setUsiaKehamilan] = useState('');
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -49,9 +51,7 @@ export default function P13() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text>
-                            Apakah Ibu saat ini sedang hamil ?
-                        </Text>
+                        <Text>Apakah Ibu saat ini sedang hamil?</Text>
                     </View>
                     <View>
                         <View style={{ flexDirection: 'row' }}>
@@ -66,7 +66,10 @@ export default function P13() {
                             <RadioButton
                                 value="second"
                                 status={hamil === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setHamil('second')}
+                                onPress={() => {
+                                    setHamil('second');
+                                    setUsiaKehamilan('');
+                                }}
                             />
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
@@ -115,7 +118,7 @@ export default function P13() {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P12')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
