@@ -21,7 +21,7 @@ export default function Pratinjau() {
     const handleSave = () => {
         Alert.alert(
           'Simpan',
-          `Anda yakin data yang diisikan sudah benar ?`,
+          `Apalah anda yakin data akan melakukan simpan data ?`,
           [
             {
               text: 'Tidak',

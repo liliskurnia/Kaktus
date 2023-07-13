@@ -129,8 +129,8 @@ export default function Home() {
                             <Ionicons name="people" size={70} color="white" />
                         </Block>
                         <Block flex={0} marginTop={10} marginBottom={10} padding={5} >
-                            <Text white bold>opr pusat</Text>
-                            <Text white style={{ fontStyle: 'italic' }}>opr.pusat</Text>
+                            <Text white bold>TPK Clara Setyo Hanani</Text>
+                            <Text white style={{ fontStyle: 'italic' }}>3501012001F1</Text>
                             <Block flexDirection="row" alignItems="center">
                                 <MaterialCommunityIcons name="google-maps" size={24} color="white" />
                                 <Text white style={{ alignItems: 'center' }}>Pusat</Text>
@@ -149,7 +149,7 @@ export default function Home() {
                                     flexDirection: 'row',
                                     marginBottom: 5,
                                 }}>
-                                <View style={{ flex: 6 }}>
+                                <View style={{ flex: 6, marginLeft: 7,  }}>
                                     <Text bold>Layanan</Text>
                                 </View>
                             </View>
@@ -189,7 +189,7 @@ export default function Home() {
                                             </View>
                                             <TextRn
                                                 style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                Stunting
+                                                Profile
                                             </TextRn>
                                         </TouchableOpacity>
                                     </View>
@@ -224,7 +224,7 @@ export default function Home() {
                                             </View>
                                             <TextRn
                                                 style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                menu1
+                                                Profile
                                             </TextRn>
                                         </TouchableOpacity>
                                     </View>
@@ -249,7 +249,7 @@ export default function Home() {
                                             </View>
                                             <TextRn
                                                 style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                menu 2
+                                                Draft
                                             </TextRn>
                                         </TouchableOpacity>
                                     </View>
@@ -267,7 +267,7 @@ export default function Home() {
                                             </View>
                                             <TextRn
                                                 style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                menu 3
+                                                Backup
                                             </TextRn>
                                         </TouchableOpacity>
                                     </View>
@@ -285,25 +285,7 @@ export default function Home() {
                                             </View>
                                             <TextRn
                                                 style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                menu 4
-                                            </TextRn>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={styles.circleBody}>
-                                        <TouchableOpacity
-                                            style={styles.circleMenuTouch}
-                                        onPress={() => Alert.alert('Menu 5 ditekan')}
-                                        >
-                                            <View style={styles.circleMenu}>
-                                                <MaterialCommunityIcons
-                                                    name="numeric-5-box-multiple"
-                                                    size={34}
-                                                    color="#fff"
-                                                />
-                                            </View>
-                                            <TextRn
-                                                style={{ fontSize: 12, fontFamily: 'poppins-regular', margin:10, marginTop:5}}>
-                                                menu 5
+                                                Restrore
                                             </TextRn>
                                         </TouchableOpacity>
                                     </View>
@@ -374,7 +356,7 @@ const styles = StyleSheet.create({
     circleMenu1: {
         width: 60,
         height: 60,
-        backgroundColor: '#2B7A0B',
+        backgroundColor: '#E02828',
         borderWidth: 1,
         borderColor: '#f4f4f4',
         borderRadius: 12,

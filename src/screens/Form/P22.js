@@ -72,30 +72,37 @@ export default function P22() {
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
+                    {(airMinum === 'first') ?
+                        <>
+                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                                <Text>
+                                    Darimana sumber air minum utama keluarga Anda ?
+                                </Text>
+                            </View>
+                            <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
+                                <Picker
+                                    selectedValue={selectedAirMinum}
+                                    onValueChange={(itemValue) => setSelectedAirMinum(itemValue)}
+                                >
+                                    <Picker.Item label="Pilih" value="" />
+                                    <Picker.Item label="1. Air Kemasan/Isi Ulang" value="kemasan" />
+                                    <Picker.Item label="2. Ledeng/PAM" value="ledeng" />
+                                    <Picker.Item label="3. Sumur Bor/Pompa" value="sumurBor" />
+                                    <Picker.Item label="4. Sumur Terlindung" value="sumurTerlindung" />
+                                    <Picker.Item label="5. Sumur Tak Terlindung" value="sumurTakTerlindung" />
+                                    <Picker.Item label="6. Mata Air Terlindung" value="mataAirTerlindung" />
+                                    <Picker.Item label="7. Mata Air Tak Terlindung" value="mataAirTakTerlindung" />
+                                    <Picker.Item label="8. Air Permukaan (sungai/danau/waduk/kolam/irigasi)" value="airPermukaan" />
+                                    <Picker.Item label="9. Air Hujan" value="airHujan" />
+                                    <Picker.Item label="10. Lainnya" value="lainnya" />
+                                </Picker>
+                            </View>
+                        </>
+                        :
+                        <>
+                        </>}
+
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text>
-                            Darimana sumber air minum utama keluarga Anda ?
-                        </Text>
-                    </View>
-                    <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
-                        <Picker
-                            selectedValue={selectedAirMinum}
-                            onValueChange={(itemValue) => setSelectedAirMinum(itemValue)}
-                        >
-                            <Picker.Item label="Pilih" value="" />
-                            <Picker.Item label="1. Air Kemasan/Isi Ulang" value="kemasan" />
-                            <Picker.Item label="2. Ledeng/PAM" value="ledeng" />
-                            <Picker.Item label="3. Sumur Bor/Pompa" value="sumurBor" />
-                            <Picker.Item label="4. Sumur Terlindung" value="sumurTerlindung" />
-                            <Picker.Item label="5. Sumur Tak Terlindung" value="sumurTakTerlindung" />
-                            <Picker.Item label="6. Mata Air Terlindung" value="mataAirTerlindung" />
-                            <Picker.Item label="7. Mata Air Tak Terlindung" value="mataAirTakTerlindung" />
-                            <Picker.Item label="8. Air Permukaan (sungai/danau/waduk/kolam/irigasi)" value="airPermukaan" />
-                            <Picker.Item label="9. Air Hujan" value="airHujan" />
-                            <Picker.Item label="10. Lainnya" value="lainnya" />
-                        </Picker>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
                         <Text>
                             Verval
                         </Text>
@@ -119,7 +126,7 @@ export default function P22() {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('P21')}
+                        <TouchableOpacity onPress={() => navigation.navigate('P13')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>

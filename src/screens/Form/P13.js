@@ -71,19 +71,25 @@ export default function P13() {
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text>
-                            Jika YA, berapa usia kehamilan Ibu ?
-                        </Text>
-                    </View>
-                    <View style={{flexDirection:'row', margin:10}}>
-                        <Text style={{marginTop:10}}>Usia kehamilan</Text>
-                        <Input style={{paddingLeft:10, paddingRight:10, width:'40%'}}>
-                        </Input>
-                        <Text style={{marginTop:10}}>
-                            Minggu
-                        </Text>
-                    </View>
+                    {(hamil === 'first') ?
+                        <>
+                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                                <Text>
+                                    Jika YA, berapa usia kehamilan Ibu ?
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', margin: 10 }}>
+                                <Text style={{ marginTop: 10 }}>Usia kehamilan</Text>
+                                <Input style={{ paddingLeft: 10, paddingRight: 10, width: '40%' }}>
+                                </Input>
+                                <Text style={{ marginTop: 10 }}>
+                                    Minggu
+                                </Text>
+                            </View>
+                        </>
+                        :
+                        <></>
+                    }
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
                         <Text>
                             Verval
@@ -113,7 +119,7 @@ export default function P13() {
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('P21')}
+                        <TouchableOpacity onPress={() => navigation.navigate(hamil === 'first' ? 'P22' : 'P21')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />

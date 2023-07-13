@@ -71,37 +71,36 @@ export default function P21() {
                             />
                             <Text style={{ marginTop: 8 }}>Tidak/bukan peserta KB</Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="third"
-                                status={kb === 'third' ? 'checked' : 'unchecked'}
-                                onPress={() => setKb('third')}
-                            />
-                            <Text style={{ marginTop: 8 }}>Menggunakan KB tradisional</Text>
-                        </View>
                     </View>
+                    {(kb === 'first') ?
+                        <>
+                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                                <Text>
+                                    Jika YA, jenis KB apa yang Ibu gunakan ?
+                                </Text>
+                            </View>
+                            <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
+                                <Picker
+                                    selectedValue={selectedKb}
+                                    onValueChange={(itemValue) => setSelectedKb(itemValue)}
+                                >
+                                    <Picker.Item label="Pilih" value="" />
+                                    <Picker.Item label="1. MOW/Steril Wanita" value="mow" />
+                                    <Picker.Item label="2. MOP/Steril Pria" value="mop" />
+                                    <Picker.Item label="3. IUD/Spiral/AKDR" value="spiral" />
+                                    <Picker.Item label="4. Implant/Susuk" value="susuk" />
+                                    <Picker.Item label="5. Suntik" value="suntik" />
+                                    <Picker.Item label="6. Pil" value="pil" />
+                                    <Picker.Item label="7. Kondom" value="kondom" />
+                                    <Picker.Item label="8. MAL" value="mal" />
+                                    <Picker.Item label="9. Tradisional" value="tradisional" />
+                                </Picker>
+                            </View>
+                        </>
+                        :
+                        <></>
+                    }
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text>
-                            Jika YA, jenis KB apa yang Ibu gunakan ?
-                        </Text>
-                    </View>
-                    <View style={{borderWidth:1, borderRadius: 5, margin:10, borderColor:'#B2B2B2'}}>
-                      <Picker
-                        selectedValue={selectedKb}
-                        onValueChange={(itemValue) => setSelectedKb(itemValue)}
-                      >
-                        <Picker.Item label="Pilih" value="" />
-                        <Picker.Item label="1. MOW/Steril Wanita" value="mow" />
-                        <Picker.Item label="2. MOP/Steril Pria" value="mop" />
-                        <Picker.Item label="3. IUD/Spiral/AKDR" value="spiral" />
-                        <Picker.Item label="4. Implant/Susuk" value="susuk" />
-                        <Picker.Item label="5. Suntik" value="suntik" />
-                        <Picker.Item label="6. Pil" value="pil" />
-                        <Picker.Item label="7. Kondom" value="kondom" />
-                        <Picker.Item label="8. MAL" value="mal" />
-                      </Picker>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
                         <Text>
                             Verval
                         </Text>
