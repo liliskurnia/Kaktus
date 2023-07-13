@@ -1,0 +1,73 @@
+[
+    {
+        "id_provinsi" : 1,
+        "KodeDepdagri" : 11,
+        "nama_provinsi" : "ACEH"
+    },
+    {
+        "id_provinsi" : 2,
+        "KodeDepdagri" : 12,
+        "nama_provinsi" : "SUMATERA UTARA"
+    },
+    {
+        "id_provinsi" : 3,
+        "KodeDepdagri" : 13,
+        "nama_provinsi" : "SUMATERA BARAT"
+    },
+    {
+        "id_provinsi" : 4,
+        "KodeDepdagri" : 14,
+        "nama_provinsi" : "RIAU"
+    },
+    {
+        "id_provinsi" : 7,
+        "KodeDepdagri" : 17,
+        "nama_provinsi" : "BENGKULU"
+    },
+    {
+        "id_provinsi" : 9,
+        "KodeDepdagri" : 19,
+        "nama_provinsi" : "KEPULAUAN BANGKA BELITUNG"
+    },
+    {
+        "id_provinsi" : 11,
+        "KodeDepdagri" : 31,
+        "nama_provinsi" : "DKI JAKARTA"
+    },
+    
+    {
+        "id_provinsi" : 16,
+        "KodeDepdagri" : 36,
+        "nama_provinsi" : "BANTEN"
+    },
+    {
+        "id_provinsi" : 20,
+        "KodeDepdagri" : 61,
+        "nama_provinsi" : "KALIMANTAN BARAT"
+    },
+    {
+        "id_provinsi" : 22,
+        "KodeDepdagri" : 63,
+        "nama_provinsi" : "KALIMANTAN SELATAN"
+    },
+    {
+        "id_provinsi" : 32,
+        "KodeDepdagri" : 91,
+        "nama_provinsi" : "PAPUA"
+    },
+    {
+        "id_provinsi" : 33,
+        "KodeDepdagri" : 92,
+        "nama_provinsi" : "PAPUA BARAT"
+    },
+    {
+        "id_provinsi" : 18,
+        "KodeDepdagri" : 52,
+        "nama_provinsi" : "NUSA TENGGARA BARAT"
+    },
+    {
+        "id_provinsi" : 19,
+        "KodeDepdagri" : 53,
+        "nama_provinsi" : "NUSA TENGGARA TIMUR"
+    }
+]
