@@ -17,9 +17,9 @@ import { useData, useTheme, useTranslation } from '../../hooks';
 export default function P11() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
-    const [baduta, setBaduta] = React.useState('first');
-    const [verval, setVerval] = React.useState('first');
-    const [umurBaduta, setUmurBaduta] = React.useState('second');
+    const [baduta, setBaduta] = React.useState('');
+    const [verval, setVerval] = React.useState('');
+    const [umurBaduta, setUmurBaduta] = React.useState('');
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -36,7 +36,7 @@ export default function P11() {
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text bold>Form Sasaran</Text>
                         <Text bold>1.1</Text>
                     </View>
@@ -66,35 +66,39 @@ export default function P11() {
                             <RadioButton
                                 value="second"
                                 status={baduta === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setBaduta('second')}
+                                onPress={() => { setBaduta('second'); setUmurBaduta('') }}
                             />
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
-                        <Text>
-                            Jika YA, berapa umur BADUTA Ibu ?
-                        </Text>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="first"
-                                status={umurBaduta === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setUmurBaduta('first')}
-                            />
-                            <Text style={{ marginTop: 8 }}>0 - 11 bulan </Text>
+                    {baduta === 'first' && (
+                        <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                            <Text>
+                                Berapa umur BADUTA Ibu ?
+                            </Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="second"
-                                status={umurBaduta === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setUmurBaduta('second')}
-                            />
-                            <Text style={{ marginTop: 8 }}>12 - 23 bulan</Text>
+                    )}
+                    {baduta === 'first' && (
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton
+                                    value="first"
+                                    status={umurBaduta === 'first' ? 'checked' : 'unchecked'}
+                                    onPress={() => setUmurBaduta('first')}
+                                />
+                                <Text style={{ marginTop: 8 }}>0 - 11 bulan </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton
+                                    value="second"
+                                    status={umurBaduta === 'second' ? 'checked' : 'unchecked'}
+                                    onPress={() => setUmurBaduta('second')}
+                                />
+                                <Text style={{ marginTop: 8 }}>12 - 23 bulan</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
+                    )}
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text>
                             Verval
                         </Text>
@@ -119,12 +123,12 @@ export default function P11() {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('TambahDataKeluarga')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P12')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>

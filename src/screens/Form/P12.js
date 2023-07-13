@@ -18,9 +18,9 @@ import { useData, useTheme, useTranslation } from '../../hooks';
 export default function P12() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
-    const [balita, setBalita] = React.useState('first');
-    const [umurBalita, setUmurBalita] = React.useState('second');
-    const [verval, setVerval] = React.useState('first');
+    const [balita, setBalita] = React.useState('');
+    const [umurBalita, setUmurBalita] = React.useState('');
+    const [verval, setVerval] = React.useState('');
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -37,7 +37,7 @@ export default function P12() {
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text bold>Form Sasaran</Text>
                         <Text bold>1.2</Text>
                     </View>
@@ -67,35 +67,39 @@ export default function P12() {
                             <RadioButton
                                 value="second"
                                 status={balita === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setBalita('second')}
+                                onPress={() => { setBalita('second'); setUmurBalita('') }}
                             />
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
-                        <Text>
-                            Jika YA, berapa umur BALITA Ibu ?
-                        </Text>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="first"
-                                status={umurBalita === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setUmurBalita('first')}
-                            />
-                            <Text style={{ marginTop: 8 }}>24 - 35 bulan </Text>
+                    {balita === 'first' && (
+                        <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                            <Text>
+                                Berapa umur BALITA Ibu ?
+                            </Text>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="second"
-                                status={umurBalita === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setUmurBalita('second')}
-                            />
-                            <Text style={{ marginTop: 8 }}>36 - 59 bulan</Text>
+                    )}
+                    {balita === 'first' && (
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton
+                                    value="first"
+                                    status={umurBalita === 'first' ? 'checked' : 'unchecked'}
+                                    onPress={() => setUmurBalita('first')}
+                                />
+                                <Text style={{ marginTop: 8 }}>24 - 35 bulan </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton
+                                    value="second"
+                                    status={umurBalita === 'second' ? 'checked' : 'unchecked'}
+                                    onPress={() => setUmurBalita('second')}
+                                />
+                                <Text style={{ marginTop: 8 }}>36 - 59 bulan</Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
+                    )}
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text>
                             Verval
                         </Text>
@@ -118,14 +122,14 @@ export default function P12() {
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection:'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P11')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P13')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>

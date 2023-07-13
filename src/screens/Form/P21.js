@@ -18,9 +18,9 @@ import { useData, useTheme, useTranslation } from '../../hooks';
 export default function P21() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
-    const [kb, setKb] = React.useState('first');
+    const [kb, setKb] = React.useState('');
     const [selectedKb, setSelectedKb] = useState('');
-    const [verval, setVerval] = React.useState('first');
+    const [verval, setVerval] = React.useState('');
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -67,7 +67,7 @@ export default function P21() {
                             <RadioButton
                                 value="second"
                                 status={kb === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setKb('second')}
+                                onPress={() => {setKb('second'); setSelectedKb('')}}
                             />
                             <Text style={{ marginTop: 8 }}>Tidak/bukan peserta KB</Text>
                         </View>
@@ -75,16 +75,19 @@ export default function P21() {
                             <RadioButton
                                 value="third"
                                 status={kb === 'third' ? 'checked' : 'unchecked'}
-                                onPress={() => setKb('third')}
+                                onPress={() => {setKb('third'); setSelectedKb('')}}
                             />
                             <Text style={{ marginTop: 8 }}>Menggunakan KB tradisional</Text>
                         </View>
                     </View>
+                    {kb === 'first' && (
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text>
-                            Jika YA, jenis KB apa yang Ibu gunakan ?
+                            Jenis KB apa yang Ibu gunakan ?
                         </Text>
                     </View>
+                    )}
+                    {kb === 'first' && (
                     <View style={{borderWidth:1, borderRadius: 5, margin:10, borderColor:'#B2B2B2'}}>
                       <Picker
                         selectedValue={selectedKb}
@@ -101,6 +104,7 @@ export default function P21() {
                         <Picker.Item label="8. MAL" value="mal" />
                       </Picker>
                     </View>
+                    )}
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
                         <Text>
                             Verval
@@ -126,12 +130,12 @@ export default function P21() {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P13')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P22')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>

@@ -20,22 +20,28 @@ export default function Pratinjau() {
     const { assets, colors, gradients, sizes } = useTheme();
     const handleSave = () => {
         Alert.alert(
-          'Simpan',
-          `Anda yakin data yang diisikan sudah benar ?`,
-          [
-            {
-              text: 'Tidak',
-              style: 'cancel',
-            },
-            {
-              text: 'YA',
-              onPress: async () => {
-                navigation.navigate('Home')
-              },
-            },
-          ],
+            'Simpan',
+            `Anda yakin data yang diisikan sudah benar ?`,
+            [
+                {
+                    text: 'Tidak',
+                    style: 'cancel',
+                },
+                {
+                    text: 'YA',
+                    onPress: async () => {
+                        navigation.navigate('Home')
+                    },
+                },
+            ],
         );
-      };
+    };
+
+    const [collapse, setCollapse] = useState(true);
+    const handleCollapse = (value) => {
+        setCollapse(value);
+    };
+
 
     return (
         <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
@@ -52,7 +58,7 @@ export default function Pratinjau() {
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                        <Text bold>Form Pratinjau</Text>
+                    <Text bold>Form Pratinjau</Text>
                     <View
                         style={{
                             marginVertical: 10,
@@ -61,14 +67,56 @@ export default function Pratinjau() {
                             flex: 1
                         }}
                     />
+                    <TouchableOpacity onPress={() => handleCollapse(true)}
+                        style={{ backgroundColor: '#205295', padding: 10, marginBottom: 10 }}>
+                        <View>
+                            <Text p white bold style={{ margin: 5 }}>
+                                Tambah Individu
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            borderColor: '#f4f4f4',
+                            borderWidth: 3,
+                            borderTopWidth: 0,
+                            marginBottom: 10,
+                        }}>
+                        {collapse && (
+                            <View>
+                                <Text>hgfhfh</Text>
+                            </View>
+                        )}
+                    </View>
+                    <TouchableOpacity onPress={() => handleCollapse(false)}
+                        style={{ backgroundColor: '#205295', padding: 10 }}>
+                        <View>
+                            <Text p white bold style={{ margin: 5 }}>
+                                Data Keluarga
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                    <View
+                        style={{
+                            borderColor: '#f4f4f4',
+                            borderWidth: 3,
+                            borderTopWidth: 0,
+                            marginBottom: 10,
+                        }}>
+                        {!collapse && (
+                            <View>
+                                <Text>hgfhfh</Text>
+                            </View>
+                        )}
+                    </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P31')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => handleSave()}
-                            style={{ backgroundColor: '#54B435', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#54B435', padding: 10, width: '45%', justifyContent: 'center', marginLeft: 'auto', flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Simpan</Text>
                             <MaterialCommunityIcons name="content-save" size={18} color="white" />
                         </TouchableOpacity>
