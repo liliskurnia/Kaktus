@@ -119,9 +119,9 @@ const Login = () => {
                                     Masuk
                                 </TextRn>
                             </Button>
-                            <TouchableOpacity style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
+                            {/* <TouchableOpacity style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
                                 <TextRn style={{color: '#555'}}>Lupa kata sandi?</TextRn>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
                             <Block
                                 row
