@@ -10,58 +10,38 @@ import {
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Block, Image, Text, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
-import HomeScreen from './HomeScreen';
-import ProfileScreen from './ProfileScreen';
 
-export default function Home() {
-  const Tab = createBottomTabNavigator();
+export default function ProfileScreen() {
+
+  const { assets, colors, gradients, sizes } = useTheme();
+
+  const data = [
+    { imageUrl: require('../assets/images/stunting1.jpg') },
+    { imageUrl: require('../assets/images/stunting6.png') },
+    { imageUrl: require('../assets/images/stunting7.jpg') },
+  ];
+
+  const navigation = useNavigation();
+
+  const [activeSlide, setActiveSlide] = React.useState(0);
+
+  const renderItem = ({ item }) => {
+    return (
+      <View style={styles.slide}>
+        <Image source={item.imageUrl} style={styles.image} />
+      </View>
+    );
+  };
 
   return (
-    <Tab.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        tabBarActiveTintColor: '#424874',
-        tabBarIconStyle: { position: 'relative', top: 2 },
-        tabBarLabelStyle: { position: 'relative', top: -4, fontSize: 10 },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: 'Home',
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="menu4"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Data',
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="database-search" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Profile',
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
+      <View style={{ flexDirection: 'row', margin: 10, marginTop: 30 }}>
+        <TextRn>Empty Page</TextRn>
+      </View>
+    </Block>
+
   );
 }
 
