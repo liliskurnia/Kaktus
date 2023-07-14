@@ -49,49 +49,24 @@ export default function P23() {
                             flex: 1
                         }}
                     />
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text>
-                            Apakah keluarga mempunyai  jamban yang layak ?
+                            Memiliki fasilitas tempat Buang Air Besar (BAB)?
                         </Text>
                     </View>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="first"
-                                status={jamban === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setJamban('first')}
-                            />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="second"
-                                status={jamban === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => { setJamban('second'); setSelectedJamban('') }}
-                            />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
-                        </View>
+                    <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
+                        <Picker
+                            selectedValue={selectedJamban}
+                            onValueChange={(itemValue) => setSelectedJamban(itemValue)}
+                            style={{flexWrap:'wrap-reverse'}}
+                        >
+                            <Picker.Item label="Pilih" value="" />
+                            <Picker.Item  label="1. Ya, milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
+                            <Picker.Item label="2. Ya, MCK komunal dengan leher angsa dan tangki septik/IPAL" value="mck" />
+                            <Picker.Item label="3. Ya, Lainnya" value="lainnya" />
+                            <Picker.Item label="4. Tidak Ada" value="Tidak" />
+                        </Picker>
                     </View>
-                    {jamban === 'first' && (
-                        <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                            <Text>
-                                Bagaimana jenis jamban yang Anda miliki ?
-                            </Text>
-                        </View>
-                    )}
-                    {jamban === 'first' && (
-                        <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
-                            <Picker
-                                selectedValue={selectedJamban}
-                                onValueChange={(itemValue) => setSelectedJamban(itemValue)}
-                            >
-                                <Picker.Item label="Pilih" value="" />
-                                <Picker.Item label="1. Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
-                                <Picker.Item label="2. Jamban pada MCK komunal dengan leher angsa dan tangki septik/IPAL" value="mck" />
-                                <Picker.Item label="3. Lainnya" value="lainnya" />
-                            </Picker>
-                        </View>
-                    )}
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text>
                             Verval

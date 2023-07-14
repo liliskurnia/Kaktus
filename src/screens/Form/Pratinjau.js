@@ -28,20 +28,20 @@ export default function Pratinjau() {
     const { assets, colors, gradients, sizes } = useTheme();
     const handleSave = () => {
         Alert.alert(
-            'Simpan',
-            `Anda yakin data yang diisikan sudah benar ?`,
-            [
-                {
-                    text: 'Tidak',
-                    style: 'cancel',
-                },
-                {
-                    text: 'YA',
-                    onPress: async () => {
-                        navigation.navigate('Home')
-                    },
-                },
-            ],
+          'Simpan',
+          `Apakah anda yakin data akan melakukan simpan data ?`,
+          [
+            {
+              text: 'Tidak',
+              style: 'cancel',
+            },
+            {
+              text: 'YA',
+              onPress: async () => {
+                navigation.navigate('Home')
+              },
+            },
+          ],
         );
     };
 

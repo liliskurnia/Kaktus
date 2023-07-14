@@ -137,16 +137,24 @@ export default function TambahDataKeluarga() {
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Jl.Pemuda No.10" />
                     </View>
+                    <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                        <Text>
+                            Jumlah Anggota Keluarga
+                        </Text>
+                        <Input style={{ width: 310 }}>
+                        </Input>
+                    </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>
                         <Text>
                             Status Keluarga
                         </Text>
-                        <TextInput style={{ padding: 8, width: 310, backgroundColor: '#EEEEEE', borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
+                        <Input style={{ width: 310, backgroundColor: '#EEEEEE', fontSize:'medium' }} value='Keluarga Baru'>
+                        </Input>
                     </View>
-                    <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+                    <View style={{ justifyContent: 'flex-end', marginBottom: 20, borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
-                            <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
+                            style={{borderRadius: 10, backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
+                            <Text white bold style={{ marginRight: 5}}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>
                     </View>
