@@ -63,7 +63,7 @@ const Login = () => {
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 30, paddingTop: 0 }}>
-                            <View style={{ paddingHorizontal: 30, paddingTop: 0, alignItems: 'center' }}>
+                            <View style={{ paddingHorizontal: 30, paddingTop: 0, fontFamily:'poppins-regular', alignItems: 'center' }}>
                                 <Text p bold black marginBottom={sizes.sm} size={15}>
                                     SIGA - Sistem Informasi Keluarga
                                 </Text>

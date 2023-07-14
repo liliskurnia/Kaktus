@@ -81,7 +81,7 @@ export default function Pratinjau() {
                             style={{ backgroundColor: '#205295', padding: 10 }}>
                             <View>
                                 <Text p white bold style={{ margin: 5 }}>
-                                    Tambah Individu
+                                    Data Keluarga
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -131,7 +131,7 @@ export default function Pratinjau() {
                             style={{ backgroundColor: '#205295', padding: 10 }}>
                             <View>
                                 <Text p white bold style={{ margin: 5 }}>
-                                    Data Keluarga
+                                    Sasaran Penapisan
                                 </Text>
                             </View>
                         </TouchableOpacity>
