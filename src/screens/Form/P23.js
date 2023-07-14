@@ -67,28 +67,32 @@ export default function P23() {
                             <RadioButton
                                 value="second"
                                 status={jamban === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setJamban('second')}
+                                onPress={() => { setJamban('second'); setSelectedJamban('') }}
                             />
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
+                    {jamban === 'first' && (
+                        <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                            <Text>
+                                Bagaimana jenis jamban yang Anda miliki ?
+                            </Text>
+                        </View>
+                    )}
+                    {jamban === 'first' && (
+                        <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
+                            <Picker
+                                selectedValue={selectedJamban}
+                                onValueChange={(itemValue) => setSelectedJamban(itemValue)}
+                            >
+                                <Picker.Item label="Pilih" value="" />
+                                <Picker.Item label="1. Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
+                                <Picker.Item label="2. Jamban pada MCK komunal dengan leher angsa dan tangki septik/IPAL" value="mck" />
+                                <Picker.Item label="3. Lainnya" value="lainnya" />
+                            </Picker>
+                        </View>
+                    )}
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text>
-                            Jika YA, bagaimana jenis jamban yang Anda miliki ?
-                        </Text>
-                    </View>
-                    <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
-                        <Picker
-                            selectedValue={selectedJamban}
-                            onValueChange={(itemValue) => setSelectedJamban(itemValue)}
-                        >
-                            <Picker.Item label="Pilih" value="" />
-                            <Picker.Item label="1. Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
-                            <Picker.Item label="2. Jamban pada MCK komunal dengan leher angsa dan tangki septik/IPAL" value="mck" />
-                            <Picker.Item label="3. Lainnya" value="lainnya" />
-                        </Picker>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
                         <Text>
                             Verval
                         </Text>
@@ -113,12 +117,12 @@ export default function P23() {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P22')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
                             <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P31')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center',flexDirection: 'row' }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', flexDirection: 'row' }}>
                             <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
                         </TouchableOpacity>
