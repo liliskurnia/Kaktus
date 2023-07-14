@@ -259,7 +259,7 @@ export default function HomeScreen() {
                     >
                       <View style={styles.circleMenu}>
                         <MaterialCommunityIcons
-                          name="account-details"
+                          name="clipboard-list-outline"
                           size={34}
                           color="#fff"
                         />
