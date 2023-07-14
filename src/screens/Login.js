@@ -10,11 +10,13 @@ import {
     Text as TextRn,
     ActivityIndicator,
     Linking,
-    ImageBackground
+    ImageBackground,
+    StatusBar
 } from 'react-native';
+StatusBar.setHidden(true);
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Button, Input, Image, Text, Checkbox } from '../components';
+import { Block, Button, Input, Image, Checkbox } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 
 const ImgBkkbn = require('../assets/images/bkkbn.png');
@@ -54,7 +56,7 @@ const Login = () => {
                             }}>
                             <View style={{ marginTop: 100 }}>
                                 <Image
-                                    width={130}
+                                    width={132}
                                     height={53}
                                     radius={0}
                                     // marginBottom={sizes.sm}
@@ -64,9 +66,9 @@ const Login = () => {
                         </View>
                         <View style={{ paddingHorizontal: 30, paddingTop: 0 }}>
                             <View style={{ paddingHorizontal: 30, paddingTop: 0, fontFamily:'poppins-regular', alignItems: 'center' }}>
-                                <Text p bold black marginBottom={sizes.sm} size={15}>
+                                <TextRn marginBottom={sizes.sm} size={15}>
                                     SIGA - Sistem Informasi Keluarga
-                                </Text>
+                                </TextRn>
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <TextInput
@@ -81,7 +83,7 @@ const Login = () => {
                             <View style={[styles.input, { marginBottom: 10, flexDirection: 'row' }]}>
                                 <TextInput
                                     value={password}
-                                    style={{ flex: 1, fontFamily: 'poppins-regular', fontSize: 14 }}
+                                    style={{ flex: 1, fontSize: 14 }}
                                     onChangeText={(value) => setPassword(value)}
                                     placeholder="Masukkan Kata Sandi"
                                     placeholderTextColor="#666B6E"
@@ -113,12 +115,12 @@ const Login = () => {
                                 height={50}
                                 shadow={!isAndroid}
                                 onPress={(e) => handleLogin(e)}>
-                                <Text bold white transform="uppercase">
+                                <TextRn style={{color: '#fff'}}>
                                     Masuk
-                                </Text>
+                                </TextRn>
                             </Button>
                             <TouchableOpacity style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
-                                <Text black>Lupa kata sandi?</Text>
+                                <TextRn style={{color: '#555'}}>Lupa kata sandi?</TextRn>
                             </TouchableOpacity>
 
                             <Block
@@ -137,13 +139,13 @@ const Login = () => {
                                     start={[0, 1]}
                                     gradient={gradients.divider}
                                 />
-                                <Text center white marginHorizontal={sizes.s}>
+                                <TextRn>
                                     <MaterialCommunityIcons
                                         name="menu-down"
                                         size={24}
                                         color="#cdcdcd"
                                     />
-                                </Text>
+                                </TextRn>
                                 <Block
                                     flex={0}
                                     height={1}
@@ -156,8 +158,7 @@ const Login = () => {
                             <View style={{ alignItems: 'center' }}>
                                 <TextRn
                                     style={{
-                                        color: '#000000',
-                                        fontFamily: 'poppins-regular',
+                                        color: '#555',
                                         fontSize: 12,
                                     }}>
                                     Copyright © BKKBN 2023 | v1.0.0
@@ -181,7 +182,7 @@ export default Login;
 
 const styles = StyleSheet.create({
     input: {
-        fontSize: 18,
+        fontSize: 14,
         height: 55,
         paddingLeft: 10,
         color: '#555',
