@@ -49,7 +49,7 @@ export default function P23() {
                             flex: 1
                         }}
                     />
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10}}>
                         <Text>
                             Memiliki fasilitas tempat Buang Air Besar (BAB)?
                         </Text>
