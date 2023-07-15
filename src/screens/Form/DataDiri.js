@@ -36,7 +36,7 @@ export default function DataDiri() {
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                    <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Data Diri</Text>
+                    <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Data Diri</Text>
                     <View
                         style={{
                             marginVertical: 10,

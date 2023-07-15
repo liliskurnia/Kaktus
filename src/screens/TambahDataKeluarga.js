@@ -30,7 +30,7 @@ export default function TambahDataKeluarga() {
                     <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
                 </TouchableOpacity>
                 <View style={{ alignItems: 'center', marginTop: -20, zIndex: 1 }}>
-                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
+                    <Text style={{fontWeight:'bold', color:'white', fontSize:16}}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
