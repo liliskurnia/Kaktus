@@ -5,7 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 
 import {
     TouchableOpacity,
-    Text as TextRn,
+    Text,
     View,
     Alert,
     StyleSheet,
@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Block, Image, Text, ModalSelect, Input } from '../../components';
+import { Block, Image,ModalSelect, Input } from '../../components';
 import { useData, useTheme, useTranslation } from '../../hooks';
 
 export default function Pratinjau() {
@@ -28,20 +28,20 @@ export default function Pratinjau() {
     const { assets, colors, gradients, sizes } = useTheme();
     const handleSave = () => {
         Alert.alert(
-          'Simpan',
-          `Apakah anda yakin data akan melakukan simpan data ?`,
-          [
-            {
-              text: 'Tidak',
-              style: 'cancel',
-            },
-            {
-              text: 'YA',
-              onPress: async () => {
-                navigation.navigate('Home')
-              },
-            },
-          ],
+            'Simpan',
+            `Anda yakin data yang diisikan sudah benar ?`,
+            [
+                {
+                    text: 'Tidak',
+                    style: 'cancel',
+                },
+                {
+                    text: 'YA',
+                    onPress: async () => {
+                        navigation.navigate('Home')
+                    },
+                },
+            ],
         );
     };
 
@@ -53,22 +53,22 @@ export default function Pratinjau() {
 
     return (
 
-        <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
-            <View style={{ margin: 10, marginTop: 30 }} >
+        <Block flex={1} style={{ backgroundColor: '#071952' }}>
+            <View style={{ margin: 10}} >
                 <View style={{ alignItems: 'center', zIndex: 1 }}>
-                    <Text h5 white bold>
+                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
             <ScrollView>
-                <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30, marginTop: 20 }}>
+                <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
                     <Block
                         scroll
                         paddingHorizontal={sizes.sm}
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                        <Text bold>Form Pratinjau</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Pratinjau</Text>
                         <View
                             style={{
                                 marginVertical: 10,
@@ -80,7 +80,7 @@ export default function Pratinjau() {
                         <TouchableOpacity onPress={() => handleCollapse(true)}
                             style={{ backgroundColor: '#205295', padding: 10 }}>
                             <View>
-                                <Text p white bold style={{ margin: 5 }}>
+                                <Text style={{fontWeight:'bold', color:'white', fontSize:14}}>
                                     Data Keluarga
                                 </Text>
                             </View>
@@ -95,31 +95,31 @@ export default function Pratinjau() {
                             {collapse && (
                                 <View>
                                     <View style={{ flexDirection: 'column', margin: 10 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Nama
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Fulanah" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             NIK
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="1234567890987654" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Hubungan dengan KK
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Istri" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Tanggal Lahir
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="24 Februari 1995" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Usia
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="28 Tahun" />
@@ -130,8 +130,8 @@ export default function Pratinjau() {
                         <TouchableOpacity onPress={() => handleCollapse(false)}
                             style={{ backgroundColor: '#205295', padding: 10 }}>
                             <View>
-                                <Text p white bold style={{ margin: 5 }}>
-                                    Sasaran Penapisan
+                                <Text style={{fontWeight:'bold', color:'white', fontSize:14}}>
+                                    Data Stunting
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -145,15 +145,15 @@ export default function Pratinjau() {
                             {!collapse && (
                                 <View>
                                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', margin: 10 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Ya
                                         </Text>
-                                        <Text marginLeft={25}>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14, marginLeft:25}}>
                                             Tidak
                                         </Text>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Status PUS
                                         </Text>
                                         <View style={{ marginLeft: 153 }}>
@@ -176,7 +176,7 @@ export default function Pratinjau() {
                                         </View>
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Status Hamil
                                         </Text>
                                         <View style={{ marginLeft: 145 }}>
@@ -200,7 +200,7 @@ export default function Pratinjau() {
                                     </View>
                                     <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text>
+                                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                                 Terlalu Muda
                                             </Text>
                                             <View style={{ marginLeft: 143 }}>
@@ -228,7 +228,7 @@ export default function Pratinjau() {
                                     </View>
                                     <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text>
+                                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                                 Terlalu Tua
                                             </Text>
                                             <View style={{ marginLeft: 153 }}>
@@ -256,7 +256,7 @@ export default function Pratinjau() {
                                     </View>
                                     <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text>
+                                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                                 Terlalu Dekat
                                             </Text>
                                             <View style={{ marginLeft: 142 }}>
@@ -284,7 +284,7 @@ export default function Pratinjau() {
                                     </View>
                                     <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text>
+                                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                                 Terlalu Banyak
                                             </Text>
                                             <View style={{ marginLeft: 135 }}>
@@ -311,31 +311,31 @@ export default function Pratinjau() {
                                         </Text>
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Status Keluarga
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Kesertaan KB Modern
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Sumber Air Minum Utama
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
                                     </View>
                                     <View style={{ flexDirection: 'column', margin: 10, marginTop: 0, marginBottom:0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Memiliki Fasilitas Tempat BAB
                                         </Text>
                                         <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: '100%', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" />
                                     </View>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 10, margin:10, marginTop:0 }}>
-                                        <Text>
+                                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                             Status Verval
                                         </Text>
                                         <View style={{ marginLeft: 140 }}>
@@ -360,18 +360,18 @@ export default function Pratinjau() {
                                 </View>
                             )}
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('P31')}
-                                style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', flexDirection: 'row' }}>
-                                <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
-                                <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleSave()}
-                                style={{ backgroundColor: '#54B435', padding: 10, width: '45%', justifyContent: 'center', marginLeft: 'auto', flexDirection: 'row' }}>
-                                <Text white bold style={{ marginRight: 5 }}>Simpan</Text>
-                                <MaterialCommunityIcons name="content-save" size={18} color="white" />
-                            </TouchableOpacity>
-                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
+                        <TouchableOpacity onPress={() => navigation.navigate('P31')}
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
+                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleSave()}
+                            style={{ backgroundColor: '#54B435', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Simpan</Text>
+                            <MaterialCommunityIcons name="content-save" size={14} color="white" />
+                        </TouchableOpacity>
+                    </View>
                     </Block>
                 </View>
             </ScrollView>

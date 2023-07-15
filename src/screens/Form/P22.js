@@ -5,14 +5,14 @@ import { Picker } from '@react-native-picker/picker';
 
 import {
     TouchableOpacity,
-    Text as TextRn,
+    Text,
     View,
     Alert,
     StyleSheet
 } from 'react-native';
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Block, Image, Text, ModalSelect, Input } from '../../components';
+import { Block, Image,ModalSelect, Input } from '../../components';
 import { useData, useTheme, useTranslation } from '../../hooks';
 
 export default function P22() {
@@ -23,23 +23,23 @@ export default function P22() {
     const [verval, setVerval] = React.useState('');
 
     return (
-        <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
-            <View style={{ margin: 10, marginTop: 30 }} >
+        <Block flex={1} style={{ backgroundColor: '#071952' }}>
+            <View style={{ margin: 10}} >
                 <View style={{ alignItems: 'center', zIndex: 1 }}>
-                    <Text h5 white bold>
+                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
-            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30, marginTop: 20 }}>
+            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
                 <Block
                     scroll
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text bold>Form Penapisan</Text>
-                        <Text bold>2.2</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Penapisan</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>2.2</Text>
                     </View>
                     <View
                         style={{
@@ -50,7 +50,7 @@ export default function P22() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Apakah keluarga mempunyai  sumber air minum yang utama yang layak ?
                         </Text>
                     </View>
@@ -75,7 +75,7 @@ export default function P22() {
                     {(airMinum === 'first') ?
                         <>
                             <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                                <Text>
+                                <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                     Darimana sumber air minum utama keluarga Anda ?
                                 </Text>
                             </View>
@@ -103,7 +103,7 @@ export default function P22() {
                         </>}
 
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Verval
                         </Text>
                     </View>
@@ -125,16 +125,16 @@ export default function P22() {
                             <Text style={{ marginTop: 8 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P21')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', flexDirection: 'row' }}>
-                            <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
-                            <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
+                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P23')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', flexDirection: 'row' }}>
-                            <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>

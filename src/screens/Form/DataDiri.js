@@ -7,14 +7,14 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
-    Text as TextRn,
+    Text ,
     ActivityIndicator,
     Linking,
     ImageBackground
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Button, Input, Image, Text, Checkbox } from '../../components';
+import { Block, Button, Input, Image, Checkbox } from '../../components';
 import { useData, useTheme, useTranslation } from '../../hooks';
 
 export default function DataDiri() {
@@ -22,21 +22,21 @@ export default function DataDiri() {
     const { assets, colors, gradients, sizes } = useTheme();
 
     return (
-        <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
-            <View style={{ margin: 10, marginTop: 30 }} >
+        <Block flex={1} style={{ backgroundColor: '#071952' }}>
+            <View style={{ margin: 10 }} >
                 <View style={{ alignItems: 'center', zIndex: 1 }}>
-                    <Text h5 white bold>
+                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
-            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30, marginTop: 20 }}>
+            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
                 <Block
                     scroll
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                    <Text bold>Form Data Diri</Text>
+                    <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Data Diri</Text>
                     <View
                         style={{
                             marginVertical: 10,
@@ -46,26 +46,26 @@ export default function DataDiri() {
                         }}
                     />
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Nama Anggota Keluarga
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Fulan" />
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             NIK
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="1234567890987654" />
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 Jenis Kelamin 
                             </Text>
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Laki-laki" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 Tanggal Lahir
                             </Text >
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="DD/MM/YYYY" />
@@ -73,34 +73,34 @@ export default function DataDiri() {
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 Status Hubungan 
                             </Text>
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Kepala Keluarga" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                Kepesertaan JKN
                             </Text >
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="BPJS" />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Mutasi Anggota Keluarga
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, backgroundColor: '#EEEEEE', borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('TambahDataKeluarga')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-start', alignSelf: 'flex-start', flexDirection: 'row',borderRadius: 10 }}>
-                            <MaterialCommunityIcons name="arrow-left" size={18} color="white" />
-                            <Text white bold style={{ marginLeft: 5 }}>Sebelumnya</Text>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
+                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('P13')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text white bold style={{ marginRight: 5 }}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
+                        <TouchableOpacity onPress={() => navigation.navigate('P11')}
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>

@@ -7,14 +7,14 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
-    Text as TextRn,
+    Text,
     ActivityIndicator,
     Linking,
     ImageBackground
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Button, Input, Image, Text, Checkbox } from '../components';
+import { Block, Button, Input, Image, Checkbox } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 
 export default function TambahDataKeluarga() {
@@ -22,26 +22,26 @@ export default function TambahDataKeluarga() {
     const { assets, colors, gradients, sizes } = useTheme();
 
     return (
-        <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
-            <View style={{ marginTop: 30, margin: 10 }} >
+        <Block flex={1} style={{ backgroundColor: '#071952' }}>
+            <View style={{ margin: 10 }} >
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Home')}
                     style={{ marginTop: 7, zIndex: 999 }}>
                     <MaterialCommunityIcons name="arrow-left" size={24} color="white" />
                 </TouchableOpacity>
-                <View style={{ alignItems: 'center', marginTop: -25, zIndex: 1 }}>
-                    <Text h5 white bold>
+                <View style={{ alignItems: 'center', marginTop: -20, zIndex: 1 }}>
+                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
-            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30, marginTop: 20 }}>
+            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
                 <Block
                     scroll
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-                    <Text bold>Form Wilayah</Text>
+                    <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Wilayah</Text>
                     <View
                         style={{
                             marginVertical: 10,
@@ -55,7 +55,7 @@ export default function TambahDataKeluarga() {
                             <Text>
                                 Provinsi
                             </Text>
-                            <Text bold>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 KALIMANTAN TIMUR
                             </Text>
                         </View>
@@ -63,17 +63,17 @@ export default function TambahDataKeluarga() {
                             <Text>
                                 Kabupaten
                             </Text>
-                            <Text bold>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 KOTA BALIKPAPAN
                             </Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                    <View style={{ flexDirection: 'row', marginBottom: 20 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 75 }}>
                             <Text>
                                 Kecamatan
                             </Text>
-                            <Text bold>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 BALIKPAPAN KOTA
                             </Text>
                         </View>
@@ -81,20 +81,20 @@ export default function TambahDataKeluarga() {
                             <Text>
                                 Kelurahan
                             </Text>
-                            <Text bold>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 KLANDASAN ILIR
                             </Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 RW
                             </Text>
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="001" />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 RT
                             </Text >
                             <TextInput style={{ padding: 8, width: 150, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="001" />
@@ -118,7 +118,7 @@ export default function TambahDataKeluarga() {
           </View> */}
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                            <Text>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                                 No. Telepon
                             </Text>
                             <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="084554997744" />
@@ -132,20 +132,20 @@ export default function TambahDataKeluarga() {
             </View> */}
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Alamat
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} placeholder="Jl.Pemuda No.10" />
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 10 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Jumlah Anggota Keluarga
                         </Text>
                         <Input style={{ width: 310 }}>
                         </Input>
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>
-                        <Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
                             Status Keluarga
                         </Text>
                         <Input style={{ width: 310, backgroundColor: '#EEEEEE', fontSize:'medium' }} value='Keluarga Baru'>
@@ -153,9 +153,9 @@ export default function TambahDataKeluarga() {
                     </View>
                     <View style={{ justifyContent: 'flex-end', marginBottom: 20, borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
-                            style={{borderRadius: 10, backgroundColor: '#30A2FF', padding: 10, idth: '45%', justifyContent: 'flex-end', alignSelf: 'flex-end', marginLeft: 'auto', flexDirection: 'row' }}>
-                            <Text white bold style={{ marginRight: 5}}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={18} color="white" />
+                            style={{borderRadius: 10, backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row' }}>
+                            <Text style={{fontWeight:'bold', color:'white', fontSize:16, marginRight: 10}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>
