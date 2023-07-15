@@ -203,6 +203,43 @@ export default function HomeScreen() {
               backgroundColor: "#fff",
               padding: 10,
               borderRadius: 10,
+              marginTop: 20,
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ paddingLeft:20, paddingRight:20, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Wilayah Kerja</TextRn>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
+                  <TouchableOpacity>
+                    <MaterialCommunityIcons name="map-search" size={22} color="black" />
+                  </TouchableOpacity>
+                  <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>1 RT</TextRn>
+                </View>
+              </View>
+              <View style={{paddingLeft:20, paddingRight:20, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Sinkronisasi</TextRn>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
+                  <TouchableOpacity>
+                    <MaterialCommunityIcons name="sync" size={22} color="black" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{ paddingLeft:20, paddingRight:20,flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10}}>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Periode</TextRn>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center',marginTop:10 }}>-</TextRn>
+              </View>
+
+            </View>
+          </Block>
+
+          <Block
+            scroll
+            paddingHorizontal={sizes.sm}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              backgroundColor: "#fff",
+              padding: 10,
+              borderRadius: 10,
               marginBottom: 20,
             }}
           >
