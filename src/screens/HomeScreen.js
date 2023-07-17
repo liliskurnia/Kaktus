@@ -225,8 +225,8 @@ export default function HomeScreen() {
                 </View>
               </View>
               <View style={{ paddingLeft:20, paddingRight:20,flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10}}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Periode</TextRn>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center',marginTop:10 }}>-</TextRn>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginLeft: -7 }}>Periode</TextRn>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center',marginTop:10, marginLeft: -5 }}>2023</TextRn>
               </View>
 
             </View>
@@ -266,30 +266,6 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => navigation.navigate("TambahDataKeluarga")}
-                    >
-                      <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="account-plus"
-                          size={34}
-                          color="#fff"
-                        />
-                      </View>
-                      <TextRn
-                        style={{
-                          fontSize: 12,
-                          fontFamily: "poppins-regular",
-                          margin: 10,
-                          marginTop: 5,
-                        }}
-                      >
-                        Tambah Keluarga
-                      </TextRn>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.circleBody}>
-                    <TouchableOpacity
-                      style={styles.circleMenuTouch}
                       onPress={() =>
                         Alert.alert("Menu detail data keluarga ditekan")
                       }
@@ -310,6 +286,30 @@ export default function HomeScreen() {
                         }}
                       >
                         Daftar Keluarga
+                      </TextRn>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.circleBody}>
+                    <TouchableOpacity
+                      style={styles.circleMenuTouch}
+                      onPress={() => navigation.navigate("TambahDataKeluarga")}
+                    >
+                      <View style={styles.circleMenu}>
+                        <MaterialCommunityIcons
+                          name="account-plus"
+                          size={34}
+                          color="#fff"
+                        />
+                      </View>
+                      <TextRn
+                        style={{
+                          fontSize: 12,
+                          fontFamily: "poppins-regular",
+                          margin: 10,
+                          marginTop: 5,
+                        }}
+                      >
+                        Tambah Keluarga
                       </TextRn>
                     </TouchableOpacity>
                   </View>

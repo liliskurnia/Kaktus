@@ -233,7 +233,7 @@ export default function Pratinjau() {
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
                                                 Terlalu Muda
                                             </Text>
-                                            <View style={{ marginLeft: 88 }}>
+                                            <View style={{ marginLeft: 89 }}>
                                                 <RadioButton
                                                     color='#000000'
                                                     value="ya"
@@ -270,7 +270,7 @@ export default function Pratinjau() {
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
                                                 Terlalu Tua
                                             </Text>
-                                            <View style={{ marginLeft: 98 }}>
+                                            <View style={{ marginLeft: 100}}>
                                                 <RadioButton
                                                     color='#000000'
                                                     value="ya"
@@ -344,7 +344,7 @@ export default function Pratinjau() {
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
                                                 Terlalu Banyak
                                             </Text>
-                                            <View style={{ marginLeft: 82 }}>
+                                            <View style={{ marginLeft: 78 }}>
                                                 <RadioButton
                                                     color='#000000'
                                                     value="ya"
@@ -383,7 +383,7 @@ export default function Pratinjau() {
                                             </Text>
                                             <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
                                         </View>
-                                        <View style={{ marginLeft: 3, marginTop: 30 }}>
+                                        <View style={{ marginLeft: 20, marginTop: 30 }}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -400,7 +400,7 @@ export default function Pratinjau() {
                                             </Text>
                                             <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
                                         </View>
-                                        <View style={{ marginLeft: 3, marginTop: 20 }}>
+                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -417,7 +417,7 @@ export default function Pratinjau() {
                                             </Text>
                                             <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
                                         </View>
-                                        <View style={{ marginLeft: 5, marginTop: 20 }}>
+                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -434,7 +434,7 @@ export default function Pratinjau() {
                                             </Text>
                                             <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" />
                                         </View>
-                                        <View style={{ marginLeft: 5, marginTop: 20 }}>
+                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"

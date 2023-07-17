@@ -117,12 +117,12 @@ export default function P13() {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('P12')}
+                        <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
                             <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
                             <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('P21')}
+                        <TouchableOpacity onPress={() => navigation.navigate( hamil === 'first' ? 'P22' : 'P21')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
                             <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={14} color="white" />

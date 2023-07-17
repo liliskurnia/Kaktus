@@ -97,7 +97,7 @@ export default function DataDiri() {
                             <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
                             <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('P11')}
+                        <TouchableOpacity onPress={() => navigation.navigate('P13')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
                             <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
