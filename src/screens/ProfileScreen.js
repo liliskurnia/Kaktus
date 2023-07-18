@@ -5,7 +5,10 @@ import {
   View,
   Alert,
   StyleSheet,
-  ScrollView
+  SectionList,
+  ScrollView,
+  StatusBar,
+  TextInput,
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -23,6 +26,14 @@ export default function ProfileScreen() {
     { imageUrl: require('../assets/images/stunting7.jpg') },
   ];
 
+  const DATA = [
+    {
+      title: 'Main dishes',
+      data: ['Anggota 1', 'Anggota 2', 'Anggota 3'],
+    },
+
+  ];
+
   const navigation = useNavigation();
 
   const [activeSlide, setActiveSlide] = React.useState(0);
@@ -36,9 +47,80 @@ export default function ProfileScreen() {
   };
 
   return (
-    <Block flex={1} style={{ backgroundColor: '#068FFF' }}>
-      <View style={{ flexDirection: 'row', margin: 10, marginTop: 30 }}>
-        <TextRn>Empty Page</TextRn>
+    <Block flex={1} style={{ backgroundColor: '#071952' }}>
+      <View style={{ margin: 10 }} >
+        <View style={{ alignItems: 'center', zIndex: 1 }}>
+          <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>
+            Tambah Data Keluarga
+          </Text>
+        </View>
+      </View>
+      <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30 }}>
+        <Block
+          scroll
+          paddingHorizontal={sizes.sm}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
+          <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>Form Profile</Text>
+          <View
+            style={{
+              marginVertical: 10,
+              borderBottomColor: '#BABABA',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              flex: 1
+            }}
+          />
+          <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
+              Nama Ketua Anggota Keluarga : fulan
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
+              NIK : 99999999999999
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
+              Jenis Kelamin : Laki Laki
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 14 }}>
+              NIK : 99999999999999
+            </Text>
+          </View>
+          {/* <View style={{ flexDirection: 'column', marginBottom: 50 }}>
+                <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                    Mutasi Anggota Keluarga
+                </Text>
+                <TextInput style={{ padding: 8, width: 310, backgroundColor: '#EEEEEE', borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
+            </View> */}
+          <SectionList
+            sections={DATA}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <Text style={styles.title}>{item}</Text>
+              </View>
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={styles.header}>{title}</Text>
+            )}
+          />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
+            <TouchableOpacity onPress={() => navigation.navigate('TambahDataKeluarga')}
+              style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
+              <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
+              <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Sebelumnya</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('P13')}
+              style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
+              <Text style={{ marginRight: 10, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Selanjutnya</Text>
+              <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
+            </TouchableOpacity>
+          </View>
+        </Block>
       </View>
     </Block>
 
@@ -50,7 +132,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 30
+    paddingBottom: 30,
+    paddingTop: StatusBar.currentHeight,
+    marginHorizontal: 16,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+  },
+  header: {
+    fontSize: 32,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
   },
   slide: {
     width: 300,

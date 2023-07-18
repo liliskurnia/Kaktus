@@ -45,13 +45,13 @@ const Login = () => {
                 source={require('../assets/images/login1.png')}
                 style={{ flex: 1 }}
             >
-                <Block safe style={{ width: '100%', height: '100%', marginTop: 20}}>
+                <Block safe style={{ width: '100%', height: '100%', marginTop: 20 }}>
                     <Block >
                         <View
                             style={{
-                                display: 'flex',
+                                // display: 'flex',
                                 alignItems: 'center',
-                                paddingBottom: 30,
+                                paddingBottom: 50,
                                 zIndex: 2,
                             }}>
                             <View style={{ marginTop: 100 }}>
@@ -65,10 +65,21 @@ const Login = () => {
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 30, paddingTop: 0 }}>
-                            <View style={{ paddingHorizontal: 30, paddingTop: 0, fontFamily:'poppins-regular', alignItems: 'center' }}>
-                                <TextRn marginBottom={sizes.sm} size={15}>
+                            <View style={{ paddingHorizontal: 30, paddingTop: 0, fontFamily: 'poppins-regular', alignItems: 'center' }}>
+                                <TextRn marginBottom={sizes.sm} style={{
+                                    fontSize: 17,
+                                    fontWeight: 700,
+                                    position: "absolute",
+                                    // color: "#fff",
+                                }}>
                                     SIGA - Sistem Informasi Keluarga
                                 </TextRn>
+                                <TextRn marginBottom={sizes.sm} size={10}>
+                                </TextRn>
+                                <TextRn marginBottom={sizes.sm} size={10}>
+                                    VERVAL KRS
+                                </TextRn>
+
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <TextInput
@@ -83,7 +94,7 @@ const Login = () => {
                             <View style={[styles.input, { marginBottom: 10, flexDirection: 'row' }]}>
                                 <TextInput
                                     value={password}
-                                    style={{ flex: 1, fontSize: 14 }}
+                                    style={{ flex: 1, fontSize: 16 }}
                                     onChangeText={(value) => setPassword(value)}
                                     placeholder="Masukkan Kata Sandi"
                                     placeholderTextColor="#666B6E"
@@ -115,7 +126,7 @@ const Login = () => {
                                 height={50}
                                 shadow={!isAndroid}
                                 onPress={(e) => handleLogin(e)}>
-                                <TextRn style={{color: '#fff'}}>
+                                <TextRn style={{ color: '#fff', fontSize: 18  }}>
                                     Masuk
                                 </TextRn>
                             </Button>
@@ -182,7 +193,7 @@ export default Login;
 
 const styles = StyleSheet.create({
     input: {
-        fontSize: 14,
+        fontSize: 16,
         height: 55,
         paddingLeft: 10,
         color: '#555',

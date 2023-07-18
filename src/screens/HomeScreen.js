@@ -186,9 +186,9 @@ export default function HomeScreen() {
                   name="cellphone-marker"
                   size={24}
                   color="#000"
-                  style={{ marginRight: 5 }}
+                  style={{ marginRight: 5, }}
                 />
-                <Text black bold>
+                <Text black bold style={{ marginTop: 2, }}>
                   TPK Clara Setyo Hanani
                 </Text>
               </View>
@@ -207,25 +207,25 @@ export default function HomeScreen() {
             }}
           >
             <View style={{ flexDirection: 'row' }}>
-              <View style={{ paddingLeft:20, paddingRight:20, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
+              <View style={{ flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
                 <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Wilayah Kerja</TextRn>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
                   <TouchableOpacity>
                     <MaterialCommunityIcons name="map-search" size={22} color="black" />
                   </TouchableOpacity>
-                  <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>1 RT</TextRn>
+                  <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>Cilangkap</TextRn>
                 </View>
               </View>
-              <View style={{paddingLeft:20, paddingRight:20, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
+              <View style={{flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
                 <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Sinkronisasi</TextRn>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
                   <TouchableOpacity>
-                    <MaterialCommunityIcons name="sync" size={22} color="black" />
+                    <MaterialCommunityIcons name="sync" size={20} color="black" />
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{ paddingLeft:20, paddingRight:20,flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10}}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginLeft: -7 }}>Periode</TextRn>
+              <View style={{ flex: 1,flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10}}>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center', position:'relative'  }}>Periode</TextRn>
                 <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center',marginTop:10, marginLeft: -5 }}>2023</TextRn>
               </View>
 
@@ -279,7 +279,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
@@ -303,7 +303,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
@@ -327,7 +327,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
@@ -359,7 +359,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
@@ -383,7 +383,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
@@ -407,7 +407,7 @@ export default function HomeScreen() {
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 12,
+                          fontSize: 13,
                           fontFamily: "poppins-regular",
                           margin: 10,
                           marginTop: 5,
