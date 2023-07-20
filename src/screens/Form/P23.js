@@ -21,25 +21,45 @@ export default function P23() {
     const [jamban, setJamban] = React.useState('');
     const [selectedJamban, setSelectedJamban] = useState('');
     const [verval, setVerval] = React.useState('');
+    const [layak, setLayak] = React.useState('');
+
+    useEffect(() => {
+        function determineLayakStatus() {
+            switch (selectedJamban) {
+                case 'pribadi':
+                    setLayak('first');
+                    break;
+                case 'mck':
+                case 'lainnya':
+                case 'tidak':
+                    setLayak('second');
+                    break;
+                default:
+                    setLayak('');
+            }
+        }
+
+        determineLayakStatus();
+    }, [selectedJamban]);
 
     return (
         <Block flex={1} style={{ backgroundColor: '#071952' }}>
-            <View style={{ margin: 10}} >
+            <View style={{ margin: 10 }} >
                 <View style={{ alignItems: 'center', zIndex: 1 }}>
-                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
+                    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
-            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
+            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30 }}>
                 <Block
                     scroll
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Penapisan</Text>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>2.3</Text>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Penapisan</Text>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>2.3</Text>
                     </View>
                     <View
                         style={{
@@ -49,8 +69,8 @@ export default function P23() {
                             flex: 1
                         }}
                     />
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10}}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Memiliki fasilitas tempat Buang Air Besar (BAB)?
                         </Text>
                     </View>
@@ -61,14 +81,39 @@ export default function P23() {
                             numberOfLines={2}
                         >
                             <Picker.Item label="Pilih jenis jamban" value="" />
-                            <Picker.Item  label="1. Ya, milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
+                            <Picker.Item label="1. Ya, milik sendiri dengan leher angsa dan tangki septik/IPAL" value="pribadi" />
                             <Picker.Item label="2. Ya, MCK komunal dengan leher angsa dan tangki septik/IPAL" value="mck" />
                             <Picker.Item label="3. Ya, Lainnya" value="lainnya" />
-                            <Picker.Item label="4. Tidak Ada" value="Tidak" />
+                            <Picker.Item label="4. Tidak Ada" value="tidak" />
                         </Picker>
                     </View>
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                            Layak/Tidak Layak
+                        </Text>
+                    </View>
+                    <View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <RadioButton
+                                value="first"
+                                status={layak === 'first' ? 'checked' : 'unchecked'}
+                                onPress={() => setLayak('first')}
+                                disabled={true}
+                            />
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Layak</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <RadioButton
+                                value="second"
+                                status={layak === 'second' ? 'checked' : 'unchecked'}
+                                onPress={() => setLayak('second')}
+                                disabled={true}
+                            />
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak Layak</Text>
+                        </View>
+                    </View>
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Verval
                         </Text>
                     </View>
@@ -79,7 +124,7 @@ export default function P23() {
                                 status={verval === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('first')}
                             />
-                            <Text style={{ marginTop: 10, fontSize:16 }}>Ya</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -87,18 +132,18 @@ export default function P23() {
                                 status={verval === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('second')}
                             />
-                            <Text style={{ marginTop: 10, fontSize:16 }}>Tidak</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P22')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
                             <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
-                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:16}}>Sebelumnya</Text>
+                            <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P31')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:16}}>Selanjutnya</Text>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
+                            <Text style={{ marginRight: 10, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>

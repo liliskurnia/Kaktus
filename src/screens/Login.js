@@ -77,7 +77,7 @@ const Login = () => {
                                 <TextRn marginBottom={sizes.sm} size={10}>
                                 </TextRn>
                                 <TextRn marginBottom={sizes.sm} size={10}>
-                                    VERVAL KRS
+                                    VERVAL KELUARGA RESIKO STUNTING
                                 </TextRn>
 
                             </View>

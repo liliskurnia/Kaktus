@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Block, Image,ModalSelect, Input } from '../../components';
+import { Block, Image, ModalSelect, Input } from '../../components';
 import { useData, useTheme, useTranslation } from '../../hooks';
 
 export default function P22() {
@@ -21,25 +21,51 @@ export default function P22() {
     const [airMinum, setAirMinum] = React.useState('');
     const [selectedAirMinum, setSelectedAirMinum] = useState('');
     const [verval, setVerval] = React.useState('');
+    const [layak, setLayak] = React.useState('');
+
+    useEffect(() => {
+        function determineLayakStatus() {
+            switch (selectedAirMinum) {
+                case 'kemasan':
+                case 'ledeng':
+                case 'sumurBor':
+                case 'sumurTerlindung':
+                case 'mataAirTerlindung':
+                    setLayak('first');
+                    break;
+                case 'sumurTakTerlindung':
+                case 'mataAirTakTerlindung':
+                case 'airPermukaan':
+                case 'airHujan':
+                case 'lainnya':
+                    setLayak('second');
+                    break;
+                default:
+                    setLayak('');
+            }
+        }
+
+        determineLayakStatus();
+    }, [selectedAirMinum]);
 
     return (
         <Block flex={1} style={{ backgroundColor: '#071952' }}>
-            <View style={{ margin: 10}} >
+            <View style={{ margin: 10 }} >
                 <View style={{ alignItems: 'center', zIndex: 1 }}>
-                    <Text style={{fontWeight:'bold', color:'white', fontSize:18}}>
+                    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>
                         Tambah Data Keluarga
                     </Text>
                 </View>
             </View>
-            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30}}>
+            <View style={{ backgroundColor: '#EEEEEE', height: '100%', borderRadius: 30 }}>
                 <Block
                     scroll
                     paddingHorizontal={sizes.sm}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Penapisan</Text>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>2.2</Text>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Penapisan</Text>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>2.2</Text>
                     </View>
                     <View
                         style={{
@@ -50,7 +76,7 @@ export default function P22() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Apakah keluarga mempunyai  sumber air minum yang utama yang layak ?
                         </Text>
                     </View>
@@ -61,7 +87,7 @@ export default function P22() {
                                 status={airMinum === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setAirMinum('first')}
                             />
-                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -69,13 +95,13 @@ export default function P22() {
                                 status={airMinum === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => { setAirMinum('second'); setSelectedAirMinum('') }}
                             />
-                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
                         </View>
                     </View>
                     {(airMinum === 'first') ?
                         <>
                             <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                                <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
+                                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                     Darimana sumber air minum utama keluarga Anda ?
                                 </Text>
                             </View>
@@ -98,13 +124,38 @@ export default function P22() {
                                     <Picker.Item label="10. Lainnya" value="lainnya" />
                                 </Picker>
                             </View>
+                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
+                                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                                    Layak/Tidak Layak
+                                </Text>
+                            </View>
+                            <View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <RadioButton
+                                        value="first"
+                                        status={layak === 'first' ? 'checked' : 'unchecked'}
+                                        onPress={() => setLayak('first')}
+                                        disabled={true}
+                                    />
+                                    <Text style={{ marginTop: 10, fontSize: 16 }}>Layak</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <RadioButton
+                                        value="second"
+                                        status={layak === 'second' ? 'checked' : 'unchecked'}
+                                        onPress={() => setLayak('second')}
+                                        disabled={true}
+                                    />
+                                    <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak Layak</Text>
+                                </View>
+                            </View>
                         </>
                         :
                         <>
                         </>}
 
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Verval
                         </Text>
                     </View>
@@ -115,7 +166,7 @@ export default function P22() {
                                 status={verval === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('first')}
                             />
-                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -123,18 +174,18 @@ export default function P22() {
                                 status={verval === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('second')}
                             />
-                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P21')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
                             <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
-                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:16}}>Sebelumnya</Text>
+                            <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P23')}
-                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:16}}>Selanjutnya</Text>
+                            style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
+                            <Text style={{ marginRight: 10, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
