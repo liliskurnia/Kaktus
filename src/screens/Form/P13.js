@@ -39,8 +39,8 @@ export default function P13() {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Sasaran</Text>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>1.3</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Sasaran</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>1.3</Text>
                     </View>
                     <View
                         style={{
@@ -51,7 +51,7 @@ export default function P13() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>Apakah Ibu saat ini sedang hamil?</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Apakah Ibu saat ini sedang hamil?</Text>
                     </View>
                     <View>
                         <View style={{ flexDirection: 'row' }}>
@@ -60,7 +60,7 @@ export default function P13() {
                                 status={hamil === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setHamil('first')}
                             />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -71,13 +71,13 @@ export default function P13() {
                                     setUsiaKehamilan('');
                                 }}
                             />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
                         </View>
                     </View>
                     {(hamil === 'first') ?
                         <>
                             <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                                <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                                <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                                     Jika YA, berapa usia kehamilan Ibu ?
                                 </Text>
                             </View>
@@ -94,7 +94,7 @@ export default function P13() {
                         <></>
                     }
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop:20 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                             Verval
                         </Text>
                     </View>
@@ -105,7 +105,7 @@ export default function P13() {
                                 status={verval === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('first')}
                             />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -113,19 +113,19 @@ export default function P13() {
                                 status={verval === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('second')}
                             />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
-                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
-                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
+                            <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:16}}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate( hamil === 'first' ? 'P22' : 'P21')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:16}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>

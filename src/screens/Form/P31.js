@@ -37,8 +37,8 @@ export default function P31() {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Kesejahteraan</Text>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>3.1</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Kesejahteraan</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>3.1</Text>
                     </View>
                     <View
                         style={{
@@ -49,7 +49,7 @@ export default function P31() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                             Pendampingan oleh TPK ?
                         </Text>
                     </View>
@@ -68,7 +68,7 @@ export default function P31() {
                         </Picker>
                     </View>
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                             Verval
                         </Text>
                     </View>
@@ -79,7 +79,7 @@ export default function P31() {
                                 status={verval === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('first')}
                             />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -87,19 +87,19 @@ export default function P31() {
                                 status={verval === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('second')}
                             />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P23')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
-                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
-                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
+                            <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:16}}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('Pratinjau')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:16}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>

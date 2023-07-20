@@ -37,8 +37,8 @@ export default function P11() {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>Form Sasaran</Text>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>1.1</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>Form Sasaran</Text>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:18}}>1.1</Text>
                     </View>
                     <View
                         style={{
@@ -49,7 +49,7 @@ export default function P11() {
                         }}
                     />
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                             Apakah Ibu memiliki BADUTA (Bayi dibawah dua tahun) ?
                         </Text>
                     </View>
@@ -60,7 +60,7 @@ export default function P11() {
                                 status={baduta === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setBaduta('first')}
                             />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -68,12 +68,12 @@ export default function P11() {
                                 status={baduta === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => { setBaduta('second'); setUmurBaduta('') }}
                             />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
                         </View>
                     </View>
                     {baduta === 'first' && (
                         <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                            <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                            <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                                 Berapa umur BADUTA Ibu ?
                             </Text>
                         </View>
@@ -86,7 +86,7 @@ export default function P11() {
                                     status={umurBaduta === 'first' ? 'checked' : 'unchecked'}
                                     onPress={() => setUmurBaduta('first')}
                                 />
-                                <Text style={{ marginTop: 8 }}>0 - 11 bulan </Text>
+                                <Text style={{  marginTop: 10, fontSize:16  }}>0 - 11 bulan </Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
                                 <RadioButton
@@ -94,12 +94,12 @@ export default function P11() {
                                     status={umurBaduta === 'second' ? 'checked' : 'unchecked'}
                                     onPress={() => setUmurBaduta('second')}
                                 />
-                                <Text style={{ marginTop: 8 }}>12 - 23 bulan</Text>
+                                <Text style={{  marginTop: 10, fontSize:16  }}>12 - 23 bulan</Text>
                             </View>
                         </View>
                     )}
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text style={{fontWeight:'bold', color:'black', fontSize:14}}>
+                        <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
                             Verval
                         </Text>
                     </View>
@@ -110,7 +110,7 @@ export default function P11() {
                                 status={verval === 'first' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('first')}
                             />
-                            <Text style={{ marginTop: 8 }}>Ya</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Ya</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
@@ -118,19 +118,19 @@ export default function P11() {
                                 status={verval === 'second' ? 'checked' : 'unchecked'}
                                 onPress={() => setVerval('second')}
                             />
-                            <Text style={{ marginTop: 8 }}>Tidak</Text>
+                            <Text style={{  marginTop: 10, fontSize:16  }}>Tidak</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50,borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row',borderRadius: 10 }}>
-                            <MaterialCommunityIcons name="arrow-left" size={14} color="white" />
-                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:14}}>Sebelumnya</Text>
+                            <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
+                            <Text style={{marginLeft:10, fontWeight:'bold', color:'white', fontSize:16}}>Sebelumnya</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('P12')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row',borderRadius: 10}}>
-                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:14}}>Selanjutnya</Text>
-                            <MaterialCommunityIcons name="arrow-right" size={14} color="white" />
+                            <Text style={{marginRight:10, fontWeight:'bold', color:'white', fontSize:16}}>Selanjutnya</Text>
+                            <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
                         </TouchableOpacity>
                     </View>
                 </Block>
