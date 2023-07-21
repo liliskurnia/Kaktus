@@ -415,7 +415,10 @@ export default function Pratinjau() {
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Sumber Air Minum Utama
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
+                                        </View>
+                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 16 }}>
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 70, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', textAlign:'center' }} editable={false} placeholder="Layak" />
                                         </View>
                                         <View style={{ marginLeft: 20, marginTop: 20 }}>
                                             <RadioButton
@@ -432,7 +435,27 @@ export default function Pratinjau() {
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Memiliki Fasilitas Tempat BAB
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Jamban milik sendiri dengan leher angsa dan tangki septik/IPAL" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Jamban milik sendiri" />
+                                        </View>
+                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 16, marginLeft:0 }}>
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 70, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', textAlign:'center' }} editable={false} placeholder="Layak" />
+                                        </View>
+                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="verval"
+                                                status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
+                                                onPress={() => setStatusVerval('verval')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 0, marginBottom: 10 }}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                                                Pendampingan oleh TPK
+                                            </Text>
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Ya, fasilitas bansos" />
                                         </View>
                                         <View style={{ marginLeft: 20, marginTop: 20 }}>
                                             <RadioButton

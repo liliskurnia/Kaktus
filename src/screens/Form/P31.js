@@ -57,13 +57,16 @@ export default function P31() {
                         <Picker
                             selectedValue={selectedTpk}
                             onValueChange={(itemValue) => setSelectedTpk(itemValue)}
+                            numberOfLines={2}
                         >
-                            <Picker.Item label="Pilih" value="" />
+                            <Picker.Item label="Pilih jenis pendampingan" value="" />
                             <Picker.Item label="1. Ya, fasilitas rujukan" value="rujukan" />
                             <Picker.Item label="2. Ya, fasilitas bansos" value="bansos" />
                             <Picker.Item label="3. Ya, fasilitas KIE" value="kie" />
-                            <Picker.Item label="4. Ya, surveilans" value="surveilans" />
-                            <Picker.Item label="5. Ya, Bapak Asuh Anak Stunting (BAAS)" value="baas" />
+                            <Picker.Item label="4. Ya, surveilans melalui elsimil" value="elsimil" />
+                            <Picker.Item label="5. Ya, surveilans melalui EPPGBM" value="eppgbm" />
+                            <Picker.Item label="6. Ya, Bapak Asuh Anak Stunting (BAAS)" value="baas" />
+                            <Picker.Item label="7. Ya, fasilitasi Pemberian Makanan Tambahan (PMT)" value="pmt" />
                             <Picker.Item label="6. Tidak ada" value="tidakAada" />
                         </Picker>
                     </View>
