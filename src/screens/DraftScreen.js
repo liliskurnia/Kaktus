@@ -16,9 +16,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Block, Image, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 
-export default function ProfileScreen() {
+export default function DraftScreen() {
 
   const { assets, colors, gradients, sizes } = useTheme();
+  const [showDetail, setShowDetail] = useState(true);
+
+  const toggleDetail = () => {
+    setShowDetail(!showDetail);
+  };
 
   const data = [
     { imageUrl: require('../assets/images/stunting1.jpg') },
@@ -46,6 +51,36 @@ export default function ProfileScreen() {
     );
   };
 
+  const handleEdit = () => {
+    Alert.alert('Edit', 'Anda akan melakukan edit data?', [
+      {
+        text: 'Tidak',
+        style: 'cancel',
+      },
+      {
+        text: 'YA',
+        onPress: async () => {
+          Alert.alert('Halaman edit data')
+        }
+      }
+    ])
+  }
+
+  const handleDelete = () => {
+    Alert.alert('Hapus', 'Anda yakin akan menghapus data?', [
+      {
+        text: 'Tidak',
+        style: 'cancel',
+      },
+      {
+        text: 'YA',
+        onPress: async () => {
+          Alert.alert('Data berhasil dihapus')
+        }
+      }
+    ])
+  }
+
   return (
     <Block flex={1} style={{ backgroundColor: '#071952' }}>
       <View style={{ margin: 10 }} >
@@ -56,7 +91,7 @@ export default function ProfileScreen() {
         </TouchableOpacity>
         <View style={{ alignItems: 'center', marginTop: -20, zIndex: 1 }}>
           <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>
-            Profile
+            Draft
           </Text>
         </View>
       </View>
@@ -66,7 +101,11 @@ export default function ProfileScreen() {
           paddingHorizontal={sizes.sm}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
-          <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Profile</Text>
+          {/* <View style={{flexDirection:'row'}}>
+            <TextInput style={{ padding: 8, width: 310, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Cari" />
+            <Ionicons name="search" size={14} color="black" />
+          </View> */}
+          {/* <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Profile</Text>
           <View
             style={{
               marginVertical: 10,
@@ -74,32 +113,77 @@ export default function ProfileScreen() {
               borderBottomWidth: StyleSheet.hairlineWidth,
               flex: 1
             }}
-          />
-          <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 40 }}>Nama Kepala Keluarga</Text>
-            <Text style={{ color: 'black', fontSize: 16 }}>: Fulan </Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 150 }}>NIK</Text>
-            <Text style={{ color: 'black', fontSize: 16 }}>: 9999999999999999 </Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 93 }}>Jenis Kelamin</Text>
-            <Text style={{ color: 'black', fontSize: 16 }}>: Laki-laki </Text>
-          </View>
-
-          {/* <View style={{ flexDirection: 'column', marginBottom: 50 }}>
-                <Text style={{fontWeight:'bold', color:'black', fontSize:16}}>
-                    Mutasi Anggota Keluarga
-                </Text>
-                <TextInput style={{ padding: 8, width: 310, backgroundColor: '#EEEEEE', borderWidth:1, borderRadius:5, borderColor:'#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
-            </View> */}
+          /> */}
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item + index}
             renderItem={({ item }) => (
               <View style={styles.item}>
-                <Text style={styles.title}>{item}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={{ marginRight: 5 }} onPress={toggleDetail}>
+                      {showDetail ? (
+                        <MaterialCommunityIcons name="chevron-up" size={20} color="black" />
+                      ) : (
+                        <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
+                      )}
+                    </TouchableOpacity>
+                    <Text style={styles.title}>{item}</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={{ marginRight: 5 }} onPress={() => handleEdit()}>
+                      <MaterialCommunityIcons
+                        name="file-edit"
+                        size={20}
+                        color="#212A3E"
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleDelete()}>
+                      <MaterialCommunityIcons
+                        name="delete"
+                        size={20}
+                        color="#B31312"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {showDetail && (
+                  <View>
+                    <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
+                      <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 50 }}>
+                        Nama
+                      </Text>
+                      <Text style={{ fontSize: 16 }}>
+                        : Fulan
+                      </Text>
+                    </View>
+                    <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
+                      <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 70 }}>
+                        NIK
+                      </Text>
+                      <Text style={{ fontSize: 16 }}>
+                        : 9999999999999999
+                      </Text>
+                    </View>
+                    <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
+                      <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 10 }}>
+                        Tanggal Lahir
+                      </Text>
+                      <Text style={{ fontSize: 16 }}>
+                        : 24 April 1998
+                      </Text>
+                    </View>
+                    <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
+                      <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 65 }}>
+                        Usia
+                      </Text>
+                      <Text style={{ fontSize: 16 }}>
+                        : 25 tahun
+                      </Text>
+                    </View>
+                  </View>
+                )}
               </View>
             )}
             renderSectionHeader={({ section: { title } }) => (
@@ -136,7 +220,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#DDE6ED',
-    padding: 20,
+    padding: 10,
     marginVertical: 8,
   },
   header: {

@@ -34,6 +34,55 @@ export default function HomeScreen() {
       </View>
     );
   };
+  
+  const handleRestore = () => {
+    Alert.alert('Restore', 'Anda akan melakukan restore data?', [
+      {
+        text: 'Tidak',
+        style: 'cancel',
+      },
+      {
+        text: 'YA',
+        onPress: async () => {
+          Alert.alert('Data berhasil direstore')
+        }
+      }
+    ])
+  }
+
+  const handleBackup = () => {
+    Alert.alert('Backup', 'Anda akan melakukan backup data?', [
+      {
+        text: 'Tidak',
+        style: 'cancel',
+      },
+      {
+        text: 'YA',
+        onPress: async () => {
+          Alert.alert('Data berhasil dibackup')
+        }
+      }
+    ])
+  }
+
+  const handleLogout = () => {
+    Alert.alert(
+        'Logout',
+        `Anda yakin akan keluar dari akun Anda ?`,
+        [
+            {
+                text: 'Tidak',
+                style: 'cancel',
+            },
+            {
+                text: 'YA',
+                onPress: async () => {
+                    navigation.navigate('Login')
+                },
+            },
+        ],
+    );
+};
 
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -79,7 +128,7 @@ export default function HomeScreen() {
                 color="#f4ecde"
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <TouchableOpacity onPress={() => handleLogout()}>
               <MaterialCommunityIcons name="logout" size={22} color="#f4ecde" />
             </TouchableOpacity>
           </Block>
@@ -267,7 +316,7 @@ export default function HomeScreen() {
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
                       onPress={() =>
-                        Alert.alert("Menu detail data keluarga ditekan")
+                        navigation.navigate('DaftarKeluargaScreen')
                       }
                     >
                       <View style={styles.circleMenu}>
@@ -316,7 +365,7 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => Alert.alert("Menu 2 ditekan")}
+                      onPress={() => navigation.navigate('DraftScreen')}
                     >
                       <View style={styles.circleMenu}>
                         <MaterialCommunityIcons
@@ -348,7 +397,7 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => Alert.alert("Menu 4 ditekan")}
+                      onPress={() => handleRestore()}
                     >
                       <View style={styles.circleMenu}>
                         <MaterialCommunityIcons
@@ -372,7 +421,7 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => Alert.alert("Menu 3 ditekan")}
+                      onPress={() => handleBackup()}
                     >
                       <View style={styles.circleMenu}>
                         <MaterialCommunityIcons
@@ -396,7 +445,7 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => Alert.alert("Menu stunting ditekan")}
+                      onPress={() => navigation.navigate('ProfileScreen')}
                     >
                       <View style={styles.circleMenu}>
                         <MaterialCommunityIcons

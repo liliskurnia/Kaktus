@@ -14,6 +14,9 @@ import P23 from './src/screens/Form/P23';
 import Pratinjau from './src/screens/Form/Pratinjau';
 import P31 from './src/screens/Form/P31';
 import DataDiri from './src/screens/Form/DataDiri';
+import ProfileScreen from './src/screens/ProfileScreen';
+import DaftarKeluargaScreen from './src/screens/DaftarKeluargaScreen';
+import DraftScreen from './src/screens/DraftScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +36,9 @@ export default function App() {
         <Stack.Screen name="P23" component={P23} options={{ headerShown: false }} />
         <Stack.Screen name="P31" component={P31} options={{ headerShown: false }} />
         <Stack.Screen name="Pratinjau" component={Pratinjau} options={{ headerShown: false }} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="DaftarKeluargaScreen" component={DaftarKeluargaScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="DraftScreen" component={DraftScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
