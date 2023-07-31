@@ -178,8 +178,10 @@ export default function DaftarKeluargaScreen() {
           </Text>
         </View>
       </View>
+      
+      <View style={{ backgroundColor: '#EEEEEE', height: 675, borderRadius: 30, borderBottomEndRadius:0, borderBottomStartRadius:0 }}>
+        
       <ScrollView>
-      <View style={{ backgroundColor: '#EEEEEE', height: 670, borderRadius: 30, borderBottomEndRadius:0, borderBottomStartRadius:0 }}>
         <Block
           scroll
           paddingHorizontal={sizes.sm}
@@ -546,8 +548,9 @@ export default function DaftarKeluargaScreen() {
           ) : null}
 
         </Block>
+        </ScrollView>
       </View>
-      </ScrollView>
+      
     </Block>
 
   );

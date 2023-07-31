@@ -84,7 +84,7 @@ export default function P21() {
                                     selectedValue={selectedKb}
                                     onValueChange={(itemValue) => setSelectedKb(itemValue)}
                                 >
-                                    <Picker.Item label="Pilih" value="" />
+                                    <Picker.Item label="Pilih jenis KB" value="" />
                                     <Picker.Item label="1. MOW/Steril Wanita" value="mow" />
                                     <Picker.Item label="2. MOP/Steril Pria" value="mop" />
                                     <Picker.Item label="3. IUD/Spiral/AKDR" value="spiral" />
