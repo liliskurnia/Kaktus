@@ -5,6 +5,7 @@ import Home from './src/screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import TambahDataKeluarga from './src/screens/TambahDataKeluarga';
+import EditDataKeluarga from './src/screens/EditDataKeluarga';
 import P11 from './src/screens/Form/P11';
 import P12 from './src/screens/Form/P12';
 import P13 from './src/screens/Form/P13';
@@ -27,6 +28,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="TambahDataKeluarga" component={TambahDataKeluarga} options={{ headerShown: false }} />
+        <Stack.Screen name="EditDataKeluarga" component={EditDataKeluarga} options={{ headerShown: false }} />
         <Stack.Screen name="DataDiri" component={DataDiri} options={{ headerShown: false }} />
         <Stack.Screen name="P11" component={P11} options={{ headerShown: false }} />
         <Stack.Screen name="P12" component={P12} options={{ headerShown: false }} />

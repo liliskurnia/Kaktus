@@ -18,18 +18,50 @@ import { useNavigation } from '@react-navigation/native';
 import { Block, Image, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
 
 export default function DaftarKeluargaScreen() {
 
   const { assets, colors, gradients, sizes } = useTheme();
   const [showData, setShowData] = useState(false);
+  const [getData, setGetData] = useState([]);
+
   const [showSummary, setShowSummary] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [showDetail, setShowDetail] = useState(true);
+  const [showBalita, setShowBalita] = useState(false);
+  const [showBaduta, setShowBaduta] = useState(false);
+  const [showHamil, setShowHamill] = useState(false);
+  const [showPUS, setShowPUS] = useState(false);
+  const [showKeluarga, setShowKeluarga] = useState(false);
+  const [showKRS, setShowKRS] = useState(false);
+  const [showVERVAL, setShowVERVAL] = useState(false);
+  const [selectedBalita, setSelectedBalita] = useState('');
+  const [selectedBaduta, setSelectedBaduta] = useState('');
+  const [selectedHamil, setSelectedHamil] = useState('');
+  const [selectedPUS, setSelectedPUS] = useState('');
+  const [selectedKeluarga, setSelectedKeluarga] = useState('');
+  const [selectedKRS, setSelectedKRS] = useState('');
+  const [selectedVERVAL, setSelectedVERVAL] = useState('');
+
+  // const [additionalFilter, setadditionalFilter] = useState([]);
+
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibleLanjutan, setModalVisibleLanjutan] = useState(false);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedChoose, setSelectedChoose] = useState('');
+  const [selectedChooseCore, setSelectedChooseCore] = useState('');
+  const [Choose, setChoose] = useState([
+    { value: "baduta", label: "Baduta" },
+    { value: "balita", label: "Balita" },
+    { value: "statusHamil", label: "Status Hamil" },
+    { value: "statusPus", label: "Status PUS" },
+    { value: "statusKeluarga", label: "Status Keluarga" },
+    { value: "statusKrs", label: "Status KRS" },
+    { value: "statusVerval", label: "Status Verval" },
+  ]);
 
   const months = [
     { label: 'January', value: 'January' },
@@ -46,25 +78,90 @@ export default function DaftarKeluargaScreen() {
     { label: 'December', value: 'December' },
   ];
 
+
+
   const handleMonthChange = (itemValue) => {
     setSelectedMonth(itemValue);
+  };
+
+  const handleBadutaChange = (itemValue) => {
+    setSelectedBaduta(itemValue);
+  };
+  const handleBalitaChange = (itemValue) => {
+    setSelectedBalita(itemValue);
+  };
+  const handleHamilChange = (itemValue) => {
+    setSelectedHamil(itemValue);
+  };
+  const handleKeluargaChange = (itemValue) => {
+    setSelectedKeluarga(itemValue);
+  };
+  const handlePUSChange = (itemValue) => {
+    setSelectedPUS(itemValue);
+  };
+  const handleKRSChange = (itemValue) => {
+    setSelectedKRS(itemValue);
+  };
+    const handleVERVALChange = (itemValue) => {
+    setSelectedVERVAL(itemValue);
+  };
+
+  const handleChooseChange = (itemValue) => {
+    setSelectedChoose(itemValue);
+
+  };
+  const handleChooseCoreChange = (itemValue) => {
+    setSelectedChooseCore(itemValue);
+
   };
 
 
   const closeModal = () => {
     setModalVisible(false);
   };
+  const closeModalLanjutan = () => {
+    setModalVisibleLanjutan(false);
+  };
 
   // Buat daftar tahun yang ingin ditampilkan (misalnya dari tahun 1950 hingga tahun ini)
   const years = [];
   const currentYear = new Date().getFullYear();
-  for (let year = currentYear; year >= 1950; year--) {
+  for (let year = currentYear; year >= 2021; year--) {
     years.push(year.toString());
   }
+
+  const Lanjutan = ["Baduta", "Balita", "Status Hamil", "Status PUS", "Status Keluarga", "Status KRS", "Status Verval"]
 
   // Fungsi untuk menampilkan modal
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const toggleModalLanjutan = () => {
+    setModalVisibleLanjutan(!isModalVisibleLanjutan);
+  };
+
+  const [selectedItems, setSelectedItems] = useState([]);
+
+
+  useEffect(() => {
+    setShowBaduta(selectedItems.find((el) => el === 'Baduta') === undefined ? false : true);
+    setShowBalita(selectedItems.find((el) => el === 'Balita') === undefined ? false : true);
+    setShowHamill(selectedItems.find((el) => el === 'Status Hamil') === undefined ? false : true);
+    setShowPUS(selectedItems.find((el) => el === 'Status PUS') === undefined ? false : true);
+    setShowKeluarga(selectedItems.find((el) => el === 'Status Keluarga') === undefined ? false : true);
+    setShowKRS(selectedItems.find((el) => el === 'Status KRS') === undefined ? false : true);
+    setShowVERVAL(selectedItems.find((el) => el === 'Status Verval') === undefined ? false : true);
+  }, [selectedItems]);
+
+  const toggleItemSelection = (item) => {
+    if (selectedItems.includes(item)) {
+      setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
+
+    } else {
+      // console.log(selectedItems,'ellllllllllllse')
+      setSelectedItems([...selectedItems, item]);
+    }
   };
 
   // Fungsi untuk mengatur tahun terpilih saat pengguna memilih item
@@ -93,6 +190,9 @@ export default function DaftarKeluargaScreen() {
     setShowDetail(!showDetail);
   };
 
+
+
+
   const data = [
     { imageUrl: require('../assets/images/stunting1.jpg') },
     { imageUrl: require('../assets/images/stunting6.png') },
@@ -106,7 +206,6 @@ export default function DaftarKeluargaScreen() {
     },
 
   ];
-
   const navigation = useNavigation();
 
   const [activeSlide, setActiveSlide] = React.useState(0);
@@ -122,7 +221,20 @@ export default function DaftarKeluargaScreen() {
   const handleSearch = () => {
     setShowData(true);
     setShowSummary(false);
+    let http = 'https://newsiga-modul-stunting-api.bkkbn.go.id/siga/stunting/'
+    axios.get(http + 'getDetail?bulan=8&tahun=2023&page=1&recordPerPage=10&idProvinsi=36&idKabupaten=331&idKecamatan=2985&idKelurahan=30028')
+      .then(response => {
+        setGetData(response.data.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
+
+  const modallanjutan = () => {
+    setModalVisibleLanjutan(!isModalVisibleLanjutan);
+
+  }
 
   const next = () => {
     setShowData(false);
@@ -134,7 +246,7 @@ export default function DaftarKeluargaScreen() {
     setShowSummary(false);
   }
 
-  const handleEdit = () => {
+  const handleEdit = (e, row) => {
     Alert.alert('Edit', 'Anda akan melakukan edit data?', [
       {
         text: 'Tidak',
@@ -143,7 +255,7 @@ export default function DaftarKeluargaScreen() {
       {
         text: 'YA',
         onPress: async () => {
-          Alert.alert('Halaman edit data')
+          navigation.navigate('EditDataKeluarga', { data: row });
         }
       }
     ])
@@ -178,42 +290,42 @@ export default function DaftarKeluargaScreen() {
           </Text>
         </View>
       </View>
-      
-      <View style={{ backgroundColor: '#EEEEEE', height: 675, borderRadius: 30, borderBottomEndRadius:0, borderBottomStartRadius:0 }}>
-        
-      <ScrollView>
-        <Block
-          scroll
-          paddingHorizontal={sizes.sm}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10}}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Pencarian</Text>
-            <TouchableOpacity onPress={toggleSearch}>
-              {showSearch ? (
-                <MaterialCommunityIcons name="chevron-up" size={24} color="black" />
-              ) : (
-                <MaterialCommunityIcons name="chevron-down" size={24} color="black" />
-              )}
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              marginVertical: 10,
-              borderBottomColor: '#BABABA',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              flex: 1
-            }}
-          />
 
-          {showSearch && (
-            <View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Periode
-                  </Text>
-                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+      <View style={{ backgroundColor: '#EEEEEE', height: 675, borderRadius: 30, borderBottomEndRadius: 0, borderBottomStartRadius: 0 }}>
+
+        <ScrollView>
+          <Block
+            scroll
+            paddingHorizontal={sizes.sm}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Pencarian</Text>
+              <TouchableOpacity onPress={toggleSearch}>
+                {showSearch ? (
+                  <MaterialCommunityIcons name="chevron-up" size={24} color="black" />
+                ) : (
+                  <MaterialCommunityIcons name="chevron-down" size={24} color="black" />
+                )}
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                marginVertical: 10,
+                borderBottomColor: '#BABABA',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                flex: 1
+              }}
+            />
+
+            {showSearch && (
+              <View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <View style={{ flexDirection: 'column', paddingRight: 100 }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                      Periode
+                    </Text>
+                    {/* <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
                     <Picker
                       selectedValue={selectedMonth}
                       onValueChange={handleMonthChange}
@@ -223,343 +335,624 @@ export default function DaftarKeluargaScreen() {
                         <Picker.Item key={month.value} label={month.label} value={month.value} />
                       ))}
                     </Picker>
+                  </View> */}
+                    {/* </View>
+                <View style={{ marginTop: 20 }}> */}
+                    <TouchableOpacity
+                      style={styles.input}
+                      onPress={toggleModal}
+
+                    >
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+                        <Text>{selectedYear || 'Pilih Tahun'}</Text>
+                        <Ionicons name="caret-down" size={14} color="black" />
+                      </View>
+
+                    </TouchableOpacity>
+
+                    <Modal
+                      visible={isModalVisible}
+                      animationType="slide"
+                      onRequestClose={toggleModal}
+                      transparent
+                    >
+                      <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                          <View style={styles.modalTitle}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
+                              Tahun
+                            </Text>
+                            <TouchableOpacity onPress={() => closeModal()} >
+                              <MaterialCommunityIcons name="window-close" size={20} color="black" />
+                            </TouchableOpacity>
+                          </View>
+                          <FlatList
+                            data={years}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item}
+                          />
+                        </View>
+                      </View>
+                    </Modal>
                   </View>
                 </View>
-                <View style={{ marginTop: 15 }}>
-                  <TouchableOpacity
-                    style={styles.input}
-                    onPress={toggleModal}
-                  >
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <Text>{selectedYear || 'Pilih Tahun'}</Text>
-                      <Ionicons name="caret-down" size={14} color="black" />
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <View style={{ flexDirection: 'column', paddingRight: 10 }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                      Nama
+                    </Text>
+                    <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Fulan" />
+                  </View>
+                  <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                      NIK
+                    </Text>
+                    <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="9999999999999999" />
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <View style={{ flexDirection: 'column', paddingRight: 10 }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                      RT
+                    </Text>
+                    <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="001" />
+                  </View>
+                  <View style={{ flexDirection: 'column' }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                      RW
+                    </Text>
+                    <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="001" />
+                  </View>
+                </View>
+
+
+              </View>
+
+            )}
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30, marginTop: 20, borderRadius: 30 }}>
+              <TouchableOpacity onPress={() => modallanjutan()}
+                style={{ backgroundColor: '#071952', padding: 10, width: '50%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
+                <Ionicons name="add-circle-outline" size={17} color="white" />
+                <Text style={{ marginLeft: 5, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Pencarian Lanjutan</Text>
+              </TouchableOpacity>
+            </View>
+            {showBaduta === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Baduta
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedBaduta}
+                      onValueChange={handleBadutaChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Ada" value="option1" />
+                      <Picker.Item label="Tidak Ada" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>
+            }
+            {showBalita === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Balita
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedBalita}
+                      onValueChange={handleBalitaChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Ada" value="option1" />
+                      <Picker.Item label="Tidak Ada" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+
+            {showHamil === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Status Hamil
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedHamil}
+                      onValueChange={handleHamilChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Ada" value="option1" />
+                      <Picker.Item label="Tidak Ada" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+
+            {showPUS === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Status PUS
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedPUS}
+                      onValueChange={handlePUSChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Ada" value="option1" />
+                      <Picker.Item label="Tidak Ada" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+
+            {showKeluarga === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Status Keluarga
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedKeluarga}
+                      onValueChange={handleKeluargaChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Keluarga Ada" value="option1" />
+                      <Picker.Item label="Keluarga Pindah" value="option2" />
+                      <Picker.Item label="Keluarga Seluruh Anggota Keluarga Meninggal Dunia" value="option2" />
+                      <Picker.Item label="Keluarga Tidak Ditemukan" value="option2" />
+                      <Picker.Item label="Keluarga Bercerai" value="option2" />
+                      <Picker.Item label="Keluarga Baru" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+
+            {showKRS === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Status KRS
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedKRS}
+                      onValueChange={handleKRSChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Berisiko" value="option1" />
+                      <Picker.Item label="Tidak Berisiko" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+            {showVERVAL === true ?
+              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                    Status Verval
+                  </Text>
+                  <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                    <Picker
+                      selectedValue={selectedVERVAL}
+                      onValueChange={handleVERVALChange}
+                      style={styles.dropdown}
+                      itemStyle={styles.dropdownText}
+                    >
+                      <Picker.Item label="Ada" value="option1" />
+                      <Picker.Item label="Tidak Ada" value="option2" />
+                    </Picker>
+                  </View>
+                </View>
+              </View>
+              : <></>}
+
+
+
+            <Modal
+              visible={isModalVisibleLanjutan}
+              animationType="slide"
+              onRequestClose={toggleModalLanjutan}
+              transparent
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <View style={styles.modalTitle}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
+                      Filter Lanjutan
+                    </Text>
+                    <TouchableOpacity onPress={() => closeModalLanjutan()} >
+                      <MaterialCommunityIcons name="window-close" size={20} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                  <FlatList
+                    data={Lanjutan}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        onPress={() => toggleItemSelection(item)}
+                        style={{
+                          padding: 15,
+                          backgroundColor: selectedItems.includes(item) ? 'lightblue' : 'white',
+                          borderBottomWidth: 1,
+                          borderBottomColor: 'black',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Text>{item}</Text>
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item}
+                    extraData={selectedItems}
+                  />
+                </View>
+              </View>
+            </Modal>
+            {/* {(state.additionalFilter?.length > 0) ?
+              (state.additionalFilter.map((item, index) => {
+                return (
+
+                  <View key={index} style={{ flexDirection: 'row', marginBottom: 8, justifyContent: 'space-between' }}>
+                    <View style={{ flexDirection: 'column', paddingRight: 10 }}>
+                      <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                        <Picker
+                          selectedValue={item.filtValue}
+                          nativeID={"filt" + item.xkey}
+                          onValueChange={(selectedOption) => handleSelectFilter(selectedOption, "filt" + item.xkey)}
+                          style={styles.dropdownChoose}
+                        >
+                          {state.optUseFilter.map((Choose) => (
+                            <Picker.Item style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }} key={Choose.value} label={Choose.label} value={Choose.value} />
+                          ))}
+                        </Picker>
+                      </View>
                     </View>
+                    <View style={{ flexDirection: 'column' }}>
+                      <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#B2B2B2' }}>
+                        <Picker
+                          selectedValue={item.valkey}
+                          key={item.xkey}
+                          onValueChange={(selectedOption) => handleSelectFilterVal(selectedOption, 'val' + item.xkey)}
+                          style={styles.dropdownChooseCore}
+                        >
+                          {item.selectVal?.map((row) => (
+                            <Picker.Item style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }} key={row.value} label={row.label} value={row.value} />
+                          ))}
+                        </Picker>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: 'column' }}>
+                      <TouchableOpacity onPress={(e) => deleteFilter(e, item)}>
+                        <Ionicons name="close-circle-outline" size={35} color="red" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )
+              }))
+              :
+              (
+                <></>
+              )
+            } */}
 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30, marginTop: 20, borderRadius: 30 }}>
+              <TouchableOpacity onPress={() => handleSearch()}
+                style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
+                <Ionicons name="search" size={14} color="white" />
+                <Text style={{ marginLeft: 5, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Cari</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => Alert.alert('Print')}
+                style={{ backgroundColor: '#54B435', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
+                <MaterialCommunityIcons name="printer" size={14} color="white" />
+                <Text style={{ marginLeft: 5, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Print</Text>
+              </TouchableOpacity>
+            </View>
+            {showData ? (
+              <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Data Keluarga & Individu</Text>
+                  <TouchableOpacity onPress={() => next()}>
+                    <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
                   </TouchableOpacity>
-
-                  <Modal
-                    visible={isModalVisible}
-                    animationType="slide"
-                    onRequestClose={toggleModal}
-                    transparent
-                  >
-                    <View style={styles.modalContainer}>
-                      <View style={styles.modalContent}>
-                        <View style={styles.modalTitle}>
-                          <Text style={{ fontSize: 16, fontWeight: 'bold' }} >
-                            Tahun
-                          </Text>
-                          <TouchableOpacity onPress={() => closeModal()}>
-                            <MaterialCommunityIcons name="window-close" size={20} color="black" />
+                </View>
+                <View
+                  style={{
+                    marginVertical: 10,
+                    borderBottomColor: '#BABABA',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    flex: 1
+                  }}
+                />
+                {getData.map((el, index) => {
+                  return (
+                    <View style={styles.item}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row' }} >
+                          <TouchableOpacity style={{ marginRight: 5 }} onPress={toggleDetail}>
+                            {showDetail ? (
+                              <MaterialCommunityIcons name="chevron-up" size={20} color="black" />
+                            ) : (
+                              <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
+                            )}
+                          </TouchableOpacity>
+                          <Text style={styles.title}>{el.nama}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                          <TouchableOpacity style={{ marginRight: 5 }} onPress={() => Alert.alert('Pencarian')}>
+                            <Ionicons
+                              name="search"
+                              size={20}
+                              color="#212A3E"
+                            />
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={(e) => handleEdit(e, el)}>
+                            <MaterialCommunityIcons
+                              name="file-edit"
+                              size={20}
+                              color="#212A3E"
+                            />
                           </TouchableOpacity>
                         </View>
-                        <FlatList
-                          data={years}
-                          renderItem={renderItem}
-                          keyExtractor={(item) => item}
-                        />
                       </View>
+
+                      {showDetail && (
+                        <View>
+
+                          <View key={index} style={styles.boxmodel}>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  NIK
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.nik}
+                                </Text>
+
+                              </View>
+                            </View>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  Kode Keluarga
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.kki.replace(/\s/g, "")}
+                                </Text>
+
+                              </View>
+                            </View>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  Nama Istri
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.nama_istri}
+                                </Text>
+
+                              </View>
+                            </View>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  Status Verval
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.status_verval}
+                                </Text>
+
+                              </View>
+                            </View>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  Status Keluarga
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.status_keluarga}
+                                </Text>
+
+                              </View>
+                            </View>
+                            <View style={{ margin: 5, flexDirection: 'row', marginBottom: 0 }}>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14, marginLeft: 20 }}>
+                                  Status KRS
+                                </Text>
+                              </View>
+                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                                <Text style={{ fontSize: 14 }}>
+                                  : {el.status_krs}
+                                </Text>
+
+                              </View>
+                            </View>
+
+                          </View>
+
+                        </View>
+
+                      )}
                     </View>
-                  </Modal>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Nama
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Fulan" />
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    NIK
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="9999999999999999" />
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Provinsi
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Kalimantan Timur" />
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Kab/Kota
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Balikpapan" />
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Kecamatan
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Balikpapan Kota" />
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    Desa/Kel
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="Klandasan Ilir" />
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'column', paddingRight: 10 }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    RT
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="001" />
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                    RW
-                  </Text>
-                  <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="001" />
-                </View>
-              </View>
-            </View>
-          )}
+                  )
+                })}
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30, marginTop: 20, borderRadius: 30 }}>
-            <TouchableOpacity onPress={() => handleSearch()}
-              style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
-              <Ionicons name="search" size={14} color="white" />
-              <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Cari</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Alert.alert('Print')}
-              style={{ backgroundColor: '#54B435', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
-              <MaterialCommunityIcons name="printer" size={14} color="white" />
-              <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 14 }}>Print</Text>
-            </TouchableOpacity>
-          </View>
-          {showData ? (
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Data Keluarga & Individu</Text>
-                <TouchableOpacity onPress={() => next()}>
-                  <MaterialCommunityIcons name="chevron-right" size={24} color="black" />
-                </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  marginVertical: 10,
-                  borderBottomColor: '#BABABA',
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  flex: 1
-                }}
-              />
-              <SectionList
-                sections={DATA}
-                keyExtractor={(item, index) => item + index}
-                renderItem={({ item }) => (
-                  <View style={styles.item}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                      <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity style={{ marginRight: 5 }} onPress={toggleDetail}>
-                          {showDetail ? (
-                            <MaterialCommunityIcons name="chevron-up" size={20} color="black" />
-                          ) : (
-                            <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
-                          )}
-                        </TouchableOpacity>
-                        <Text style={styles.title}>{item}</Text>
-                      </View>
-                      <View style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity style={{ marginRight: 5 }} onPress={() => Alert.alert('Pencarian')}>
-                          <Ionicons
-                            name="search"
-                            size={20}
-                            color="#212A3E"
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleEdit()}>
-                          <MaterialCommunityIcons
-                            name="file-edit"
-                            size={20}
-                            color="#212A3E"
-                          />
-                        </TouchableOpacity>
-                      </View>
+            ) : null}
+
+            {showSummary ? (
+              <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Ringkasan</Text>
+                  <TouchableOpacity onPress={() => back()}>
+                    <MaterialCommunityIcons name="chevron-left" size={24} color="black" />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    marginVertical: 10,
+                    borderBottomColor: '#BABABA',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    flex: 1
+                  }}
+                />
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 50 }}>Jumlah Keluarga/Jiwa</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 257/999</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 105 }}>Jumlah PUS</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 190</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 53 }}>Jumlah Wanita Hamil</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 1</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 53 }}>Jumlah Unmed Need</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 49</Text>
+                </View>
+                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginBottom: 10 }}>Peserta KB Aktif</Text>
+                <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginBottom: 10, borderRadius: 5 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginBottom: 10 }}>Metode IUD</Text>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
+                      <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Pemerintah</Text>
+                      <Text style={{ color: 'black', fontSize: 16 }}>2</Text>
                     </View>
-  
-                    {showDetail && (
-                      <View>
-                        <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
-                          <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 50 }}>
-                            Nama
-                          </Text>
-                          <Text style={{ fontSize: 16 }}>
-                            : Fulan
-                          </Text>
-                        </View>
-                        <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
-                          <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 70 }}>
-                            NIK
-                          </Text>
-                          <Text style={{ fontSize: 16 }}>
-                            : 9999999999999999
-                          </Text>
-                        </View>
-                        <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
-                          <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 10 }}>
-                            Tanggal Lahir
-                          </Text>
-                          <Text style={{ fontSize: 16 }}>
-                            : 24 April 1998
-                          </Text>
-                        </View>
-                        <View style={{ margin: 10, flexDirection: 'row', marginBottom: 0 }}>
-                          <Text style={{ fontSize: 16, marginLeft: 20, marginRight: 65 }}>
-                            Usia
-                          </Text>
-                          <Text style={{ fontSize: 16 }}>
-                            : 25 tahun
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </View>
-                )}
-                renderSectionHeader={({ section: { title } }) => (
-                  <Text style={styles.header}>{title}</Text>
-                )}
-              />
-            </View>
-          ) : null}
-
-          {showSummary ? (
-            <View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Ringkasan</Text>
-                <TouchableOpacity onPress={() => back()}>
-                  <MaterialCommunityIcons name="chevron-left" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  marginVertical: 10,
-                  borderBottomColor: '#BABABA',
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  flex: 1
-                }}
-              />
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 50 }}>Jumlah Keluarga/Jiwa</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 257/999</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 105 }}>Jumlah PUS</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 190</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 53 }}>Jumlah Wanita Hamil</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 1</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 53 }}>Jumlah Unmed Need</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 49</Text>
-              </View>
-              <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginBottom: 10 }}>Peserta KB Aktif</Text>
-              <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginBottom: 10, borderRadius: 5 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginBottom: 10 }}>Metode IUD</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                  <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
-                    <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Pemerintah</Text>
-                    <Text style={{ color: 'black', fontSize: 16 }}>2</Text>
-                  </View>
-                  <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
-                    <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Swasta</Text>
-                    <Text style={{ color: 'black', fontSize: 16 }}>1</Text>
-                  </View>
-                  <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
-                    <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Lainnya</Text>
-                    <Text style={{ color: 'black', fontSize: 16 }}>0</Text>
-                  </View>
-                  <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
-                    <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Total</Text>
-                    <Text style={{ color: 'black', fontSize: 16 }}>3</Text>
+                    <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
+                      <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Swasta</Text>
+                      <Text style={{ color: 'black', fontSize: 16 }}>1</Text>
+                    </View>
+                    <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
+                      <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Lainnya</Text>
+                      <Text style={{ color: 'black', fontSize: 16 }}>0</Text>
+                    </View>
+                    <View style={{ padding: 5, borderRadius: 5, alignItems: 'center' }}>
+                      <Text style={{ color: 'black', fontSize: 16, marginBottom: 5 }}>Total</Text>
+                      <Text style={{ color: 'black', fontSize: 16 }}>3</Text>
+                    </View>
                   </View>
                 </View>
-              </View>
 
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 45 }}>PUS  Bukan Peserta KB</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 57</Text>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 45 }}>PUS  Bukan Peserta KB</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 57</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 100, marginLeft: 10 }}>Ingin Anak</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 9</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 53, marginLeft: 10 }}>Ingin Anak Ditunda</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 13</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 40, marginLeft: 10 }}>Tidak Ingin Anak Lagi</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 36</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 80 }}>Sasaran Poktan</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 261</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 44</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 138</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKL</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 79</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 70 }}>Kesertaan Poktan</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 49</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 23</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 5</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKL</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 6</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 44</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 138</Text>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <Text style={{ color: 'black', fontSize: 16, marginRight: 123, marginLeft: 10 }}>UPPKA</Text>
+                  <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 0</Text>
+                </View>
               </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 100, marginLeft: 10 }}>Ingin Anak</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 9</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 53, marginLeft: 10 }}>Ingin Anak Ditunda</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 13</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 40, marginLeft: 10 }}>Tidak Ingin Anak Lagi</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 36</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 80 }}>Sasaran Poktan</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 261</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 44</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 138</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKL</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 79</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginRight: 70 }}>Kesertaan Poktan</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 49</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 23</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 5</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKL</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 6</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 139, marginLeft: 10 }}>BKB</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 44</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 137, marginLeft: 10 }}>BKR</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 138</Text>
-              </View>
-              <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={{ color: 'black', fontSize: 16, marginRight: 123, marginLeft: 10 }}>UPPKA</Text>
-                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>: 0</Text>
-              </View>
-            </View>
-          ) : null}
+            ) : null}
 
-        </Block>
+          </Block>
         </ScrollView>
       </View>
-      
-    </Block>
+
+    </Block >
 
   );
 }
 
 const styles = StyleSheet.create({
   dropdown: {
-    width: 150,
-    height: 50,
+    width: 310,
+    height: 47,
+  },
+  dropdownText: {
+
+  },
+  dropdownChoose: {
+    width: 170,
+    height: 45,
+    fontSize: 15
+  },
+
+  dropdownChooseCore: {
+    width: 100,
+    height: 45,
+    fontSize: 15
   },
   modalTitle: {
     margin: 20,
@@ -568,15 +961,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   input: {
-    padding: 15,
-    paddingBottom:17,
-    paddingTop:17,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderWidth: 1,
-    borderColor: '#B7B7B7',
-    borderRadius: 5,
-    width: 150
+    padding: 10, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', float: 'left'
+  },
+  boxmodel: {
+    backgroundColor: '#dedede',
+    borderRadius: 15,
+    paddingBottom: 10
   },
   modalContainer: {
     flex: 1,
@@ -611,9 +1001,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   item: {
-    backgroundColor: '#DDE6ED',
-    padding: 10,
+    backgroundColor: '#efefef',
+    padding: 5,
     marginVertical: 8,
+    borderRadius: 10
   },
   header: {
     fontSize: 18,
@@ -705,5 +1096,22 @@ const styles = StyleSheet.create({
     zIndex: 1,
     borderBottomWidth: 3,
     borderBottomColor: '#FF6961',
+  },
+  containerpicker: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  picker: {
+    width: 200,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'gray',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  selectedText: {
+    marginTop: 16,
   },
 });
