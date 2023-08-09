@@ -65,7 +65,9 @@ export default function P22() {
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Penapisan</Text>
-                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>2.2</Text>
+                        <TouchableOpacity onPress={() => Alert.alert('Draft disimpan !')}>
+                            <MaterialCommunityIcons name="content-save-alert" size={18} color="#557A46" />
+                        </TouchableOpacity>
                     </View>
                     <View
                         style={{
@@ -75,106 +77,53 @@ export default function P22() {
                             flex: 1
                         }}
                     />
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10 }}>
+                    <View style={{ backgroundColor: '#EEEEEE', padding: 10}}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                            Apakah keluarga mempunyai  sumber air minum yang utama yang layak ?
+                            Darimana sumber air minum utama keluarga Anda ?
                         </Text>
                     </View>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="first"
-                                status={airMinum === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setAirMinum('first')}
-                            />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="second"
-                                status={airMinum === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => { setAirMinum('second'); setSelectedAirMinum('') }}
-                            />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
-                        </View>
+                    <View style={styles.picker}>
+                        <Picker
+                            selectedValue={selectedAirMinum}
+                            onValueChange={(itemValue) => setSelectedAirMinum(itemValue)}
+                            numberOfLines={2}
+                        >
+                            <Picker.Item label="Pilih sumber air minum" value="" />
+                            <Picker.Item label="1. Air Kemasan/Isi Ulang" value="kemasan" />
+                            <Picker.Item label="2. Ledeng/PAM" value="ledeng" />
+                            <Picker.Item label="3. Sumur Bor/Pompa" value="sumurBor" />
+                            <Picker.Item label="4. Sumur Terlindung" value="sumurTerlindung" />
+                            <Picker.Item label="5. Sumur Tak Terlindung" value="sumurTakTerlindung" />
+                            <Picker.Item label="6. Mata Air Terlindung" value="mataAirTerlindung" />
+                            <Picker.Item label="7. Mata Air Tak Terlindung" value="mataAirTakTerlindung" />
+                            <Picker.Item label="8. Air Permukaan (sungai/danau/waduk/kolam/irigasi)" value="airPermukaan" />
+                            <Picker.Item label="9. Air Hujan" value="airHujan" />
+                            <Picker.Item label="10. Lainnya" value="lainnya" />
+                        </Picker>
                     </View>
-                    {(airMinum === 'first') ?
-                        <>
-                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                    Darimana sumber air minum utama keluarga Anda ?
-                                </Text>
-                            </View>
-                            <View style={{ borderWidth: 1, borderRadius: 5, margin: 10, borderColor: '#B2B2B2' }}>
-                                <Picker
-                                    selectedValue={selectedAirMinum}
-                                    onValueChange={(itemValue) => setSelectedAirMinum(itemValue)}
-                                    numberOfLines={2}
-                                >
-                                    <Picker.Item label="Pilih sumber air minum" value="" />
-                                    <Picker.Item label="1. Air Kemasan/Isi Ulang" value="kemasan" />
-                                    <Picker.Item label="2. Ledeng/PAM" value="ledeng" />
-                                    <Picker.Item label="3. Sumur Bor/Pompa" value="sumurBor" />
-                                    <Picker.Item label="4. Sumur Terlindung" value="sumurTerlindung" />
-                                    <Picker.Item label="5. Sumur Tak Terlindung" value="sumurTakTerlindung" />
-                                    <Picker.Item label="6. Mata Air Terlindung" value="mataAirTerlindung" />
-                                    <Picker.Item label="7. Mata Air Tak Terlindung" value="mataAirTakTerlindung" />
-                                    <Picker.Item label="8. Air Permukaan (sungai/danau/waduk/kolam/irigasi)" value="airPermukaan" />
-                                    <Picker.Item label="9. Air Hujan" value="airHujan" />
-                                    <Picker.Item label="10. Lainnya" value="lainnya" />
-                                </Picker>
-                            </View>
-                            <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                                <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                    Layak/Tidak Layak
-                                </Text>
-                            </View>
-                            <View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <RadioButton
-                                        value="first"
-                                        status={layak === 'first' ? 'checked' : 'unchecked'}
-                                        onPress={() => setLayak('first')}
-                                        disabled={true}
-                                    />
-                                    <Text style={{ marginTop: 10, fontSize: 16 }}>Layak</Text>
-                                </View>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <RadioButton
-                                        value="second"
-                                        status={layak === 'second' ? 'checked' : 'unchecked'}
-                                        onPress={() => setLayak('second')}
-                                        disabled={true}
-                                    />
-                                    <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak Layak</Text>
-                                </View>
-                            </View>
-                        </>
-                        :
-                        <>
-                        </>}
-
                     <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                            Verval
+                            Layak/Tidak Layak
                         </Text>
                     </View>
                     <View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
                                 value="first"
-                                status={verval === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setVerval('first')}
+                                status={layak === 'first' ? 'checked' : 'unchecked'}
+                                onPress={() => setLayak('first')}
+                                disabled={true}
                             />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Layak</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <RadioButton
                                 value="second"
-                                status={verval === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setVerval('second')}
+                                status={layak === 'second' ? 'checked' : 'unchecked'}
+                                onPress={() => setLayak('second')}
+                                disabled={true}
                             />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
+                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak Layak</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
@@ -194,3 +143,12 @@ export default function P22() {
         </Block>
     )
 }
+
+const styles = StyleSheet.create({
+    picker: {
+        borderWidth: 1,
+        borderRadius: 5,
+        margin: 10,
+        borderColor: '#B2B2B2'
+    },
+});
