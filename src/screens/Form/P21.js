@@ -20,16 +20,6 @@ export default function P21() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
     const [selectedKb, setSelectedKb] = useState('');
-    const [selectedValue, setSelectedValue] = useState(null);
-
-    const handleValueChange = (value) => {
-        // Check the value and set selectedValue accordingly
-        if (value === 'default') {
-            setSelectedValue(null); // Reset selection to default
-        } else {
-            setSelectedValue(value);
-        }
-    };
     return (
         <Block flex={1} style={{ backgroundColor: '#071952' }}>
             <View style={{ margin: 10 }} >
@@ -82,16 +72,6 @@ export default function P21() {
                             <Picker.Item label="9. Tradisional" value="tradisional" />
                         </Picker>
                     </View>
-                    <DropDownPicker
-                        items={[
-                            { label: 'Option 1', value: 'option1' },
-                            { label: 'Option 2', value: 'option2' },
-                            { label: 'Default Option', value: 'default'}, // Set the default option as disabled
-                        ]}
-                        defaultValue={null} // Use null as defaultValue to start with no option selected
-                        value={selectedValue}
-                        onChangeItem={(item) => handleValueChange(item.value)}
-                    />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
                         <TouchableOpacity onPress={() => navigation.navigate('P13')}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
