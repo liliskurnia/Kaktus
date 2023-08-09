@@ -59,7 +59,9 @@ export default function P23() {
                     contentContainerStyle={{ backgroundColor: '#fff', marginTop: 20, padding: 10, borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>Form Penapisan</Text>
-                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 18 }}>2.3</Text>
+                        <TouchableOpacity onPress={() => Alert.alert('Draft disimpan !')}>
+                            <MaterialCommunityIcons name="content-save-alert" size={18} color="#557A46" />
+                        </TouchableOpacity>
                     </View>
                     <View
                         style={{
@@ -110,29 +112,6 @@ export default function P23() {
                                 disabled={true}
                             />
                             <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak Layak</Text>
-                        </View>
-                    </View>
-                    <View style={{ backgroundColor: '#EEEEEE', padding: 10, marginTop: 20 }}>
-                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                            Verval
-                        </Text>
-                    </View>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="first"
-                                status={verval === 'first' ? 'checked' : 'unchecked'}
-                                onPress={() => setVerval('first')}
-                            />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Ya</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                value="second"
-                                status={verval === 'second' ? 'checked' : 'unchecked'}
-                                onPress={() => setVerval('second')}
-                            />
-                            <Text style={{ marginTop: 10, fontSize: 16 }}>Tidak</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
