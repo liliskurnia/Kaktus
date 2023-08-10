@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RadioButton } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 import {
     TouchableOpacity,
