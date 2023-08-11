@@ -159,7 +159,7 @@ export default function TambahDataKeluarga() {
                         </View>
                     </View>
                     <View style={{ justifyContent: 'flex-end', marginBottom: 20, borderRadius: 30 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('DataDiri', { jumlahKeluarga })}
+                        <TouchableOpacity onPress={() => navigation.navigate('DataDiri', { currentIndex: 0, jumlahKeluarga })}
                             style={{ borderRadius: 10, backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row' }}>
                             <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 16, marginRight: 10 }}>Selanjutnya</Text>
                             <MaterialCommunityIcons name="arrow-right" size={16} color="white" />
