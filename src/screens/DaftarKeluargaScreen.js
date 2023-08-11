@@ -611,10 +611,13 @@ export default function DaftarKeluargaScreen() {
                         onPress={() => toggleItemSelection(item)}
                         style={{
                           padding: 15,
+                          marginHorizontal: 20,
+                          margin: 5,
                           backgroundColor: selectedItems.includes(item) ? 'lightblue' : 'white',
-                          borderBottomWidth: 1,
-                          borderBottomColor: 'black',
-                          alignItems: 'center'
+                          borderWidth: 1,
+                          borderColor: '#ccc',
+                          alignItems: 'center',
+                          borderRadius: 5
                         }}
                       >
                         <Text>{item}</Text>
@@ -999,19 +1002,20 @@ const styles = StyleSheet.create({
     padding: 10, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', float: 'left'
   },
   boxmodel: {
-    backgroundColor: '#dedede',
-    borderRadius: 15,
-    paddingBottom: 10
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    paddingBottom: 10,
+    marginTop: 5
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end', // Atur justifyContent ke 'flex-end' untuk mendorong modal ke bawah
+    justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     borderRadius: 20,
     backgroundColor: 'white',
-    height: '70%', // Atur tinggi modal menjadi 50% dari tinggi layar
+    height: '70%',
     width: '100%',
     borderBottomEndRadius: 0,
     borderBottomStartRadius: 0
@@ -1039,7 +1043,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     padding: 5,
     marginVertical: 8,
-    borderRadius: 10
+    borderRadius: 5
   },
   header: {
     fontSize: 18,
