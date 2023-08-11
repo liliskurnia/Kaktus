@@ -163,7 +163,6 @@ export default function DaftarKeluargaScreen() {
       setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
 
     } else {
-      // console.log(selectedItems,'ellllllllllllse')
       setSelectedItems([...selectedItems, item]);
     }
   };
@@ -225,14 +224,12 @@ export default function DaftarKeluargaScreen() {
   const handleSearch = useCallback(async () => {
 
 
-    console.log(page)
     try {
       setShowData(true);
       setShowSummary(false);
 
       const http = 'https://newsiga-modul-stunting-api.bkkbn.go.id/siga/stunting/';
       const response = await axios.get(`${http}getDetail?bulan=8&tahun=2023&page=${page}&recordPerPage=10&idProvinsi=36&idKabupaten=331&idKecamatan=2985&idKelurahan=30028`);
-      console.log(response.data.totalRecord)
       setMaxpage(response.data.totalRecord)
       setGetData(response.data.data);
     } catch (error) {
