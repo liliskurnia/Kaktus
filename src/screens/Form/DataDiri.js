@@ -34,6 +34,42 @@ export default function DataDiri({ route }) {
         }
     };
 
+    const [birthdate, setBirthdate] = useState('');
+    const [age, setAge] = useState('');
+
+    const handleBirthdateChange = (text) => {
+        setBirthdate(text);
+        calculateAge(text);
+    };
+
+    const calculateAge = (birthdate) => {
+        const today = new Date();
+        const birthdateArray = birthdate.split('-');
+        const birthYear = parseInt(birthdateArray[0], 10);
+        const birthMonth = parseInt(birthdateArray[1], 10);
+        const birthDay = parseInt(birthdateArray[2], 10);
+
+        const ageYear = today.getFullYear() - birthYear;
+        const ageMonth = today.getMonth() + 1 - birthMonth;
+        const ageDay = today.getDate() - birthDay;
+
+        let calculatedAge = ageYear;
+
+        if (
+            birthMonth > today.getMonth() + 1 ||
+            (birthMonth === today.getMonth() + 1 && birthDay > today.getDate())
+        ) {
+            calculatedAge--;
+        }
+
+        //usia 0 jika negatif 
+        if (calculatedAge < 0) {
+            calculatedAge = 0;
+        }
+
+        setAge(calculatedAge.toString());
+    };
+
     return (
         <Block flex={1} style={{ backgroundColor: '#071952' }}>
 
@@ -121,13 +157,36 @@ export default function DataDiri({ route }) {
                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                 Tanggal Lahir
                             </Text>
-                            <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} />
+                            <TextInput
+                                style={{
+                                    padding: 8,
+                                    width: 150,
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderColor: '#B7B7B7',
+                                }}
+                                placeholder="YYYY-MM-DD"
+                                value={birthdate}
+                                onChangeText={handleBirthdateChange}
+                            />
                         </View>
                         <View style={{ flexDirection: 'column' }}>
                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                 Usia
-                            </Text >
-                            <TextInput style={{ padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} />
+                            </Text>
+                            <TextInput
+                                style={{
+                                    padding: 8,
+                                    width: 150,
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderColor: '#B7B7B7',
+                                    color: 'black'
+                                }}
+                                placeholder='35'
+                                value={age}
+                                editable={false}
+                            />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>

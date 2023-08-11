@@ -23,12 +23,31 @@ export default function TambahDataKeluarga() {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
     const [selectedStatusKeluarga, setSelectedStatusKeluarga] = useState('baru');
-    const [jumlahKeluarga, setJumlahKeluarga] = useState(0);
+    const [jumlahKeluarga, setJumlahKeluarga] = useState('2');
 
     const handleJumlahKeluargaChange = (value) => {
         setJumlahKeluarga(value);
-        // onJumlahKeluargaChange(parseInt(value));
     }
+
+    //tidak bisa hanya menambahkan individu, harus pus (minimal 2 anggota keluarga)
+    const validateInput = () => {
+        const inputValue = parseInt(jumlahKeluarga, 10);
+        if (isNaN(inputValue) || inputValue <= 1) {
+            return false;
+        }
+        return true;
+    };
+
+    const renderErrorMessage = () => {
+        if (!validateInput()) {
+            return (
+                <Text style={{ color: 'red' }}>
+                    Jumlah anggota keluarga harus lebih dari 1.
+                </Text>
+            );
+        }
+        return null;
+    };
 
     return (
         <Block flex={1} style={{ backgroundColor: '#071952' }}>
@@ -137,25 +156,27 @@ export default function TambahDataKeluarga() {
                             value={jumlahKeluarga.toString()}
                             onChangeText={handleJumlahKeluargaChange}
                             keyboardType="numeric"
+                            placeholder='2'
                         />
+                        {renderErrorMessage()}
                     </View>
                     <View style={{ flexDirection: 'column', marginBottom: 50 }}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Status Keluarga
                         </Text>
-                        <View style={{backgroundColor: '#EEEEEE', width: 310, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }}>
-                        <Picker
-                            selectedValue={selectedStatusKeluarga}
-                            onValueChange={(itemValue, itemIndex) => setSelectedStatusKeluarga(itemValue)}
-                            enabled={false}
-                        >
-                            <Picker.Item label="6. Keluarga Baru" value="baru" />
-                            <Picker.Item label="1. Keluarga Ada" value="ada" />
-                            <Picker.Item label="2. Keluarga Pindah" value="pindah" />
-                            <Picker.Item label="3. Keluarga Seluruh Anggota Keluarga Meninggal Dunia" value="meninggal" />
-                            <Picker.Item label="4. Keluarga Tidak Ditemukan" value="tidakDitemukan" />
-                            <Picker.Item label="5. Keluarga Bercerai" value="cerai" />
-                        </Picker>
+                        <View style={{ backgroundColor: '#EEEEEE', width: 310, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }}>
+                            <Picker
+                                selectedValue={selectedStatusKeluarga}
+                                onValueChange={(itemValue, itemIndex) => setSelectedStatusKeluarga(itemValue)}
+                                enabled={false}
+                            >
+                                <Picker.Item label="6. Keluarga Baru" value="baru" />
+                                <Picker.Item label="1. Keluarga Ada" value="ada" />
+                                <Picker.Item label="2. Keluarga Pindah" value="pindah" />
+                                <Picker.Item label="3. Keluarga Seluruh Anggota Keluarga Meninggal Dunia" value="meninggal" />
+                                <Picker.Item label="4. Keluarga Tidak Ditemukan" value="tidakDitemukan" />
+                                <Picker.Item label="5. Keluarga Bercerai" value="cerai" />
+                            </Picker>
                         </View>
                     </View>
                     <View style={{ justifyContent: 'flex-end', marginBottom: 20, borderRadius: 30 }}>
