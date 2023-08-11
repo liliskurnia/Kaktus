@@ -46,7 +46,7 @@ export default function P31() {
     };
 
     useEffect(() => {
-        setSelectedItems(selectedItems.find((el) => el === "8. Tidak ada") ? selectedItems : []);
+        // setSelectedItems(selectedItems.find((el) => el === "8. Tidak ada") ? selectedItems : []);
         // console.log(selectedItems.find((el) => el === "8. Tidak ada"))
       }, [selectedItems]);
 

@@ -12,7 +12,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, Foundation } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { useNavigation } from '@react-navigation/native';
 import { Block, Image, ModalSelect, Input } from '../components';
@@ -44,12 +44,16 @@ export default function DaftarKeluargaScreen() {
   const [selectedKRS, setSelectedKRS] = useState('');
   const [selectedVERVAL, setSelectedVERVAL] = useState('');
 
-  // const [additionalFilter, setadditionalFilter] = useState([]);
 
+  // const [additionalFilter, setadditionalFilter] = useState([]);
+  const [openIndex, setOpenIndex] = useState(null);
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleLanjutan, setModalVisibleLanjutan] = useState(false);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [page, setPage] = useState(1);
+  const [maxpage, setMaxpage] = useState(0);
+
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedChoose, setSelectedChoose] = useState('');
   const [selectedChooseCore, setSelectedChooseCore] = useState('');
@@ -102,7 +106,7 @@ export default function DaftarKeluargaScreen() {
   const handleKRSChange = (itemValue) => {
     setSelectedKRS(itemValue);
   };
-    const handleVERVALChange = (itemValue) => {
+  const handleVERVALChange = (itemValue) => {
     setSelectedVERVAL(itemValue);
   };
 
@@ -152,14 +156,13 @@ export default function DaftarKeluargaScreen() {
     setShowKeluarga(selectedItems.find((el) => el === 'Status Keluarga') === undefined ? false : true);
     setShowKRS(selectedItems.find((el) => el === 'Status KRS') === undefined ? false : true);
     setShowVERVAL(selectedItems.find((el) => el === 'Status Verval') === undefined ? false : true);
-  }, [selectedItems]);
+  }, [selectedItems, page]);
 
   const toggleItemSelection = (item) => {
     if (selectedItems.includes(item)) {
       setSelectedItems(selectedItems.filter((selectedItem) => selectedItem !== item));
 
     } else {
-      // console.log(selectedItems,'ellllllllllllse')
       setSelectedItems([...selectedItems, item]);
     }
   };
@@ -186,8 +189,8 @@ export default function DaftarKeluargaScreen() {
     setShowSearch(!showSearch);
   };
 
-  const toggleDetail = () => {
-    setShowDetail(!showDetail);
+  const toggleDetail = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
 
@@ -218,17 +221,34 @@ export default function DaftarKeluargaScreen() {
   //   );
   // };
 
-  const handleSearch = () => {
-    setShowData(true);
-    setShowSummary(false);
-    let http = 'https://newsiga-modul-stunting-api.bkkbn.go.id/siga/stunting/'
-    axios.get(http + 'getDetail?bulan=8&tahun=2023&page=1&recordPerPage=10&idProvinsi=36&idKabupaten=331&idKecamatan=2985&idKelurahan=30028')
-      .then(response => {
-        setGetData(response.data.data)
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const handleSearch = useCallback(async () => {
+
+
+    try {
+      setShowData(true);
+      setShowSummary(false);
+
+      const http = 'https://newsiga-modul-stunting-api.bkkbn.go.id/siga/stunting/';
+      const response = await axios.get(`${http}getDetail?bulan=8&tahun=2023&page=${page}&recordPerPage=10&idProvinsi=36&idKabupaten=331&idKecamatan=2985&idKelurahan=30028`);
+      setMaxpage(response.data.totalRecord)
+      setGetData(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [page]);
+
+  const handleNext = useCallback(() => {
+    setPage((page) => Math.min(page + 1, maxpage))
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [page]);
+
+  const handlePrevious = () => {
+    if (page > 1) {
+      setPage((page) => page - 1);
+    }
   };
 
   const modallanjutan = () => {
@@ -685,16 +705,18 @@ export default function DaftarKeluargaScreen() {
                   return (
                     <View style={styles.item}>
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flexDirection: 'row' }} >
-                          <TouchableOpacity style={{ marginRight: 5 }} onPress={toggleDetail}>
-                            {showDetail ? (
-                              <MaterialCommunityIcons name="chevron-up" size={20} color="black" />
-                            ) : (
-                              <MaterialCommunityIcons name="chevron-down" size={20} color="black" />
-                            )}
-                          </TouchableOpacity>
-                          <Text style={styles.title}>{el.nama}</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => toggleDetail(index)}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <MaterialCommunityIcons
+                              name={openIndex === index ? 'chevron-up' : 'chevron-down'}
+                              size={20}
+                              color="black"
+                            />
+                            <Text style={styles.title}>{el.nama}</Text>
+
+                          </View>
+                        </TouchableOpacity>
+
                         <View style={{ flexDirection: 'row' }}>
                           <TouchableOpacity style={{ marginRight: 5 }} onPress={() => Alert.alert('Pencarian')}>
                             <Ionicons
@@ -713,7 +735,7 @@ export default function DaftarKeluargaScreen() {
                         </View>
                       </View>
 
-                      {showDetail && (
+                      {openIndex === index && (
                         <View>
 
                           <View key={index} style={styles.boxmodel}>
@@ -723,7 +745,7 @@ export default function DaftarKeluargaScreen() {
                                   NIK
                                 </Text>
                               </View>
-                              <View style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
+                              <View key={index} style={{ margin: 5, flexDirection: 'column', marginBottom: 0 }}>
                                 <Text style={{ fontSize: 14 }}>
                                   : {el.nik}
                                 </Text>
@@ -801,10 +823,23 @@ export default function DaftarKeluargaScreen() {
                         </View>
 
                       )}
+
                     </View>
                   )
                 })}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 30, marginTop: 20, borderRadius: 30 }}>
+                  <TouchableOpacity onPress={() => handlePrevious()}
+                    style={{ backgroundColor: '#30A2FF', padding: 8, width: '30%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
+                    <MaterialCommunityIcons name="arrow-left" size={20} color="white" />
+                    <Text style={{ marginLeft: 5, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Previous</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleNext()}
+                    style={{ backgroundColor: '#54B435', padding: 8, width: '25%', justifyContent: 'center', alignSelf: 'center', marginLeft: 'auto', flexDirection: 'row', borderRadius: 10 }}>
+                    <Text style={{ marginLeft: 5, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Next</Text>
+                    <MaterialCommunityIcons name="arrow-right" size={20} color="white" style={{ marginLeft: 10 }} />
 
+                  </TouchableOpacity>
+                </View>
               </View>
             ) : null}
 

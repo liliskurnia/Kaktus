@@ -21,6 +21,7 @@ export default function HomeScreen() {
     { imageUrl: require("../assets/images/stunting4.jpg") },
     { imageUrl: require("../assets/images/stunting3.jpg") },
     { imageUrl: require("../assets/images/stunting2.jpg") },
+    { imageUrl: require("../assets/images/stunting2.jpg") },
   ];
 
   const navigation = useNavigation();
@@ -34,7 +35,7 @@ export default function HomeScreen() {
       </View>
     );
   };
-  
+
   const handleRestore = () => {
     Alert.alert('Restore', 'Anda akan melakukan restore data?', [
       {
@@ -67,22 +68,22 @@ export default function HomeScreen() {
 
   const handleLogout = () => {
     Alert.alert(
-        'Logout',
-        `Anda yakin akan keluar dari akun Anda ?`,
-        [
-            {
-                text: 'Tidak',
-                style: 'cancel',
-            },
-            {
-                text: 'YA',
-                onPress: async () => {
-                    navigation.navigate('Login')
-                },
-            },
-        ],
+      'Logout',
+      `Anda yakin akan keluar dari akun Anda ?`,
+      [
+        {
+          text: 'Tidak',
+          style: 'cancel',
+        },
+        {
+          text: 'YA',
+          onPress: async () => {
+            navigation.navigate('Login')
+          },
+        },
+      ],
     );
-};
+  };
 
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -265,17 +266,9 @@ export default function HomeScreen() {
                   <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>Cilangkap</TextRn>
                 </View>
               </View>
-              <View style={{flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Sinkronisasi</TextRn>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons name="sync" size={20} color="black" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={{ flex: 1,flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10}}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center', position:'relative'  }}>Periode</TextRn>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign:'center',marginTop:10, marginLeft: -5 }}>2023</TextRn>
+              <View style={{ flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10 }}>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', position: 'relative' }}>Periode</TextRn>
+                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginLeft: -5 }}>2023</TextRn>
               </View>
 
             </View>
@@ -300,7 +293,7 @@ export default function HomeScreen() {
                 }}
               >
                 <View style={{ flex: 6, marginBottom: 8 }}>
-                  <TextRn style={{ fontSize: 16, fontWeight: 700 }}>
+                  <TextRn style={{ fontSize: 18, fontWeight: 700 }}>
                     Layanan
                   </TextRn>
                 </View>
@@ -320,10 +313,9 @@ export default function HomeScreen() {
                       }
                     >
                       <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="clipboard-list-outline"
-                          size={34}
-                          color="#fff"
+                        <Image
+                          source={require('../assets/images/family-room.png')} // Replace with the actual path
+                          style={{ width: 45, height: 45 }}
                         />
                       </View>
                       <TextRn
@@ -344,10 +336,9 @@ export default function HomeScreen() {
                       onPress={() => navigation.navigate("TambahDataKeluarga")}
                     >
                       <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="account-plus"
-                          size={34}
-                          color="#fff"
+                      <Image
+                          source={require('../assets/images/family-plus.png')} // Replace with the actual path
+                          style={{ width: 45, height: 45 }}
                         />
                       </View>
                       <TextRn
@@ -359,30 +350,6 @@ export default function HomeScreen() {
                         }}
                       >
                         Tambah Keluarga
-                      </TextRn>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.circleBody}>
-                    <TouchableOpacity
-                      style={styles.circleMenuTouch}
-                      onPress={() => navigation.navigate('DraftScreen')}
-                    >
-                      <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="clipboard-file-outline"
-                          size={34}
-                          color="#fff"
-                        />
-                      </View>
-                      <TextRn
-                        style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
-                          margin: 10,
-                          marginTop: 5,
-                        }}
-                      >
-                        Draft
                       </TextRn>
                     </TouchableOpacity>
                   </View>
@@ -400,10 +367,9 @@ export default function HomeScreen() {
                       onPress={() => handleRestore()}
                     >
                       <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="backup-restore"
-                          size={38}
-                          color="#fff"
+                      <Image
+                          source={require('../assets/images/curve-arrow.png')} // Replace with the actual path
+                          style={{ width: 45, height: 45 }}
                         />
                       </View>
                       <TextRn
@@ -414,7 +380,7 @@ export default function HomeScreen() {
                           marginTop: 5,
                         }}
                       >
-                        Restrore
+                        Restore
                       </TextRn>
                     </TouchableOpacity>
                   </View>
@@ -424,10 +390,9 @@ export default function HomeScreen() {
                       onPress={() => handleBackup()}
                     >
                       <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="zip-disk"
-                          size={34}
-                          color="#fff"
+                      <Image
+                          source={require('../assets/images/backup.png')} // Replace with the actual path
+                          style={{ width: 45, height: 45 }}
                         />
                       </View>
                       <TextRn
@@ -448,10 +413,9 @@ export default function HomeScreen() {
                       onPress={() => navigation.navigate('ProfileScreen')}
                     >
                       <View style={styles.circleMenu}>
-                        <MaterialCommunityIcons
-                          name="account-details"
-                          size={38}
-                          color="#fff"
+                      <Image
+                          source={require('../assets/images/user.png')} // Replace with the actual path
+                          style={{ width: 45, height: 45 }}
                         />
                       </View>
                       <TextRn
@@ -527,7 +491,7 @@ const styles = StyleSheet.create({
   circleMenu: {
     width: 60,
     height: 60,
-    backgroundColor: "#B70404",
+    backgroundColor: "#808080",
     borderWidth: 1,
     borderColor: "#f4f4f4",
     borderRadius: 12,

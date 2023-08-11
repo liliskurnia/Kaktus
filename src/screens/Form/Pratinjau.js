@@ -77,15 +77,15 @@ export default function Pratinjau() {
                                 flex: 1
                             }}
                         />
-                        <View style={{flexDirection:'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                             <MaterialCommunityIcons name="map-marker-radius" size={20} color="black" />
-                            <Text style={{fontSize: 16, fontWeight:'bold',padding:3}}>Lokasi Pendataan</Text>
-                            <View style={{borderWidth:1, borderRadius:5, backgroundColor:'#EEEEEE', borderColor:'#B7B7B7', marginLeft:5}}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold', padding: 3 }}>Lokasi Pendataan</Text>
+                            <View style={{ borderWidth: 1, borderRadius: 5, backgroundColor: '#EEEEEE', borderColor: '#B7B7B7', marginLeft: 5 }}>
                                 <MaterialCommunityIcons name="refresh" size={20} color="black" />
                             </View>
                         </View>
-                        <Text style={{fontSize:16, fontWeight:'bold', marginTop:5}}>Latitude : -</Text>
-                        <Text style={{fontSize:16, fontWeight:'bold', marginTop:5, marginBottom:20}}>Longitude : -</Text>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 5 }}>Latitude : -</Text>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 5, marginBottom: 20 }}>Longitude : -</Text>
                         <TouchableOpacity onPress={() => handleCollapse(true)}
                             style={{ backgroundColor: '#205295', padding: 10 }}>
                             <View>
@@ -152,55 +152,74 @@ export default function Pratinjau() {
                                 marginBottom: 10,
                             }}>
                             {!collapse && (
-                                <View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end', margin: 10 }}>
-                                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                            Ya
-                                        </Text>
-                                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 25 }}>
-                                            Tidak
-                                        </Text>
-                                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 25 }}>
-                                            Verval
-                                        </Text>
+                                <View style={styles.container}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+
+                                            </Text>
+                                        </View>
+                                        <View style={styles.cellcategory}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, textAlign: 'center' }}>
+                                                Ya
+                                            </Text>
+                                        </View>
+                                        <View style={styles.cellcategory}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, textAlign: 'center' }}>
+                                                Tidak
+                                            </Text>
+                                        </View>
+                                        <View style={styles.cellcategory}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, textAlign: 'center' }}>
+                                                Verval
+                                            </Text>
+                                        </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                            Status PUS
-                                        </Text>
-                                        <View style={{ marginLeft: 100 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
+                                                Status PUS
+                                            </Text>
+                                        </View>
+                                        <View style={styles.cell}>
                                             <RadioButton
+
                                                 color='#000000'
                                                 value="ya"
                                                 status={statusPUS === 'ya' ? 'checked' : 'unchecked'}
                                                 onPress={() => setStatusPUS('ya')}
                                                 disabled={true}
+                                                style={{ textAlign: 'center' }}
                                             />
                                         </View>
-                                        <View style={{ marginLeft: 7 }}>
+                                        <View style={styles.cell}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="tidak"
                                                 status={statusPUS === 'tidak' ? 'checked' : 'unchecked'}
                                                 onPress={() => setStatusPUS('tidak')}
                                                 disabled={true}
+                                                s
                                             />
                                         </View>
-                                        <View style={{ marginLeft: 18 }}>
+                                        <View style={styles.cell}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
                                                 status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
                                                 onPress={() => setStatusVerval('verval')}
                                                 disabled={true}
+                                                style={styles.cellradio}
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                            Status Hamil
-                                        </Text>
-                                        <View style={{ marginLeft: 90 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
+                                                Status Hamil
+                                            </Text>
+                                        </View>
+                                        <View style={styles.cell}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="ya"
@@ -209,7 +228,7 @@ export default function Pratinjau() {
                                                 disabled={true}
                                             />
                                         </View>
-                                        <View style={{ marginLeft: 7 }}>
+                                        <View style={styles.cell}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="tidak"
@@ -218,7 +237,7 @@ export default function Pratinjau() {
                                                 disabled={true}
                                             />
                                         </View>
-                                        <View style={{ marginLeft: 18 }}>
+                                        <View style={styles.cell}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -228,162 +247,168 @@ export default function Pratinjau() {
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
                                                 Terlalu Muda
                                             </Text>
-                                            <View style={{ marginLeft: 89 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="ya"
-                                                    status={terlaluMuda === 'ya' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluMuda('ya')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 7 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="tidak"
-                                                    status={terlaluMuda === 'tidak' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluMuda('tidak')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 18 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="verval"
-                                                    status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setStatusVerval('verval')}
-                                                    disabled={true}
-                                                />
-                                            </View>
+                                            <Text style={{ fontStyle: 'italic', marginTop: 0, marginLeft: 10 }}>
+                                                Umur istri &lt; 20 tahun
+                                            </Text>
+
                                         </View>
-                                        <Text style={{ fontStyle: 'italic', marginTop: -10 }}>
-                                            Umur istri &lt; 20 tahun
-                                        </Text>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="ya"
+                                                status={terlaluMuda === 'ya' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluMuda('ya')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="tidak"
+                                                status={terlaluMuda === 'tidak' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluMuda('tidak')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="verval"
+                                                status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
+                                                onPress={() => setStatusVerval('verval')}
+                                                disabled={true}
+                                            />
+                                        </View>
+
                                     </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
                                                 Terlalu Tua
                                             </Text>
-                                            <View style={{ marginLeft: 100}}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="ya"
-                                                    status={terlaluTua === 'ya' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluTua('ya')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 8 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="tidak"
-                                                    status={terlaluTua === 'tidak' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluTua('tidak')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 18 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="verval"
-                                                    status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setStatusVerval('verval')}
-                                                    disabled={true}
-                                                />
-                                            </View>
+                                            <Text style={{ fontStyle: 'italic', marginTop: 0, marginLeft: 10 }}>
+                                                Umur istri &lt; 35-40 tahun
+                                            </Text>
+
                                         </View>
-                                        <Text style={{ fontStyle: 'italic', marginTop: -10 }}>
-                                            Umur istri 35 - 40 tahun
-                                        </Text>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="ya"
+                                                status={terlaluTua === 'ya' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluTua('ya')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="tidak"
+                                                status={terlaluTua === 'tidak' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluTua('tidak')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="verval"
+                                                status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
+                                                onPress={() => setStatusVerval('verval')}
+                                                disabled={true}
+                                            />
+                                        </View>
                                     </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
                                                 Terlalu Dekat
                                             </Text>
-                                            <View style={{ marginLeft: 87 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="ya"
-                                                    status={terlaluDekat === 'ya' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluDekat('ya')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 7 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="tidak"
-                                                    status={terlaluDekat === 'tidak' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluDekat('tidak')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 18 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="verval"
-                                                    status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setStatusVerval('verval')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                        </View>
-                                        <Text style={{ fontStyle: 'italic', marginTop: -10 }}>
-                                            &lt; 2 tahun
-                                        </Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'column', alignItems: 'flex-start', margin: 10, marginTop: 0, marginBottom: 0 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
-                                                Terlalu Banyak
+                                            <Text style={{ fontStyle: 'italic', marginTop: 0, marginLeft: 10 }}>
+                                                &lt; 2 tahun
                                             </Text>
-                                            <View style={{ marginLeft: 78 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="ya"
-                                                    status={terlaluBanyak === 'ya' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluBanyak('ya')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 7 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="tidak"
-                                                    status={terlaluBanyak === 'tidak' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setTerlaluBanyak('tidak')}
-                                                    disabled={true}
-                                                />
-                                            </View>
-                                            <View style={{ marginLeft: 18 }}>
-                                                <RadioButton
-                                                    color='#000000'
-                                                    value="verval"
-                                                    status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
-                                                    onPress={() => setStatusVerval('verval')}
-                                                    disabled={true}
-                                                />
-                                            </View>
+
                                         </View>
-                                        <Text style={{ fontStyle: 'italic', marginTop: -10 }}>
-                                            &gt; 3 tahun
-                                        </Text>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="ya"
+                                                status={terlaluDekat === 'ya' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluDekat('ya')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="tidak"
+                                                status={terlaluDekat === 'tidak' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluDekat('tidak')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="verval"
+                                                status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
+                                                onPress={() => setStatusVerval('verval')}
+                                                disabled={true}
+                                            />
+                                        </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', margin: 10 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.celltext}>
+                                            <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16, marginLeft: 10 }}>
+                                                Terlalu Jauh
+                                            </Text>
+                                            <Text style={{ fontStyle: 'italic', marginTop: 0, marginLeft: 10 }}>
+                                                &lt; 3 tahun
+                                            </Text>
+                                        </View>
+
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="ya"
+                                                status={terlaluBanyak === 'ya' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluBanyak('ya')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="tidak"
+                                                status={terlaluBanyak === 'tidak' ? 'checked' : 'unchecked'}
+                                                onPress={() => setTerlaluBanyak('tidak')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                        <View style={styles.cell}>
+                                            <RadioButton
+                                                color='#000000'
+                                                value="verval"
+                                                status={statusVerval === 'verval' ? 'checked' : 'unchecked'}
+                                                onPress={() => setStatusVerval('verval')}
+                                                disabled={true}
+                                            />
+                                        </View>
+                                    </View>
+                                    <View style={styles.row}>
+                                        <View style={styles.cellinput} >
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Status Keluarga
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Keluarga Baru" />
                                         </View>
-                                        <View style={{ marginLeft: 20, marginTop: 30 }}>
+
+                                        <View style={styles.cellinputradio}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -393,14 +418,14 @@ export default function Pratinjau() {
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.cellinput} >
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Kesertaan KB Modern
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
                                         </View>
-                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
+                                        <View style={styles.cellinputradio}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -410,17 +435,17 @@ export default function Pratinjau() {
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 0 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.cellinput} >
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Sumber Air Minum Utama
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Sumur Terlindungi" />
+                                            <Text style={{ fontWeight: 'bold', color: 'green', fontSize: 16 }}>
+                                                Layak
+                                            </Text>
                                         </View>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 16 }}>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 70, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', textAlign:'center' }} editable={false} placeholder="Layak" />
-                                        </View>
-                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
+                                        <View style={styles.cellinputradio}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -430,17 +455,18 @@ export default function Pratinjau() {
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 0, marginBottom: 10 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.cellinput} >
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Memiliki Fasilitas Tempat BAB
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 150, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Jamban milik sendiri" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
+                                            <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 16 }}>
+                                                Tidak Layak
+                                            </Text>
                                         </View>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 16, marginLeft:0 }}>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 70, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', textAlign:'center' }} editable={false} placeholder="Layak" />
-                                        </View>
-                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
+
+                                        <View style={styles.cellinputradio}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -450,14 +476,14 @@ export default function Pratinjau() {
                                             />
                                         </View>
                                     </View>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flexDirection: 'column', margin: 10, marginTop: 0, marginBottom: 10 }}>
+                                    <View style={styles.row}>
+                                        <View style={styles.cellinput} >
                                             <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                                                 Pendampingan oleh TPK
                                             </Text>
-                                            <TextInput style={{ backgroundColor: '#EEEEEE', padding: 8, width: 240, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="Ya, fasilitas bansos" />
+                                            <TextInput style={{ backgroundColor: '#EEEEEE', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} editable={false} placeholder="MAL" />
                                         </View>
-                                        <View style={{ marginLeft: 20, marginTop: 20 }}>
+                                        <View style={styles.cellinputradio}>
                                             <RadioButton
                                                 color='#000000'
                                                 value="verval"
@@ -488,3 +514,53 @@ export default function Pratinjau() {
         </Block>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    cell: {
+        width: 60,
+        // borderWidth: 1,
+        borderColor: 'black',
+        textAlign: 'center',
+        paddingLeft: 12
+
+    },
+
+    cellcategory: {
+        width: 60,
+        // borderWidth: 1,
+        borderColor: 'black',
+        textAlign: 'center'
+
+    },
+    celltext: {
+        width: 160,
+        // borderWidth: 1,
+        borderColor: 'black',
+    },
+    cellradio: {
+        textAlign: 'center',
+        marginLeft: 10
+    },
+    cellinput: {
+        width: 260,
+        margin: 10,
+        // borderWidth: 1,
+        borderColor: 'black',
+    },
+    cellinputradio: {
+        width: 60,
+        // borderWidth: 1,
+        borderColor: 'black',
+        textAlign: 'center',
+        paddingLeft: 12,
+        paddingTop: 25
+
+    },
+});
