@@ -23,6 +23,7 @@ export default function DataDiri({ route }) {
     const { assets, colors, gradients, sizes } = useTheme();
     const [selectedHubunganKK, setSelectedHubunganKK] = useState('');
     const [selectedKodeIbuKandung, setSelectedKodeIbuKandung] = useState('');
+    const [jenisKelamin, setJenisKelamin] = useState('');
 
     const { currentIndex, jumlahKeluarga } = route.params;
 
@@ -118,6 +119,21 @@ export default function DataDiri({ route }) {
                             Nomor Induk Kependudukan
                         </Text>
                         <TextInput style={{ padding: 8, width: 310, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }} placeholder="1234567890987654" />
+                    </View>
+                    <View style={{ flexDirection: 'column', marginBottom: 10 }}>
+                        <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
+                            Jenis Kelamin
+                        </Text>
+                        <View style={{ width: 310, borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7' }}>
+                            <Picker
+                                selectedValue={jenisKelamin}
+                                onValueChange={(itemValue, itemIndex) => setJenisKelamin(itemValue)}
+                            >
+                                <Picker.Item label="Pilih jenis kelamin" value="" />
+                                <Picker.Item label="Laki-laki" value="laki-laki" />
+                                <Picker.Item label="Perempuan" value="perempuan" />
+                            </Picker>
+                        </View>
                     </View>
                     <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                         <View style={{ flexDirection: 'column', paddingRight: 10 }}>
