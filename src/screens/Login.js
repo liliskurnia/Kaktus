@@ -65,7 +65,7 @@ const Login = () => {
                             </View>
                         </View>
                         <View style={{ paddingHorizontal: 30, paddingTop: 0 }}>
-                            <View style={{ paddingHorizontal: 30, paddingTop: 0, fontFamily: 'poppins-regular', alignItems: 'center' }}>
+                            <View style={{ paddingHorizontal: 30, paddingTop: 0, alignItems: 'center' }}>
                                 <TextRn marginBottom={sizes.sm} style={{
                                     fontSize: 17,
                                     fontWeight: 700,

@@ -37,52 +37,48 @@ export default function HomeScreen() {
   };
 
   const handleRestore = () => {
-    Alert.alert('Restore', 'Anda akan melakukan restore data?', [
+    Alert.alert("Restore", "Anda akan melakukan restore data?", [
       {
-        text: 'Tidak',
-        style: 'cancel',
+        text: "Tidak",
+        style: "cancel",
       },
       {
-        text: 'YA',
+        text: "YA",
         onPress: async () => {
-          Alert.alert('Data berhasil direstore')
-        }
-      }
-    ])
-  }
+          Alert.alert("Data berhasil direstore");
+        },
+      },
+    ]);
+  };
 
   const handleBackup = () => {
-    Alert.alert('Backup', 'Anda akan melakukan backup data?', [
+    Alert.alert("Backup", "Anda akan melakukan backup data?", [
       {
-        text: 'Tidak',
-        style: 'cancel',
+        text: "Tidak",
+        style: "cancel",
       },
       {
-        text: 'YA',
+        text: "YA",
         onPress: async () => {
-          Alert.alert('Data berhasil dibackup')
-        }
-      }
-    ])
-  }
+          Alert.alert("Data berhasil dibackup");
+        },
+      },
+    ]);
+  };
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      `Anda yakin akan keluar dari akun Anda ?`,
-      [
-        {
-          text: 'Tidak',
-          style: 'cancel',
+    Alert.alert("Logout", `Anda yakin akan keluar dari akun Anda ?`, [
+      {
+        text: "Tidak",
+        style: "cancel",
+      },
+      {
+        text: "YA",
+        onPress: async () => {
+          navigation.navigate("Login");
         },
-        {
-          text: 'YA',
-          onPress: async () => {
-            navigation.navigate('Login')
-          },
-        },
-      ],
-    );
+      },
+    ]);
   };
 
   return (
@@ -236,9 +232,9 @@ export default function HomeScreen() {
                   name="cellphone-marker"
                   size={24}
                   color="#000"
-                  style={{ marginRight: 5, }}
+                  style={{ marginRight: 5 }}
                 />
-                <Text black bold style={{ marginTop: 2, }}>
+                <Text black bold style={{ marginTop: 2 }}>
                   TPK Clara Setyo Hanani
                 </Text>
               </View>
@@ -251,26 +247,104 @@ export default function HomeScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               backgroundColor: "#fff",
-              padding: 10,
+              paddingVertical: 10,
               borderRadius: 10,
-              marginTop: 20,
+              marginTop: 10,
             }}
           >
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10, marginRight: 15 }}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold' }}>Wilayah Kerja</TextRn>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', borderWidth: 1, borderRadius: 5, borderColor: '#B7B7B7', backgroundColor: '#fff', padding: 5, marginTop: 4 }}>
-                  <TouchableOpacity>
-                    <MaterialCommunityIcons name="map-search" size={22} color="black" />
-                  </TouchableOpacity>
-                  <TextRn style={{ fontSize: 14, fontWeight: 'bold', marginTop: 5 }}>Cilangkap</TextRn>
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  borderRadius: 5,
+                  backgroundColor: "#fff",
+                  borderWidth: 1,
+                  borderColor: "#cdcdcd",
+                  padding: 10,
+                }}
+              >
+                <TextRn style={styles.titleCard}>Wilayah Kerja</TextRn>
+                <TextRn
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginTop: 10,
+                    color: '#424874'
+                  }}
+                >
+                  Cilangkap
+                </TextRn>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  borderRadius: 5,
+                  backgroundColor: "#fff",
+                  borderWidth: 1,
+                  borderColor: "#cdcdcd",
+                  padding: 10,
+                  marginHorizontal: 5,
+                }}
+              >
+                <TextRn style={styles.titleCard}>Sinkronisasi</TextRn>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingHorizontal: 4,
+                    paddingVertical: 5,
+                    backgroundColor: "#f4f4f4",
+                    borderWidth: 1,
+                    borderColor: "#cdcdcd",
+                    borderRadius: 4,
+                    marginTop: 4,
+                  }}
+                >
+                  <>
+                    <MaterialCommunityIcons
+                      name="sync"
+                      size={18}
+                      color="#333"
+                    />
+                    <TextRn
+                      style={{
+                        fontSize: 10,
+                        marginLeft: 2,
+                        color: "#333",
+                        marginTop: 2,
+                      }}
+                    >
+                      -
+                    </TextRn>
+                  </>
                 </View>
               </View>
-              <View style={{ flex: 1, flexDirection: 'column', borderRadius: 5, backgroundColor: '#EEEEEE', padding: 10 }}>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', position: 'relative' }}>Periode</TextRn>
-                <TextRn style={{ fontSize: 14, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginLeft: -5 }}>2023</TextRn>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  borderRadius: 5,
+                  backgroundColor: "#fff",
+                  borderWidth: 1,
+                  borderColor: "#cdcdcd",
+                  padding: 10,
+                }}
+              >
+                <TextRn style={styles.titleCard}>Periode</TextRn>
+                <TextRn
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginTop: 10,
+                    color: '#424874'
+                  }}
+                >
+                  2023
+                </TextRn>
               </View>
-
             </View>
           </Block>
 
@@ -280,12 +354,12 @@ export default function HomeScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               backgroundColor: "#fff",
-              padding: 10,
+              paddingVertical: 10,
               borderRadius: 10,
-              marginBottom: 20,
+              marginBottom: 0,
             }}
           >
-            <Block flex={0} marginTop={10} marginBottom={10}>
+            <Block flex={0} marginBottom={0}>
               <View
                 style={{
                   flexDirection: "row",
@@ -308,20 +382,45 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() =>
-                        navigation.navigate('DaftarKeluargaScreen')
-                      }
+                      onPress={() => navigation.navigate("TambahDataKeluarga")}
                     >
                       <View style={styles.circleMenu}>
-                        <Image
-                          source={require('../assets/images/family-room.png')} // Replace with the actual path
-                          style={{ width: 45, height: 45 }}
+                        <MaterialCommunityIcons
+                          name="account-plus"
+                          size={34}
+                          color="#424874"
                         />
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
+                          fontSize: 12,
+
+                          margin: 10,
+                          marginTop: 5,
+                        }}
+                      >
+                        Tambah Keluarga
+                      </TextRn>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.circleBody}>
+                    <TouchableOpacity
+                      style={styles.circleMenuTouch}
+                      onPress={() =>
+                        navigation.navigate("DaftarKeluargaScreen")
+                      }
+                    >
+                      <View style={styles.circleMenu}>
+                        <MaterialCommunityIcons
+                          name="format-list-text"
+                          size={34}
+                          color="#424874"
+                        />
+                      </View>
+                      <TextRn
+                        style={{
+                          fontSize: 12,
+
                           margin: 10,
                           marginTop: 5,
                         }}
@@ -336,20 +435,21 @@ export default function HomeScreen() {
                       onPress={() => navigation.navigate("TambahDataKeluarga")}
                     >
                       <View style={styles.circleMenu}>
-                      <Image
-                          source={require('../assets/images/family-plus.png')} // Replace with the actual path
-                          style={{ width: 45, height: 45 }}
+                        <MaterialCommunityIcons
+                          name="book-alert-outline"
+                          size={38}
+                          color="#424874"
                         />
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
+                          fontSize: 12,
+
                           margin: 10,
                           marginTop: 5,
                         }}
                       >
-                        Tambah Keluarga
+                        Draft
                       </TextRn>
                     </TouchableOpacity>
                   </View>
@@ -367,15 +467,16 @@ export default function HomeScreen() {
                       onPress={() => handleRestore()}
                     >
                       <View style={styles.circleMenu}>
-                      <Image
-                          source={require('../assets/images/curve-arrow.png')} // Replace with the actual path
-                          style={{ width: 45, height: 45 }}
+                        <MaterialCommunityIcons
+                          name="backup-restore"
+                          size={34}
+                          color="#424874"
                         />
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
+                          fontSize: 12,
+
                           margin: 10,
                           marginTop: 5,
                         }}
@@ -390,15 +491,16 @@ export default function HomeScreen() {
                       onPress={() => handleBackup()}
                     >
                       <View style={styles.circleMenu}>
-                      <Image
-                          source={require('../assets/images/backup.png')} // Replace with the actual path
-                          style={{ width: 45, height: 45 }}
+                        <MaterialCommunityIcons
+                          name="cloud-download"
+                          size={38}
+                          color="#424874"
                         />
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
+                          fontSize: 12,
+
                           margin: 10,
                           marginTop: 5,
                         }}
@@ -410,18 +512,19 @@ export default function HomeScreen() {
                   <View style={styles.circleBody}>
                     <TouchableOpacity
                       style={styles.circleMenuTouch}
-                      onPress={() => navigation.navigate('ProfileScreen')}
+                      onPress={() => navigation.navigate("ProfileScreen")}
                     >
                       <View style={styles.circleMenu}>
-                      <Image
-                          source={require('../assets/images/user.png')} // Replace with the actual path
-                          style={{ width: 45, height: 45 }}
+                        <MaterialCommunityIcons
+                          name="account"
+                          size={34}
+                          color="#424874"
                         />
                       </View>
                       <TextRn
                         style={{
-                          fontSize: 13,
-                          fontFamily: "poppins-regular",
+                          fontSize: 12,
+
                           margin: 10,
                           marginTop: 5,
                         }}
@@ -484,6 +587,11 @@ const styles = StyleSheet.create({
     width: 10,
     backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
+  titleCard: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
   circleBody: {
     width: Dimensions.get("window").width / 3,
     alignItems: "center",
@@ -491,9 +599,9 @@ const styles = StyleSheet.create({
   circleMenu: {
     width: 60,
     height: 60,
-    backgroundColor: "#808080",
+    backgroundColor: "#D0EFD1",
     borderWidth: 1,
-    borderColor: "#f4f4f4",
+    borderColor: "#cdcdcd",
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
@@ -519,11 +627,11 @@ const styles = StyleSheet.create({
   },
   textSubTitleCarousel: {
     fontSize: 19,
-    // fontFamily: "poppins-regular",
+    //
   },
   textSubTitleCarouselWhite: {
     fontSize: 19,
-    // fontFamily: "poppins-regular",
+    //
     color: "white",
   },
   textTitleCarousel: {

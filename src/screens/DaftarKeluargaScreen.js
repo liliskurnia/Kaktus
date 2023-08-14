@@ -311,7 +311,7 @@ export default function DaftarKeluargaScreen() {
         </View>
       </View>
 
-      <View style={{ backgroundColor: '#EEEEEE', height: 675, borderRadius: 30, borderBottomEndRadius: 0, borderBottomStartRadius: 0 }}>
+      <View style={{ backgroundColor: '#EEEEEE', height: 675, borderRadius: 20, borderBottomEndRadius: 0, borderBottomStartRadius: 0 }}>
 
         <ScrollView>
           <Block
