@@ -16,7 +16,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Block, Image, ModalSelect, Input } from '../../components';
 import { useData, useTheme, useTranslation } from '../../hooks';
 
-export default function P13() {
+export default function P13(jumlahKeluarga) {
     const navigation = useNavigation();
     const { assets, colors, gradients, sizes } = useTheme();
     const [hamil, setHamil] = React.useState('');
@@ -77,7 +77,7 @@ export default function P13() {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, marginTop: 50, borderRadius: 30 }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('DataDiri')}
+                        <TouchableOpacity onPress={() => navigation.navigate('DataDiri', { currentIndex: 0, jumlahKeluarga })}
                             style={{ backgroundColor: '#30A2FF', padding: 10, width: '45%', justifyContent: 'center', alignSelf: 'center', flexDirection: 'row', borderRadius: 10 }}>
                             <MaterialCommunityIcons name="arrow-left" size={16} color="white" />
                             <Text style={{ marginLeft: 10, fontWeight: 'bold', color: 'white', fontSize: 16 }}>Sebelumnya</Text>

@@ -31,7 +31,7 @@ export default function DataDiri({ route }) {
         if (currentIndex < jumlahKeluarga - 1) {
             navigation.push('DataDiri', { currentIndex: currentIndex + 1, jumlahKeluarga });
         } else {
-            navigation.navigate('P13');
+            navigation.navigate('P13', {jumlahKeluarga});
         }
     };
 
@@ -197,7 +197,8 @@ export default function DataDiri({ route }) {
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderColor: '#B7B7B7',
-                                    color: 'black'
+                                    color: 'black',
+                                    backgroundColor:'#EEEEEE'
                                 }}
                                 placeholder='35'
                                 value={age}
@@ -205,7 +206,7 @@ export default function DataDiri({ route }) {
                             />
                         </View>
                     </View>
-                    <View style={{ flexDirection: 'column', marginBottom: 50 }}>
+                    <View style={{ flexDirection: 'column'}}>
                         <Text style={{ fontWeight: 'bold', color: 'black', fontSize: 16 }}>
                             Mutasi Anggota Keluarga
                         </Text>
