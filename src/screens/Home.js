@@ -15,7 +15,9 @@ import { Block, Image, Text, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
-import DaftarKeluargaScreen from './DaftarKeluargaScreen';
+import DaftarKeluargaScreen from './Scanner';
+import Scanner from './Scanner';
+import PickUp from './PickUp';
 
 export default function Home() {
   const Tab = createBottomTabNavigator();
@@ -42,12 +44,12 @@ export default function Home() {
       />
       <Tab.Screen
         name="menu4"
-        component={DaftarKeluargaScreen}
+        component={PickUp}
         options={{
-          tabBarLabel: 'Data',
+          tabBarLabel: 'Pick Up',
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="database-search" color={color} size={size} />
+            <MaterialCommunityIcons name="truck" color={color} size={size} />
           ),
         }}
       />

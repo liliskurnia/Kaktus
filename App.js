@@ -2,22 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './src/screens/Login';
 import Home from './src/screens/Home';
+import Register from './src/screens/FormRegister/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import TambahDataKeluarga from './src/screens/TambahDataKeluarga';
-import EditDataKeluarga from './src/screens/EditDataKeluarga';
-import P11 from './src/screens/Form/P11';
-import P12 from './src/screens/Form/P12';
-import P13 from './src/screens/Form/P13';
-import P21 from './src/screens/Form/P21';
-import P22 from './src/screens/Form/P22';
-import P23 from './src/screens/Form/P23';
-import Pratinjau from './src/screens/Form/Pratinjau';
-import P31 from './src/screens/Form/P31';
-import DataDiri from './src/screens/Form/DataDiri';
 import ProfileScreen from './src/screens/ProfileScreen';
-import DaftarKeluargaScreen from './src/screens/DaftarKeluargaScreen';
-import DraftScreen from './src/screens/DraftScreen';
+import Scanner from './src/screens/Scanner';
+import Manual1 from './src/screens/FormRegister/Manual1';
+import PickUp from './src/screens/PickUp';
+import Manual2 from './src/screens/FormRegister/Manual2';
+import Otp from './src/screens/FormRegister/Otp';
+import Success from './src/screens/FormRegister/Success';
 
 const Stack = createStackNavigator();
 
@@ -27,20 +21,14 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="TambahDataKeluarga" component={TambahDataKeluarga} options={{ headerShown: false }} />
-        <Stack.Screen name="EditDataKeluarga" component={EditDataKeluarga} options={{ headerShown: false }} />
-        <Stack.Screen name="DataDiri" component={DataDiri} options={{ headerShown: false }} />
-        <Stack.Screen name="P11" component={P11} options={{ headerShown: false }} />
-        <Stack.Screen name="P12" component={P12} options={{ headerShown: false }} />
-        <Stack.Screen name="P13" component={P13} options={{ headerShown: false }} />
-        <Stack.Screen name="P21" component={P21} options={{ headerShown: false }} />
-        <Stack.Screen name="P22" component={P22} options={{ headerShown: false }} />
-        <Stack.Screen name="P23" component={P23} options={{ headerShown: false }} />
-        <Stack.Screen name="P31" component={P31} options={{ headerShown: false }} />
-        <Stack.Screen name="Pratinjau" component={Pratinjau} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="Manual1" component={Manual1} options={{ headerShown: false }} />
+        <Stack.Screen name="Manual2" component={Manual2} options={{ headerShown: false }} />
+        <Stack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
+        <Stack.Screen name="Success" component={Success} options={{ headerShown: false }} />
+        <Stack.Screen name="PickUp" component={PickUp} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="DaftarKeluargaScreen" component={DaftarKeluargaScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="DraftScreen" component={DraftScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Scanner" component={Scanner} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

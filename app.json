@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "TemplateSigaVerval",
-    "slug": "TemplateSigaVerval",
+    "name": "Kaktus",
+    "slug": "Kaktus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/spsc3.png",
+      "image": "./assets/spc1.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
