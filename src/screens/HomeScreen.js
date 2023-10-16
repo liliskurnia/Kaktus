@@ -13,7 +13,6 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
 import { useData, useTheme, useTranslation } from "../hooks";
-
 export default function HomeScreen() {
   const { assets, colors, gradients, sizes } = useTheme();
 
@@ -34,7 +33,7 @@ export default function HomeScreen() {
       </View>
     );
   };
-  
+
   const handleLogout = () => {
     Alert.alert("Logout", `Anda yakin akan keluar dari akun Anda ?`, [
       {
@@ -56,26 +55,14 @@ export default function HomeScreen() {
         style={{
           flexDirection: "row",
           paddingVertical: 10,
-          backgroundColor: "#1A5D1A",
+          margin: 10,
+          justifyContent: 'space-between'
         }}
       >
-        {/* <TouchableOpacity onPress={() => Alert.alert('Menu ditekan')}>
-                    <MaterialCommunityIcons name="menu" size={24} color="white" />
-                </TouchableOpacity> */}
-        <View flex={1}>
-          <TextRn
-            style={{
-              paddingLeft: 17,
-              fontSize: 16,
-              fontWeight: 700,
-              position: "absolute",
-              color: "#fff",
-              marginTop: 5,
-            }}
-          >
-            Waste Tracker
-          </TextRn>
-        </View>
+        <Image
+          style={{ width: '40%', height: '150%' }}
+          source={require('../assets/images/kaktus.png')}
+        />
         <View style={{ alignSelf: "flex-end" }}>
           <Block
             row
@@ -85,19 +72,48 @@ export default function HomeScreen() {
             marginTop={5}
           >
             <TouchableOpacity
-              style={{ marginRight: 12 }}
               onPress={() => Alert.alert("Notifikasi ditekan")}
             >
               <MaterialCommunityIcons
                 name="bell-outline"
                 size={22}
-                color="#f4ecde"
+                color="#1C7360"
               />
             </TouchableOpacity>
+            <TouchableOpacity >
+              <MaterialCommunityIcons name="android-messages" size={22} color="#1C7360" />
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => handleLogout()}>
-              <MaterialCommunityIcons name="logout" size={22} color="#f4ecde" />
+              <MaterialCommunityIcons name="logout" size={22} color="#1C7360" />
             </TouchableOpacity>
           </Block>
+        </View>
+      </View>
+
+      <View style={styles.box}>
+        <Image
+          style={{ alignSelf: 'flex-start', margin: 5, flexDirection: 'column' }}
+          source={require('../assets/images/profil.png')}
+        />
+        <View style={{ flexDirection: 'column' }}>
+          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10 }}>
+            Michael Cactus
+          </TextRn>
+          <View style={{ flexDirection: 'row', marginLeft: 10 }}>
+            <Image
+              style={{ flexDirection: 'column' }}
+              source={require('../assets/images/point.png')}
+            />
+            <TextRn style={{ flexDirection: 'column' }}>4,483 Points</TextRn>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'column' }}>
+          <Image
+            style={{ flexDirection: 'row', alignSelf: 'center' }}
+            source={require('../assets/images/trash.png')}
+          />
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center' }}>Exchange</TextRn>
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center' }}>Points</TextRn>
         </View>
       </View>
       <ScrollView>
@@ -153,11 +169,189 @@ export default function HomeScreen() {
           </Block>
         </View>
       </ScrollView>
+      <Block flex={0} top={-70}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginHorizontal: 30,
+            marginVertical: 10
+          }}>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#ECFFFB' }]}>
+                <MaterialCommunityIcons
+                  name="truck-fast"
+                  size={34}
+                  color="#57B4A1"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Pick-up
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#FFE8ED' }]}>
+                <MaterialCommunityIcons
+                  name="map-marker"
+                  size={34}
+                  color="#E05555"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Track Order
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#FFF1E0' }]}>
+                <MaterialCommunityIcons
+                  name="clipboard-text"
+                  size={34}
+                  color="#F9A441"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Order History
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#EAF9FF' }]}>
+                <Ionicons
+                  name="pricetag"
+                  size={34}
+                  color="#0090E1"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Vouchers
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginHorizontal: 30,
+            marginVertical: 10
+          }}>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#D6FDFF' }]}>
+                <MaterialCommunityIcons
+                  name="label-percent"
+                  size={34}
+                  color="#10B8ED"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Promotions
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#E8FFF8' }]}>
+                <Ionicons
+                  name="card"
+                  size={34}
+                  color="#0C937A"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Membesrship
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+              <View style={[styles.circleMenu, { backgroundColor: '#EBEFF2' }]}>
+                <MaterialCommunityIcons
+                  name="credit-card-multiple"
+                  size={34}
+                  color="#3D4D60"
+                />
+              </View>
+              <TextRn
+                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                Payment Details
+              </TextRn>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.circleBody}>
+            <TouchableOpacity
+              style={styles.circleMenuTouch}
+            >
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Block>
     </Block>
   );
 }
 
 const styles = StyleSheet.create({
+  circleBody: {
+    width: 85,
+    alignItems: 'center',
+  },
+  circleMenu: {
+    width: 60,
+    height: 60,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circleMenuTouch: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box: {
+    width: 300,
+    height: 80,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5,
+    marginHorizontal: 30,
+    marginTop: 10,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10
+  },
   container: {
     flex: 1,
     alignItems: "center",
