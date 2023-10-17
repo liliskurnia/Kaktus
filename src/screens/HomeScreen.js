@@ -8,7 +8,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons,MaterialIcons } from "@expo/vector-icons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
@@ -83,8 +83,8 @@ export default function HomeScreen() {
             <TouchableOpacity >
               <MaterialCommunityIcons name="android-messages" size={22} color="#1C7360" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleLogout()}>
-              <MaterialCommunityIcons name="logout" size={22} color="#1C7360" />
+            <TouchableOpacity>
+              <MaterialIcons name="menu" size={22} color="#1C7360" />
             </TouchableOpacity>
           </Block>
         </View>
@@ -96,7 +96,7 @@ export default function HomeScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10 }}>
+          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color:'#3B4341' }}>
             Michael Cactus
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: 10 }}>
@@ -104,7 +104,7 @@ export default function HomeScreen() {
               style={{ flexDirection: 'column' }}
               source={require('../assets/images/point.png')}
             />
-            <TextRn style={{ flexDirection: 'column' }}>4,483 Points</TextRn>
+            <TextRn style={{ flexDirection: 'column', color:'#3B4341' }}>4,483 Points</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -112,8 +112,8 @@ export default function HomeScreen() {
             style={{ flexDirection: 'row', alignSelf: 'center' }}
             source={require('../assets/images/trash.png')}
           />
-          <TextRn style={{ flexDirection: 'row', textAlign: 'center' }}>Exchange</TextRn>
-          <TextRn style={{ flexDirection: 'row', textAlign: 'center' }}>Points</TextRn>
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color:'#3B4341' }}>Exchange</TextRn>
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color:'#3B4341' }}>Points</TextRn>
         </View>
       </View>
       <ScrollView>
@@ -189,7 +189,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Pick-up
               </TextRn>
             </TouchableOpacity>
@@ -206,7 +206,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Track Order
               </TextRn>
             </TouchableOpacity>
@@ -223,7 +223,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Order History
               </TextRn>
             </TouchableOpacity>
@@ -240,7 +240,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Vouchers
               </TextRn>
             </TouchableOpacity>
@@ -265,7 +265,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Promotions
               </TextRn>
             </TouchableOpacity>
@@ -282,7 +282,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Membesrship
               </TextRn>
             </TouchableOpacity>
@@ -299,7 +299,7 @@ export default function HomeScreen() {
                 />
               </View>
               <TextRn
-                style={{ fontSize: 12, fontFamily: 'poppins-regular', marginTop: 10, fontWeight: 'bold' }}>
+                style={styles.menuText}>
                 Payment Details
               </TextRn>
             </TouchableOpacity>
@@ -317,6 +317,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  menuText: {
+    fontSize: 12, 
+    fontFamily: 'poppins-regular', 
+    marginTop: 10, 
+    fontWeight: 'bold', 
+    color:'#0D5142'
+  },
   circleBody: {
     width: 85,
     alignItems: 'center',

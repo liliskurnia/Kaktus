@@ -18,6 +18,7 @@ import ProfileScreen from './ProfileScreen';
 import DaftarKeluargaScreen from './Scanner';
 import Scanner from './Scanner';
 import PickUp from './PickUp';
+import OrderHistory from './OrderHistory';
 
 export default function Home() {
   const Tab = createBottomTabNavigator();
@@ -39,6 +40,17 @@ export default function Home() {
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="orderHistory"
+        component={OrderHistory}
+        options={{
+          tabBarLabel: 'Order History',
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="clipboard-text" color={color} size={size} />
           ),
         }}
       />
