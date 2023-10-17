@@ -82,61 +82,83 @@ export default function PickUp() {
                     ORDER PICK-UP
                 </TextRn>
             </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="FULL NAME"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ name: text })} />
-            <TextInput
-                style={styles.inputText}
-                placeholder="PHONE NUMBER"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ phone: text })} />
-            <TextInput
-                style={styles.inputText}
-                placeholder="ADDRESS"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ address: text })} />
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.inputTextView}>
                 <TextInput
-                    style={[styles.inputText, { width: '33%' }]}
-                    placeholder="DATE"
+                    style={styles.inputText}
+                    placeholder="FULL NAME"
                     placeholderTextColor="#B3B3B3"
-                    onChangeText={text => setState({ date: text })} />
-                <TextInput
-                    style={[styles.inputText, { width: '33%' }]}
-                    placeholder="TIME"
-                    placeholderTextColor="#B3B3B3"
-                    onChangeText={text => setState({ time: text })} />
+                    onChangeText={text => setState({ name: text })} />
             </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="GARBAGE TYPE"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ garbageType: text })} />
-            <TextInput
-                style={styles.inputText}
-                placeholder="GARBAGE ID"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ garbageId: text })} />
-            <TouchableOpacity style={{margin: 10, alignSelf:'center', backgroundColor:'#57B4A1', borderRadius:10, padding:10}}>
-                <TextRn style={{fontSize:20, fontWeight:'bold', color:'#ffffff', margin:10}}>CONFIRM ORDER</TextRn>
+            <View style={styles.inputTextView}>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="PHONE NUMBER"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ phone: text })} />
+            </View>
+            <View style={styles.inputTextView}>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="ADDRESS"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ address: text })} />
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={styles.inputTextView}>
+                    <TextInput
+                        style={[styles.inputText, { width: '40%' }]}
+                        placeholder="DATE"
+                        placeholderTextColor="#B3B3B3"
+                        onChangeText={text => setState({ date: text })} />
+                </View>
+                <View style={styles.inputTextView}>
+                    <TextInput
+                        style={[styles.inputText, { width: '40%' }]}
+                        placeholder="TIME"
+                        placeholderTextColor="#B3B3B3"
+                        onChangeText={text => setState({ time: text })} />
+                </View>
+
+            </View>
+            <View style={styles.inputTextView}>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="GARBAGE TYPE"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ garbageType: text })}
+                />
+            </View>
+            <View style={styles.inputTextView}>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="GARBAGE ID"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ garbageId: text })} />
+                <TouchableOpacity>
+                    <MaterialCommunityIcons name="line-scan" size={24} color="#B3B3B3" />
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={{ margin: 10, alignSelf: 'center', backgroundColor: '#57B4A1', borderRadius: 10, padding: 10 }}>
+                <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#ffffff', margin: 10 }}>CONFIRM ORDER</TextRn>
             </TouchableOpacity>
         </Block>
     );
 }
 
 const styles = StyleSheet.create({
+    inputTextView: {
+        marginHorizontal: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCCCCC'
+    },
     inputText: {
         height: 70,
-        // width: '80%',
         borderRadius: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: '#CCCCCC',
         paddingLeft: 10,
-        marginBottom: 10,
         fontSize: 20,
-        marginHorizontal: 30
     },
     container: {
         flex: 1,

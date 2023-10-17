@@ -42,7 +42,10 @@ export default function ProfileScreen() {
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
-          <Ionicons name="pencil" size={24} color="#819994" />
+          <TouchableOpacity>
+            <Ionicons name="pencil" size={24} color="#819994" />
+          </TouchableOpacity>
+
         </View>
       </View>
       <ScrollView>
