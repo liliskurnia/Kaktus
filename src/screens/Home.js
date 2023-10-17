@@ -19,6 +19,7 @@ import DaftarKeluargaScreen from './Scanner';
 import Scanner from './Scanner';
 import PickUp from './PickUp';
 import OrderHistory from './OrderHistory';
+import Vouchers from './Vouchers';
 
 export default function Home() {
   const Tab = createBottomTabNavigator();
@@ -62,6 +63,17 @@ export default function Home() {
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="truck" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Vouchers"
+        component={Vouchers}
+        options={{
+          tabBarLabel: 'Vouchers',
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="gift" color={color} size={size} />
           ),
         }}
       />
