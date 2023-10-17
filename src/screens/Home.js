@@ -34,7 +34,7 @@ export default function Home() {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
@@ -59,10 +59,10 @@ export default function Home() {
         name="menu4"
         component={PickUp}
         options={{
-          tabBarLabel: 'Pick Up',
+          tabBarLabel: 'Order',
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="truck" color={color} size={size} />
+            <MaterialCommunityIcons name="plus-box" color={color} size={size} />
           ),
         }}
       />

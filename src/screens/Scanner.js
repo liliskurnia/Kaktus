@@ -1,101 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
-import { Camera } from 'expo-camera';
+import React, { useRef } from 'react';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image
+} from 'react-native';
+import { RNCamera } from 'react-native-camera';
+import RNTextDetector from "react-native-text-detector";
 
-export default function Scanner() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+const Scanner = (props) => {
+  const cameraRef = useRef(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const options = { quality: 0.5, base64: true };
+      const data = await cameraRef.current.takePictureAsync(options);
+      console.log(data.uri);
+    }
   };
 
-  const renderCamera = () => {
-    return (
-      <View style={styles.cameraContainer}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.camera}
-        />
-      </View>
-    );
+  const detectText = async () => {
+    try {
+      const options = {
+        quality: 0.8,
+        base64: true,
+        skipProcessing: true,
+      };
+      const { uri } = await cameraRef.current.takePictureAsync(options);
+      const visionResp = await RNTextDetector.detectFromUri(uri);
+      console.log('visionResp', visionResp);
+    } catch (e) {
+      console.warn(e);
+    }
   };
-
-  const handleScanAgain = () => {
-    setScanned(false); // Reset the scanned state to enable scanning again.
-  };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-
-  if (hasPermission === false) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Camera permission not granted</Text>
-      </View>
-    );
-  }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to the Barcode Scanner!</Text>
-      <Text style={styles.paragraph}>Scan a barcode to start your job.</Text>
-      {renderCamera()}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleScanAgain} // Handle scan again
-        disabled={scanned}
-      >
-        <Text style={styles.buttonText}>Scan QR to Start your job</Text>
-      </TouchableOpacity>
-    </View>
+    <RNCamera
+      ref={cameraRef}
+      googleVisionBarcodeType={0}
+      style={styles.preview}
+      type={RNCamera.Constants.Type.back}
+      flashMode={RNCamera.Constants.FlashMode.on}
+    >
+      <Image source={require('../../assets/FrameKTP.png')} />
+      <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+        <TouchableOpacity onPress={takePicture} style={styles.capture}>
+          <Text style={{ fontSize: 14 }}> AMBIL PHOTO </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={detectText} style={styles.capture}>
+          <Text style={{ fontSize: 14 }}> EXTRACT </Text>
+        </TouchableOpacity>
+      </View>
+    </RNCamera>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: 'black'
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  paragraph: {
-    fontSize: 16,
-    marginBottom: 40,
-  },
-  cameraContainer: {
-    width: '80%',
-    aspectRatio: 1,
-    overflow: 'hidden',
-    borderRadius: 10,
-    marginBottom: 40,
-  },
-  camera: {
+  preview: {
     flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
-  button: {
-    backgroundColor: 'blue',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
     borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20
+  }
 });
+
+export default Scanner;

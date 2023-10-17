@@ -59,7 +59,7 @@ export default function OrderHistory() {
                 </View>
             </View>
             <View>
-                <TextRn style={{ fontSize: 30, textAlign: 'center', color: '#819994', fontWeight: 'bold', marginTop: 10 }}>
+                <TextRn style={{ fontSize: 30, textAlign: 'center', color: '#819994', fontWeight: 'bold', marginTop: 20 }}>
                     ORDER HISTORY
                 </TextRn>
             </View>
