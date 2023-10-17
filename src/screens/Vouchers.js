@@ -38,7 +38,7 @@ export default function Vouchers() {
           {
             text: "OK",
             onPress: async () => {
-              navigation.navigate("Home");
+              navigation.navigate("HomeScreen");
             },
           },
         ]);

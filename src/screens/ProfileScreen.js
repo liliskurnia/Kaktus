@@ -9,6 +9,7 @@ import {
   ScrollView,
   StatusBar,
   TextInput,
+  Switch
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -17,6 +18,8 @@ import { Block, Image, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 
 export default function ProfileScreen() {
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>
@@ -28,13 +31,13 @@ export default function ProfileScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', marginLeft:-40}}>
+          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', marginLeft: -40 }}>
             Michael Cactus
           </TextRn>
-          <View style={{ flexDirection: 'row', marginLeft:-40}}>
+          <View style={{ flexDirection: 'row', marginLeft: -40 }}>
             <TextRn style={{ flexDirection: 'column' }}>testUser@kaktus.com</TextRn>
           </View>
-          <View style={{ flexDirection: 'row', marginLeft:-40}}>
+          <View style={{ flexDirection: 'row', marginLeft: -40 }}>
             <TextRn style={{ flexDirection: 'column' }}>+62-816-7291-0982</TextRn>
           </View>
         </View>
@@ -47,18 +50,21 @@ export default function ProfileScreen() {
           <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#819994' }}>MY ACCOUNT</TextRn>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <MaterialCommunityIcons name="cactus" size={35} color="#819994" />
-            <TextRn style={styles.text}>Cactus Rewards</TextRn>
-            <View style={{ flexDirection: 'row', marginLeft: 10, paddingTop: 10 }}>
+          <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row' }}>
+              <MaterialCommunityIcons name="cactus" size={35} color="#819994" />
+              <TextRn style={styles.text}>Cactus Rewards</TextRn>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
-                style={{ flexDirection: 'column' }}
                 source={require('../assets/images/point.png')}
+                style={{ marginRight: 10 }}
               />
-              <TextRn style={{ flexDirection: 'column', fontSize: 18, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
+              <TextRn style={{ fontSize: 18, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
             </View>
           </TouchableOpacity>
         </View>
+
         <View style={styles.field}>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialCommunityIcons name="account" size={35} color="#819994" />
@@ -87,7 +93,9 @@ export default function ProfileScreen() {
           <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialIcons name="language" size={35} color="#819994" />
             <TextRn style={styles.text}>Language</TextRn>
-            <TextRn style={styles.text}>English(US)</TextRn>
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <TextRn style={styles.text}>English(US)</TextRn>
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -96,17 +104,26 @@ export default function ProfileScreen() {
         </View>
         <View style={styles.field}>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <Ionicons name="card" size={35} color="#819994" />
+            <MaterialCommunityIcons name="lock" size={35} color="#819994" />
             <TextRn style={styles.text}>Change Security Code</TextRn>
           </TouchableOpacity>
         </View>
-        <View style={styles.field}>
+        <View style={[styles.field, { marginBottom: 20 }]}>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialIcons name="language" size={35} color="#819994" />
             <TextRn style={styles.text}>Face ID</TextRn>
-            {/* <TextRn style={styles.text}>English(US)</TextRn> */}
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Switch
+                trackColor={{ false: '#819994', true: '#57B4A1' }}
+                thumbColor={isEnabled ? '#ffffff' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+            </View>
           </TouchableOpacity>
         </View>
+
       </ScrollView>
     </Block>
 
@@ -126,7 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#819994',
     paddingTop: 10,
-    marginLeft: 20
+    marginLeft: 20,
   },
   box: {
     width: 315,
