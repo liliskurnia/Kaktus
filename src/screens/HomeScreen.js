@@ -8,7 +8,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons,MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
@@ -55,12 +55,14 @@ export default function HomeScreen() {
         style={{
           flexDirection: "row",
           paddingVertical: 10,
-          margin: 10,
+          marginTop: 30,
+          marginHorizontal: 20,
+          marginBottom:20,
           justifyContent: 'space-between'
         }}
       >
         <Image
-          style={{ width: '40%', height: '150%' }}
+          style={{ width: '45%', height: '150%' }}
           source={require('../assets/images/kaktus.png')}
         />
         <View style={{ alignSelf: "flex-end" }}>
@@ -96,7 +98,7 @@ export default function HomeScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color:'#3B4341' }}>
+          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
             Michael Cactus
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: 10 }}>
@@ -104,7 +106,7 @@ export default function HomeScreen() {
               style={{ flexDirection: 'column' }}
               source={require('../assets/images/point.png')}
             />
-            <TextRn style={{ flexDirection: 'column', color:'#3B4341' }}>4,483 Points</TextRn>
+            <TextRn style={{ flexDirection: 'column', color: '#3B4341' }}>4,483 Points</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -112,8 +114,8 @@ export default function HomeScreen() {
             style={{ flexDirection: 'row', alignSelf: 'center' }}
             source={require('../assets/images/trash.png')}
           />
-          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color:'#3B4341' }}>Exchange</TextRn>
-          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color:'#3B4341' }}>Points</TextRn>
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color: '#3B4341' }}>Exchange</TextRn>
+          <TextRn style={{ flexDirection: 'row', textAlign: 'center', color: '#3B4341' }}>Points</TextRn>
         </View>
       </View>
       <ScrollView>
@@ -318,11 +320,11 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   menuText: {
-    fontSize: 12, 
-    fontFamily: 'poppins-regular', 
-    marginTop: 10, 
-    fontWeight: 'bold', 
-    color:'#0D5142'
+    fontSize: 12,
+    fontFamily: 'poppins-regular',
+    marginTop: 10,
+    fontWeight: 'bold',
+    color: '#0D5142'
   },
   circleBody: {
     width: 85,
