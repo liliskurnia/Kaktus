@@ -13,6 +13,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
 import { useData, useTheme, useTranslation } from "../hooks";
+import OrderHistory from "./OrderHistory";
 export default function HomeScreen() {
   const { assets, colors, gradients, sizes } = useTheme();
 
@@ -33,6 +34,18 @@ export default function HomeScreen() {
       </View>
     );
   };
+
+  const handleOrderHistory = () => {
+    navigation.navigate('OrderHistory')
+  }
+
+  const handlePickUp = () => {
+    navigation.navigate('PickUp')
+  }
+  
+  const handleTrackOrder = () => {
+    navigation.navigate('TrackOrder')
+  }
 
   const handleLogout = () => {
     Alert.alert("Logout", `Anda yakin akan keluar dari akun Anda ?`, [
@@ -57,7 +70,7 @@ export default function HomeScreen() {
           paddingVertical: 10,
           marginTop: 30,
           marginHorizontal: 20,
-          marginBottom:20,
+          marginBottom: 20,
           justifyContent: 'space-between'
         }}
       >
@@ -181,6 +194,7 @@ export default function HomeScreen() {
           }}>
           <View style={styles.circleBody}>
             <TouchableOpacity
+              onPress={handlePickUp}
               style={styles.circleMenuTouch}
             >
               <View style={[styles.circleMenu, { backgroundColor: '#ECFFFB' }]}>
@@ -198,6 +212,7 @@ export default function HomeScreen() {
           </View>
           <View style={styles.circleBody}>
             <TouchableOpacity
+              onPress={handleTrackOrder}
               style={styles.circleMenuTouch}
             >
               <View style={[styles.circleMenu, { backgroundColor: '#FFE8ED' }]}>
@@ -215,6 +230,7 @@ export default function HomeScreen() {
           </View>
           <View style={styles.circleBody}>
             <TouchableOpacity
+              onPress={handleOrderHistory}
               style={styles.circleMenuTouch}
             >
               <View style={[styles.circleMenu, { backgroundColor: '#FFF1E0' }]}>

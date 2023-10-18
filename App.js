@@ -12,6 +12,10 @@ import PickUp from './src/screens/PickUp';
 import Manual2 from './src/screens/FormRegister/Manual2';
 import Otp from './src/screens/FormRegister/Otp';
 import Success from './src/screens/FormRegister/Success';
+import OrderHistory from './src/screens/OrderHistory';
+import TrackOrder from './src/screens/TrackOrderMenu/TrackOrder';
+import TrackById from './src/screens/TrackOrderMenu/TrackById';
+import TrackerPage from './src/screens/TrackOrderMenu/TrackerPage';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +33,10 @@ export default function App() {
         <Stack.Screen name="PickUp" component={PickUp} options={{ headerShown: false }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Scanner" component={Scanner} options={{ headerShown: false }} />
+        <Stack.Screen name="OrderHistory" component={OrderHistory} options={{ headerShown: false }} />
+        <Stack.Screen name="TrackOrder" component={TrackOrder} options={{ headerShown: false }} />
+        <Stack.Screen name="TrackById" component={TrackById} options={{ headerShown: false }} />
+        <Stack.Screen name="TrackerPage" component={TrackerPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
