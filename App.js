@@ -16,6 +16,8 @@ import OrderHistory from './src/screens/OrderHistory';
 import TrackOrder from './src/screens/TrackOrderMenu/TrackOrder';
 import TrackById from './src/screens/TrackOrderMenu/TrackById';
 import TrackerPage from './src/screens/TrackOrderMenu/TrackerPage';
+import ScanBarcode from './src/screens/ScanBarcode';
+import ConfirmOrder from './src/screens/ConfirmOrder';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +39,8 @@ export default function App() {
         <Stack.Screen name="TrackOrder" component={TrackOrder} options={{ headerShown: false }} />
         <Stack.Screen name="TrackById" component={TrackById} options={{ headerShown: false }} />
         <Stack.Screen name="TrackerPage" component={TrackerPage} options={{ headerShown: false }} />
+        <Stack.Screen name="ScanBarcode" component={ScanBarcode} options={{ headerShown: false }} />
+        <Stack.Screen name="ConfirmOrder" component={ConfirmOrder} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

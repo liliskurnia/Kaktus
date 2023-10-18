@@ -27,14 +27,14 @@ export default function PickUp() {
     })
 
     const navigation = useNavigation();
-    const handlePressSignUp = () => {
-        Alert.alert('Register', 'Akun berhasil didaftarkan! Silahkan Login.', [
-            {
-                text: 'OK',
-                onPress: () => navigation.navigate('Login'),
-            }
-        ]);
-    };
+    
+    const handleScan = () => {
+        navigation.navigate('ScanBarcode')
+    }
+
+    const handleConfirmOrder = () => {
+        navigation.navigate('ConfirmOrder')
+    }
 
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -134,11 +134,11 @@ export default function PickUp() {
                     placeholder="GARBAGE ID"
                     placeholderTextColor="#B3B3B3"
                     onChangeText={text => setState({ garbageId: text })} />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={handleScan}>
                     <MaterialCommunityIcons name="line-scan" size={24} color="#B3B3B3" />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={{ margin: 10, alignSelf: 'center', backgroundColor: '#57B4A1', borderRadius: 10, padding: 10 }}>
+            <TouchableOpacity onPress={handleConfirmOrder} style={{ margin: 10, alignSelf: 'center', backgroundColor: '#57B4A1', borderRadius: 10, padding: 10 }}>
                 <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#ffffff', margin: 10 }}>CONFIRM ORDER</TextRn>
             </TouchableOpacity>
         </Block>

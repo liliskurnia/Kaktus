@@ -17,6 +17,10 @@ export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
     const navigation = useNavigation();
 
+    const handleAdd = () => {
+        navigation.navigate('PickUp')
+    }
+
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
             <View
@@ -66,7 +70,7 @@ export default function OrderHistory() {
             <ScrollView>
                 <View style={{ flexDirection: 'row', marginHorizontal: 30, marginTop: 30, justifyContent: 'space-between', alignItems: 'center' }}>
                     <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>TODAY</TextRn>
-                    <TouchableOpacity style={{ flexDirection: 'row', borderWidth: 1, borderRadius: 5, borderColor: '#9EBCB6', padding: 5, alignItems: 'center' }}>
+                    <TouchableOpacity onPress={handleAdd} style={{ flexDirection: 'row', borderWidth: 1, borderRadius: 5, borderColor: '#9EBCB6', padding: 5, alignItems: 'center' }}>
                         <MaterialCommunityIcons name="plus" size={18} color="#9EBCB6" />
                         <TextRn style={{ color: '#9EBCB6' }}>NEW ORDER</TextRn>
                     </TouchableOpacity>
