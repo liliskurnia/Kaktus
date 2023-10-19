@@ -9,7 +9,6 @@ class MenuController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const menuList = await dm.findAll({
-        exclude: ['programName'],
         order: ['id'],
       });
 
@@ -29,7 +28,6 @@ class MenuController implements IController {
 
     try {
       const data = await dm.findByPk(id, {
-        exclude: ['programName'],
         order: ['id'],
       });
       if (!data) {

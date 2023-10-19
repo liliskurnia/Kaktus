@@ -12,6 +12,7 @@ module.exports = {
       nama: {
         type: Sequelize.STRING(100),
         allowNull: false,
+        unique: true,
       },
       icon: {
         type: Sequelize.STRING(50),

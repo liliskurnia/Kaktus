@@ -11,9 +11,6 @@ class HakAksesController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const hakAksesList = await dm.findAll({
-        attributes: {
-          exclude: ['programName'],
-        },
         //ambil referensi data dari data model role dan user
         include: [
           { model: role, attributes: ['nama'] },
@@ -29,7 +26,7 @@ class HakAksesController implements IController {
       }
     } catch (err) {
       console.error(err);
-      return res.status(500).send('Data tidak ditemukan');
+      return res.status(500).send('server error');
     }
   };
 
@@ -38,7 +35,6 @@ class HakAksesController implements IController {
 
     try {
       const data = await dm.findByPk(id, {
-        exclude: ['programName'],
         include: [
           { model: role, attributes: ['nama'] },
           { model: user, attributes: ['username'] },
@@ -83,7 +79,7 @@ class HakAksesController implements IController {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).send('pendaftaran hak akses gagal');
     }
   };
@@ -113,7 +109,7 @@ class HakAksesController implements IController {
         return res.status(200).send(`Menu "${current}" telah berhasil diubah.`);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).send(`Gagal mengubah menu.`);
     }
   };
@@ -131,7 +127,7 @@ class HakAksesController implements IController {
       await data.destroy();
       return res.status(200).send(`Menu "${current}" berhasil dihapus.`);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).send(`Gagal menghapus menu.`);
     }
   };
@@ -153,7 +149,7 @@ class HakAksesController implements IController {
 
       return res.status(200).json(hakAkses);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return res.status(500).send(`failed to get user previlages`);
     }
   };

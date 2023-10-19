@@ -4,33 +4,32 @@ const db = require('../db/models');
 
 class AuthController {
   register = async (req: Request, res: Response): Promise<Response> => {
-    let { username, password, nama, alamat, email, telp } = req.body;
+    const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
     try {
-      if (!username) {
-        return res.status(400).send('username belum diisi');
-      } else if (!password) {
+      if (!nik) {
+        return res.status(400).send('nik belum diisi');
+      }
+      if (!password) {
         return res.status(400).send('password belum diisi');
-      } else if (!nama) {
+      }
+      if (!nama) {
         return res.status(400).send('nama belum diisi');
-      } else if (!email) {
-        return res.status(400).send('email belum diisi');
-      } else if (!telp) {
-        return res.status(400).send('nomor telepon belum diisi');
       }
 
-      const hashedPassword: string = await Authentication.passwordHash(
-        password
-      );
+      const hashedPassword: string = await Authentication.passwordHash(password);
 
       await db.user.create({
         username,
         password: hashedPassword,
+        nik,
         nama,
-        alamat,
         email,
         telp,
-        programName: 'System',
-        createdBy: 'System',
+        alamat,
+        kota,
+        gender,
+        programName,
+        createdBy,
       });
 
       console.log('new user registered');
@@ -51,95 +50,61 @@ class AuthController {
       } else if (!password) {
         return res.status(400).send('password belum diisi');
       }
-        //check for username in database
-        const user = await db.user.findOne({
-          where: { username },
+      //check for username in database
+      let user = await db.user.findOne({
+        where: { username },
+      });
+      //if no username exist, check the following as the username
+      if (!user) {
+        //cek NIK as username
+        user = await db.user.findOne({
+          where: { nik: username },
         });
         if (!user) {
-          return res.status(404).send('User not found');
-        }
-        const compare = await Authentication.passwordCompare(
-          password,
-          user.password
-        );
-        if (compare) {
-          const token = Authentication.generateToken(
-            user.id,
-            username,
-            user.password
-          );
-          const hakAkses = await db.hak_akses.findOne({
-            where: { userId: user.id },include: [
-              { model: db.role, attributes: ['nama'] },
-            ],
+          //cek email as username
+          user = await db.user.findOne({
+            where: { email: username },
           });
+          if (!user) {
+            //cek no.telp as username
+            user = await db.user.findOne({
+              where: { telp: username },
+            });
+            if (!user) {
+              return res.status(401).send('user tidak ditemukan');
+            }
+          }
+        }
+      }
+      const compare = await Authentication.passwordCompare(password, user.password);
+      if (compare) {
+        const token = Authentication.generateToken(user.id, username, user.password);
+        const hakAkses = await db.hak_akses.findOne({
+          where: { userId: user.id },
+          include: [{ model: db.role, attributes: ['nama'] }],
+        });
+        let access = null;
+        if (hakAkses) {
           console.log(hakAkses);
-          const access = {
+          access = {
             token: token,
             previllage: hakAkses.role.nama,
-            userId: hakAkses.userId,
+            userId: user.id,
           };
-          console.log(access);
-          return res.status(200).json({
-            access,
-          });
+        } else {
+          access = {
+            token: token,
+            previllage: 'Unassigned',
+            userId: user.id,
+          };
         }
-        return res.status(401).send('Authentication failed, Wrong Password');
-    } catch (err) {
-      console.log(err);
-      return res.status(500).send('Login authentication error');
-    }
-  };
 
-  loginByNoRek = async (req: Request, res: Response): Promise<Response> => {
-    // cari data user by username
-    try {
-      const { username, password } = req.body;
-
-      if (!username) {
-        return res.status(400).send('username belum diisi');
-      } else if (!password) {
-        return res.status(400).send('password belum diisi');
-      }
-        //check for username in database
-      const noRek: number = parseInt(username);
-      const nasabah = await db.master_bank.findOne({
-        where: { norek: noRek },
-      });
-      const user = await db.user.findOne({
-        where: { id: nasabah.userId },
-      });
-      if (!user) {
-        return res.status(404).send('user nasabah tidak dapat ditemukan')
-      }
-      const compare = await Authentication.passwordCompare(
-        password,
-        user.password
-      );
-      if (compare) {
-        const token = Authentication.generateToken(
-          user.id,
-          user.username,
-          user.password
-        );
-        const hakAkses = await db.hak_akses.findOne({
-          where: { userId: user.id }, include: [
-            { model: db.role, attributes: ['nama'] },
-          ],
-        });
-        console.log(hakAkses);
-        const access = {
-          token: token,
-          previllage: hakAkses.role.nama,
-          userId: hakAkses.userId,
-        };
         console.log(access);
         return res.status(200).json({
           access,
         });
       }
       return res.status(401).send('Authentication failed, Wrong Password');
-
     } catch (err) {
       console.log(err);
       return res.status(500).send('Login authentication error');

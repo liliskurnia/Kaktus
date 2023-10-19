@@ -9,7 +9,6 @@ class RoleController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const roleList = await dm.findAll({
-        exclude: ['programName'],
         order: ['id'],
       });
 
@@ -29,7 +28,6 @@ class RoleController implements IController {
 
     try {
       const data = await dm.findByPk(id, {
-        exclude: ['programName'],
         order: ['id'],
       });
       if (!data) {

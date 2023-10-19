@@ -52,7 +52,7 @@ class RoleController implements IController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { roleId, menuId, isActive, programName, createdBy } = req.body;
+    const { roleId, menuId, programName, createdBy } = req.body;
 
     try {
       const role = await Role.findByPk(roleId);
@@ -71,7 +71,6 @@ class RoleController implements IController {
           const newData = await dm.create({
             roleId,
             menuId,
-            isActive,
             programName,
             createdBy,
           });
@@ -87,7 +86,7 @@ class RoleController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { roleId, menuId, isActive, programName, updatedBy } = req.body;
+    const { roleId, menuId, programName, updatedBy } = req.body;
 
     try {
       if (!roleId) {
@@ -99,7 +98,7 @@ class RoleController implements IController {
         if (!data) {
           return res.status(404).send(`Role menu dengan id: ${id} tidak ditemukan.`);
         }
-        await data.update({ roleId, menuId, isActive, programName, updatedBy });
+        await data.update({ roleId, menuId, programName, updatedBy });
         const menu = await Menu.findByPk(menuId);
         if (!menu) {
           console.log('tidak menemukan nama menu');

@@ -13,6 +13,8 @@ import RoleRoutes from './routers/RoleRoutes';
 import HakAksesRoutes from './routers/HakAksesRoutes';
 import MenuRoutes from './routers/MenuRoutes';
 import RoleMenuRoutes from './routers/RoleMenuRoutes';
+import TPSRoutes from './routers/TPSRoutes';
+import SampahRoutes from './routers/SampahRoutes';
 
 class App {
   public app: Application;
@@ -42,12 +44,13 @@ class App {
     });
 
     this.app.use('/api/v1/auth', AuthRoutes);
-
-    this.app.use('/api/v1/admin/manage/users', UserRoutes);
-    this.app.use('/api/v1/admin/manage/roles', RoleRoutes);
-    this.app.use('/api/v1/admin/manage/menus', MenuRoutes);
-    this.app.use('/api/v1/admin/manage/hakAkses', HakAksesRoutes);
-    this.app.use('/api/v1/admin/manage/roleMenu', RoleMenuRoutes);
+    this.app.use('/api/v1/admin/users', UserRoutes);
+    this.app.use('/api/v1/admin/roles', RoleRoutes);
+    this.app.use('/api/v1/admin/menus', MenuRoutes);
+    this.app.use('/api/v1/admin/hakAkses', HakAksesRoutes);
+    this.app.use('/api/v1/admin/roleMenu', RoleMenuRoutes);
+    this.app.use('/api/v1/admin/tps', TPSRoutes);
+    this.app.use('/api/v1/admin/sampah', SampahRoutes);
   }
 }
 

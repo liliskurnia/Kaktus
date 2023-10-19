@@ -26,37 +26,38 @@ class UserController implements IController {
 
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { username, password, nama, alamat, email, telp, programName, createdBy } = req.body;
-      if (!username) {
-        return res.status(400).send('username belum diisi');
-      } else if (!password) {
-        return res.status(400).send('password belum diisi');
-      } else if (!nama) {
-        return res.status(400).send('nama belum diisi');
-      } else if (!email) {
-        return res.status(400).send('email belum diisi');
-      } else if (!telp) {
-        return res.status(400).send('nomor telepon belum diisi');
-      } else {
-        const hashedPassword: string = await Authentication.passwordHash(password);
-
-        await dm.create({
-          username,
-          password: hashedPassword,
-          nama,
-          alamat,
-          email,
-          telp,
-          programName,
-          createdBy,
-        });
-
-        // console.log('arrId', arrId);
-        // if (newData) {
-        //   return res.status(201).send('registrasi user sukses!');
-        // }
-        return res.status(201).send(`registrasi user: ${username} sukses`);
+      const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
+      if (!nik) {
+        return res.status(400).send('nik belum diisi');
       }
+      if (!password) {
+        return res.status(400).send('password belum diisi');
+      }
+      if (!nama) {
+        return res.status(400).send('nama belum diisi');
+      }
+
+      const hashedPassword: string = await Authentication.passwordHash(password);
+
+      await dm.create({
+        username,
+        password: hashedPassword,
+        nik,
+        nama,
+        email,
+        telp,
+        alamat,
+        kota,
+        gender,
+        programName,
+        createdBy,
+      });
+
+      // console.log('arrId', arrId);
+      // if (newData) {
+      //   return res.status(201).send('registrasi user sukses!');
+      // }
+      return res.status(201).send(`registrasi user: ${username} sukses`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('registrasi user gagal.');
@@ -163,10 +164,6 @@ class UserController implements IController {
   };
 
   getMaxId = async (req: Request, res: Response): Promise<Response> => {
-    const { username } = req.params;
-
-    console.log(username);
-
     try {
       const maxId = await dm.max('id');
       const data = { id: maxId };
