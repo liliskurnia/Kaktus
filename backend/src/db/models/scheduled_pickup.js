@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class scheduled_pickup extends Model {
     /**
@@ -11,19 +9,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.master_customer_request, { foreignKey: 'orderId' });
+      this.belongsTo(models.master_driver, { foreignKey: 'driverId' });
     }
   }
-  scheduled_pickup.init({
-    orderId: DataTypes.INTEGER,
-    driverId: DataTypes.INTEGER,
-    assigneeId: DataTypes.INTEGER,
-    points: DataTypes.INTEGER,
-    programName: DataTypes.STRING,
-    createdBy: DataTypes.STRING,
-    updatedBy: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'scheduled_pickup',
-  });
+  scheduled_pickup.init(
+    {
+      orderId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'master_customer_requests',
+          key: 'id',
+        },
+      },
+      driverId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'master_drivers',
+          key: 'id',
+        },
+      },
+      assigneeId: DataTypes.INTEGER,
+      points: DataTypes.INTEGER,
+      programName: DataTypes.STRING,
+      createdBy: DataTypes.STRING,
+      updatedBy: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'scheduled_pickup',
+    }
+  );
   return scheduled_pickup;
 };
