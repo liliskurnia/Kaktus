@@ -9,6 +9,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      historyId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'pickup_histories',
+          key: 'id',
+        },
+      },
       orderId: {
         type: Sequelize.INTEGER,
         allowNull: false,

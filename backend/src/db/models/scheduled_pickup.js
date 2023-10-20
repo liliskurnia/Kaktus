@@ -15,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   scheduled_pickup.init(
     {
+      historyId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'pickup_histories',
+          key: 'id',
+        },
+      },
       orderId: {
         type: DataTypes.INTEGER,
         references: {
