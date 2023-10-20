@@ -7,8 +7,9 @@ class SampahRoutes extends BaseRouter {
     this.router.get('/', SampahController.index);
     this.router.get('/:id', SampahController.show);
     this.router.post('/', SampahController.create);
-    this.router.post('/:id', SampahController.update);
-    this.router.post('/status/:id', SampahController.updateStatus);
+    this.router.put('/:id', SampahController.update);
+    this.router.put('/status/:id', SampahController.updateStatus);
+    this.router.delete('/:id', SampahController.delete);
   }
 }
 

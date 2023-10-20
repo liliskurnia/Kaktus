@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.hak_akses);
-      this.hasOne(models.master_operator);
-      this.hasOne(models.master_customer);
-      this.hasOne(models.master_driver);
+      // this.hasMany(models.hak_akses);
+      // this.hasOne(models.master_operator);
+      // this.hasOne(models.master_customer);
+      // this.hasOne(models.master_driver);
     }
   }
   user.init(
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       alamat: DataTypes.TEXT,
       kota: DataTypes.STRING,
       gender: DataTypes.STRING,
-      points: DataTypes.INTEGER,
+      points: DataTypes.STRING,
       programName: DataTypes.STRING,
       createdBy: DataTypes.STRING,
       updatedBy: DataTypes.STRING,

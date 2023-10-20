@@ -1,3 +1,4 @@
+'use strict';
 import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
@@ -29,7 +30,7 @@ class CustomerController implements IController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { userId } = req.body;
+    const { userId, programName, createdBy } = req.body;
 
     try {
       if (!userId) {
@@ -39,9 +40,41 @@ class CustomerController implements IController {
       if (!user) {
         return res.status(404).send('user tidak ditemukan');
       }
-
-      await dm.create({
+      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
+      if (access) {
+        let admin: boolean = false;
+        let customer: boolean = false;
+        //checks if role is admin / customer
+        for (const acs of access) {
+          if (acs.roleName.search('Admin') !== -1) {
+            admin = true;
+          } else if (acs.roleName.search('Customer') !== -1) {
+            customer = true;
+          }
+        }
+        if (admin === true) {
+          //if admin, cancel creation
+          return res.status(400).send('Admins cannot have other previlages');
+        } else if (customer !== true) {
+          //if role as customer not assigned, assign the role as customer
+          const roleId = await Role.findOne({ where: { nama: 'Customer' } });
+          await HakAkses.create({
+            userId,
+            roleId,
+          });
+        }
+      }
+      //create unique customer code
+      let uniqueCode = generateUserCode(16, true);
+      let exist = await dm.findOne({ where: { uniqueCode } });
+      while (exist) {
+        uniqueCode = generateUserCode(16, true);
+        exist = await dm.findOne({ where: { uniqueCode } });
+      }
+      //register user as customer at db
+      const customer = await dm.create({
         userId,
+        uniqueCode,
         nik: user.nik,
         nama: user.nama,
         email: user.email,
@@ -49,12 +82,20 @@ class CustomerController implements IController {
         alamat: user.alamat,
         kota: user.kota,
         gender: user.gender,
+        programName,
+        createdBy,
       });
-
-      // console.log('arrId', arrId);
-      // if (newData) {
-      //   return res.status(201).send('registrasi user sukses!');
-      // }
+      //get current list of kode sampah
+      const jenisSampahs = await db.jenis_sampah.findAll({ attributes: ['kode'], order: ['id', 'ASC'] });
+      //generate unique user trash codes based on types in db
+      for (const jenisSampah of jenisSampahs) {
+        const barcode = `${jenisSampah.kode}-${uniqueCode}`;
+        await Sampah.create({
+          barcode,
+          programName: 'Registration System',
+          createdBy: 'Registration System',
+        });
+      }
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -64,6 +105,7 @@ class CustomerController implements IController {
 
   register = async (req: Request, res: Response): Promise<Response> => {
     const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
+
     try {
       if (!nik) {
         return res.status(400).send('nik belum diisi');
@@ -86,9 +128,10 @@ class CustomerController implements IController {
       if (!gender) {
         return res.status(400).send('gender tidak boleh kosong');
       }
+      const hashedPassword: string = await Authentication.passwordHash(password);
       await User.create({
         username,
-        password,
+        password: hashedPassword,
         nik,
         nama,
         email: email.toLowerCase(),
@@ -99,11 +142,11 @@ class CustomerController implements IController {
         programName,
         createdBy,
       });
-      const newUserId = await User.max('id');
-      const roleId = await Role.findOne({ where: { nama: 'Customer' } });
+      const newUser = await User.max('id');
+      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
       await HakAkses.create({
-        userId: newUserId,
-        roleId,
+        userId: newUser,
+        roleId: customerRole.id,
       });
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
@@ -112,7 +155,7 @@ class CustomerController implements IController {
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const customer = await dm.create({
-        userId: newUserId,
+        userId: newUser,
         uniqueCode,
         nik,
         nama,
@@ -124,10 +167,11 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      const jenisSampahs = await db.jenis_sampah.findAll(['kode']);
+      const jenisSampahs = await db.jenis_sampah.findAll();
       for (const jenisSampah of jenisSampahs) {
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
         await Sampah.create({
+          jenisSampah: jenisSampah.id,
           barcode,
           programName: 'Registration System',
           createdBy: 'Registration System',

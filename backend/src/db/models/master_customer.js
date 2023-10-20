@@ -9,9 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.user, { foreignKey: 'userId' });
-      // this.hasMany(models.master_customer_request);
-      this.hasMany(models.sampah);
+      // this.belongsTo(models.user, { foreignKey: 'userId' });
+      // this.hasMany(models.sampah);
     }
   }
   master_customer.init(
@@ -42,18 +41,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'master_customer',
     }
   );
-  master_customer.beforeDestroy(async (customer, options) => {
-    const customerId = customer.id;
-    try {
-      const orders = await sequelize.models.master_customer_request.findAll({
-        where: { customerId },
-      });
-      for (const order of orders) {
-        await order.destroy(options);
-      }
-    } catch (error) {
-      console.error('error menghapus data orderan pelanggan');
-    }
-  });
   return master_customer;
 };

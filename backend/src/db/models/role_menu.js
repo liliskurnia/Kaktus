@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.menu, { foreignKey: 'menuId' });
-      this.belongsTo(models.role, { foreignKey: 'roleId' });
+      // this.belongsTo(models.menu, { foreignKey: 'menuId' });
+      // this.belongsTo(models.role, { foreignKey: 'roleId' });
     }
   }
   role_menu.init(
@@ -36,5 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'role_menu',
     }
   );
+
   return role_menu;
 };

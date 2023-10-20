@@ -2,53 +2,20 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('master_operators', {
+    await queryInterface.createTable('jenis_sampahs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
-      tpsId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'tps',
-          key: 'id',
-        },
-      },
-      uniqueCode: {
-        type: Sequelize.STRING(40),
-      },
-      nik: {
-        type: Sequelize.STRING(20),
+      kode: {
+        type: Sequelize.STRING(4),
         allowNull: false,
         unique: true,
       },
       nama: {
         type: Sequelize.STRING(100),
-        allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING(100),
-        unique: true,
-        allowNull: false,
-      },
-      telp: {
-        type: Sequelize.STRING(50),
-        unique: true,
-        allowNull: false,
-      },
-      alamat: {
-        type: Sequelize.TEXT,
         allowNull: false,
       },
       programName: {
@@ -73,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('master_operators');
+    await queryInterface.dropTable('jenis_sampahs');
   },
 };

@@ -16,6 +16,7 @@ import RoleMenuRoutes from './routers/RoleMenuRoutes';
 import TPSRoutes from './routers/TPSRoutes';
 import CustomerRoutes from './routers/CustomerRoutes';
 import SampahRoutes from './routers/SampahRoutes';
+import JenisSampahRoutes from './routers/JenisSampahRoutes';
 
 class App {
   public app: Application;
@@ -53,6 +54,7 @@ class App {
     this.app.use('/api/v1/tps', TPSRoutes);
     this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/customers', CustomerRoutes);
+    this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
   }
 }
 

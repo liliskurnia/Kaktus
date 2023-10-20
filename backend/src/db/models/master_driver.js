@@ -9,9 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.user, { foreignKey: 'userId' });
-      // this.hasMany(models.accepted_pickup);
-      // this.hasMany(models.scheduled_pickup);
+      // this.belongsTo(models.user, { foreignKey: 'userId' });
     }
   }
   master_driver.init(
@@ -42,25 +40,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'master_driver',
     }
   );
-  master_driver.beforeDestroy(async (driver, options) => {
-    const driverId = driver.id;
-    try {
-      const accepts = await sequelize.models.accepted_pickup.findAll({
-        where: { driverId },
-      });
-      for (const accept of accepts) {
-        await accept.destroy(options);
-      }
-
-      const assigns = await sequelize.models.scheduled_pickup.findAll({
-        where: { driverId },
-      });
-      for (const assign of assigns) {
-        await assign.destroy(options);
-      }
-    } catch (error) {
-      console.error('gagal menghapus data terasosiasi dengan driver');
-    }
-  });
   return master_driver;
 };
