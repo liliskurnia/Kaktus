@@ -6,13 +6,24 @@ import {
   Alert,
   StyleSheet,
   ScrollView,
+  TextInput,
+  Platform,
   Dimensions,
-  TextInput
+  SafeAreaView
 } from "react-native";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../../components";
 import { useData, useTheme, useTranslation } from "../../hooks";
+import MapView, { Marker, AnimatedRegion} from "react-native-maps";
+import PubNubReact from "pubnub-react";
+const { width, height } = Dimensions.get("window");
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 37.78825;
+const LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default function TrackerPage() {
   const { assets, colors, gradients, sizes } = useTheme();
@@ -22,6 +33,92 @@ export default function TrackerPage() {
   const handleBack = () => {
     navigation.navigate('TrackOrder')
   }
+
+  const [state, setState] = useState({
+    latitude: LATITUDE,
+    longitude: LONGITUDE,
+    coordinate: new Animated.ValueXY({
+      x: LATITUDE,
+      y: LONGITUDE,
+    }),
+  });
+
+  const pubnub = useRef(
+    new PubNubReact({
+      publishKey: 'X', // Replace with your keys
+      subscribeKey: 'X',
+    })
+  );
+
+  const watchID = useRef(null);
+  const marker = useRef(null);
+
+  const watchLocation = () => {
+    watchID.current = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newCoordinate = {
+          latitude,
+          longitude,
+        };
+
+        if (Platform.OS === 'android') {
+          if (marker.current) {
+            marker.current._component.animateMarkerToCoordinate(
+              newCoordinate,
+              500 // 500 is the duration to animate the marker
+            );
+          }
+        } else {
+          state.coordinate.timing(newCoordinate).start();
+        }
+
+        setState({
+          ...state,
+          latitude,
+          longitude,
+        });
+      },
+      (error) => console.log(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+        distanceFilter: 10,
+      }
+    );
+  };
+
+  useEffect(() => {
+    watchLocation();
+  }, []);
+
+  useEffect(() => {
+    if (state.latitude !== LATITUDE) {
+      pubnub.current.publish({
+        message: {
+          latitude: state.latitude,
+          longitude: state.longitude,
+        },
+        channel: 'location',
+      });
+    }
+  }, [state.latitude, state.longitude]);
+
+  useEffect(() => {
+    return () => {
+      if (watchID.current) {
+        navigator.geolocation.clearWatch(watchID.current);
+      }
+    };
+  }, []);
+
+  const getMapRegion = () => ({
+    latitude: state.latitude,
+    longitude: state.longitude,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  });
 
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -75,11 +172,38 @@ export default function TrackerPage() {
           </TextRn>
         </View>
       </View>
+
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            showUserLocation
+            followUserLocation
+            loadingEnabled
+            region={getMapRegion()}
+          >
+            <Marker.Animated
+              ref={(marker) => {
+                marker.current = marker;
+              }}
+              coordinate={state.coordinate}
+            />
+          </MapView>
+        </View>
+      </SafeAreaView>
     </Block>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
   inputTextView: {
     marginHorizontal: 30,
     flexDirection: 'row',
