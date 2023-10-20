@@ -8,15 +8,16 @@ export default function Manual2() {
     const route = useRoute();
     const { registrationData } = route.params;
     const [state, setState] = useState({
-        username:'',
+        username: '',
         email: '',
-        phone: '',
+        telp: '',
         password: '',
         confirmPassword: '',
     })
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigation = useNavigation();
+    const [errors, setErrors] = useState({});
 
     const isVisiblePassword = () => {
         setShowPassword(!showPassword);
@@ -41,20 +42,44 @@ export default function Manual2() {
             Alert.alert('Passwords do not match');
             return;
         }
-    
+
+        //field required
+        const validationErrors = {};
+
+        if (!state.username) {
+            validationErrors.username = '*Username is required';
+        }
+        if (!state.email) {
+            validationErrors.email = '*Email is required';
+        }
+        if (!state.telp) {
+            validationErrors.telp = '*Phone number is required';
+        }
+        if (!state.password) {
+            validationErrors.password = '*Password is required';
+        }
+        if (!state.confirmPassword) {
+            validationErrors.confirmPassword = '*Confirm password is required';
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         const registrationData = {
             username: state.username,
             email: state.email,
-            phone: state.phone,
+            telp: state.telp,
             password: state.password,
             ...route.params.registrationData,
         };
-    
+
         console.log('registrationData', registrationData)
 
         // Define the URL of your registration endpoint
         const registrationEndpoint = 'your-registration-api-endpoint';
-    
+
         // axios
         //     .post(registrationEndpoint, registrationData)
         //     .then((response) => {
@@ -66,7 +91,7 @@ export default function Manual2() {
         //         console.error('Registration error:', error);
         //     });
     };
-    
+
 
     return (
         <View style={styles.container}>
@@ -77,17 +102,26 @@ export default function Manual2() {
                 style={styles.inputText}
                 placeholder="USERNAME"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, username: text })}/>
+                onChangeText={text => setState({ ...state, username: text })} />
+            <View style={{ width: '80%' }}>
+                {errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
+            </View>
             <TextInput
                 style={styles.inputText}
                 placeholder="EMAIL"
                 placeholderTextColor="#B3B3B3"
                 onChangeText={text => setState({ ...state, email: text })} />
+            <View style={{ width: '80%' }}>
+                {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+            </View>
             <TextInput
                 style={styles.inputText}
                 placeholder="PHONE NUMBER"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, phone: text })} />
+                onChangeText={text => setState({ ...state, telp: text })} />
+            <View style={{ width: '80%' }}>
+                {errors.telp && <Text style={styles.errorText}>{errors.telp}</Text>}
+            </View>
             <View style={{ flexDirection: 'row' }}>
                 <TextInput
                     style={styles.inputText}
@@ -113,6 +147,9 @@ export default function Manual2() {
                         />
                     )}
                 </TouchableOpacity>
+            </View>
+            <View style={{ width: '80%' }}>
+                {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <TextInput
@@ -140,6 +177,9 @@ export default function Manual2() {
                     )}
                 </TouchableOpacity>
             </View>
+            <View style={{ width: '80%' }}>
+                {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+            </View>
             <View style={{ flexDirection: 'row', marginTop: 100 }}>
                 <View style={styles.cancel}>
                     <TouchableOpacity onPress={handleBack}>
@@ -161,6 +201,11 @@ export default function Manual2() {
 }
 
 const styles = StyleSheet.create({
+    errorText: {
+        textAlign: 'left',
+        color: 'red',
+        alignSelf: "flex-start"
+    },
     textbtn: {
         color: '#ffffff',
         fontSize: 20,
