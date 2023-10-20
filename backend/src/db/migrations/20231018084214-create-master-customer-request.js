@@ -1,5 +1,6 @@
 'use strict';
 
+const { sequelize } = require('../models');
 const master_customer = require('../models/master_customer');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -11,6 +12,13 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+      },
+      historyId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'order_histories',
+          key: 'id',
+        },
       },
       customerId: {
         type: Sequelize.INTEGER,
@@ -28,14 +36,16 @@ module.exports = {
         },
       },
       barcodeSampah: {
-        type: Sequelize.STRING(20),
-        unique: true,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       jenisSampah: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 'Unassigned',
+        references: {
+          model: 'jenis_sampahs',
+          key: 'id',
+        },
       },
       status: {
         type: Sequelize.STRING(50),

@@ -2,47 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('sampahs', {
+    await queryInterface.createTable('jenis_sampahs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      jenisSampah: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'jenis_samphahs',
-          key: 'id',
-        },
-      },
-      barcode: {
-        type: Sequelize.STRING(50),
+      kode: {
+        type: Sequelize.STRING,
         allowNull: false,
         unique: true,
       },
-      status: {
-        type: Sequelize.STRING(50),
+      nama: {
+        type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: 'Not Active',
-      },
-      latitude: {
-        type: Sequelize.DECIMAL(8, 6),
-      },
-      longitude: {
-        type: Sequelize.DECIMAL(9, 6),
       },
       programName: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         defaultValue: 'Postman',
       },
       createdBy: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
         defaultValue: 'Admin',
       },
       updatedBy: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -55,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('sampahs');
+    await queryInterface.dropTable('jenis_sampahs');
   },
 };
