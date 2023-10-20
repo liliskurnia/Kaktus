@@ -13,10 +13,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      kodeCustomer: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-      },
       nikCustomer: {
         type: Sequelize.STRING(20),
         allowNull: false,
@@ -59,9 +55,9 @@ module.exports = {
         allowNull: false,
       },
       jenisSampah: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.STRING(20),
         allowNull: false,
-        defaultValue: 'U - Unassigned',
+        defaultValue: 'Unassigned',
       },
       status: {
         type: Sequelize.STRING(50),

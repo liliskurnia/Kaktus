@@ -9,13 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      jenisSampah: {
-        type: Sequelize.INTEGER,
+      jenis: {
+        type: Sequelize.STRING(20),
         allowNull: false,
-        references: {
-          model: 'jenis_samphahs',
-          key: 'id',
-        },
+        defaultValue: 'Unassigned',
       },
       barcode: {
         type: Sequelize.STRING(50),

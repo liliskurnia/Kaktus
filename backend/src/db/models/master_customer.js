@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'userId' });
       this.hasMany(models.master_customer_request);
-      this.hasMany(models.sampah);
     }
   }
   master_customer.init(
@@ -23,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
-      uniqueCode: DataTypes.STRING,
       nik: DataTypes.STRING,
       nama: DataTypes.STRING,
       email: DataTypes.STRING,
