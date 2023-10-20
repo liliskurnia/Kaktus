@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'userId' });
-      this.hasMany(models.accepted_pickup);
-      this.hasMany(models.scheduled_pickup);
+      // this.hasMany(models.accepted_pickup);
+      // this.hasMany(models.scheduled_pickup);
     }
   }
   master_driver.init(
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      uniqueCode: DataTypes.STRING,
       nik: DataTypes.STRING,
       nama: DataTypes.STRING,
       email: DataTypes.STRING,

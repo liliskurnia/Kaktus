@@ -44,7 +44,7 @@ class UserController implements IController {
         password: hashedPassword,
         nik,
         nama,
-        email,
+        email: email.toLowerCase(),
         telp,
         alamat,
         kota,
@@ -104,7 +104,7 @@ class UserController implements IController {
         await data.update({
           nama,
           alamat,
-          email,
+          email: email.toLowerCase(),
           telp,
           programName,
           updatedBy,
