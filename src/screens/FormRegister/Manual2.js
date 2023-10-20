@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Button, Image, TextInput, Ale
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default function Manual2() {
     const route = useRoute();
@@ -35,7 +36,7 @@ export default function Manual2() {
     //     navigation.navigate('Otp')
     // }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
 
         // Check if password and confirm password match
         if (state.password !== state.confirmPassword) {
@@ -77,21 +78,20 @@ export default function Manual2() {
 
         console.log('registrationData', registrationData)
 
-        // Define the URL of your registration endpoint
-        const registrationEndpoint = 'your-registration-api-endpoint';
-
-        // axios
-        //     .post(registrationEndpoint, registrationData)
-        //     .then((response) => {
-        //         // Handle a successful response from the server
-        //         // For example, you can show a success message or navigate to the next screen.
-        //     })
-        //     .catch((error) => {
-        //         // Handle any errors, e.g., show an error message.
-        //         console.error('Registration error:', error);
-        //     });
+        try {
+            const response = await axios.post('http://192.168.1.14:8000/api/v1/auth/register', registrationData);
+            console.log('respon', response.data)
+            // Handle the response
+            if (response.status === 201) {
+                navigation.navigate('Otp');
+            } else {
+                Alert.alert('Error', 'Failed to register. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Alert.alert('Error', 'Failed to register. Please try again.');
+        }
     };
-
 
     return (
         <View style={styles.container}>
