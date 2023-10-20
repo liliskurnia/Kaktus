@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      uniqueCode: DataTypes.STRING,
       nik: DataTypes.STRING,
       nama: DataTypes.STRING,
       email: DataTypes.STRING,

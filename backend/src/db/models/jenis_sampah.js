@@ -9,8 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsToMany(models.sampah, { through: 'jenisSampah' });
-      this.belongsToMany(models.master_customer_request, { through: 'jenisSampah' });
+      this.hasMany(models.sampah);
     }
   }
   jenis_sampah.init(
@@ -35,21 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     if (linkedSampahs) {
       for (const sampah of linkedSampahs) {
-        await sampah.update({
-          jenisId: null,
-        });
-      }
-
-      //unlink jenis sampah from master customer requests
-      const linkedOrders = await sequelize.models.sampah.findAll({
-        where: { jenisSampah },
-      });
-      if (linkedOrders) {
-        for (const order of linkedOrders) {
-          await order.update({
-            jenisSampah: null,
-          });
-        }
+        await sampah.destroy(options);
       }
     }
   });

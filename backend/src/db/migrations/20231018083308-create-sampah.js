@@ -25,7 +25,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        defaultValue: 'Not Active',
+        defaultValue: 'Inactive',
       },
       latitude: {
         type: Sequelize.DECIMAL(8, 6),

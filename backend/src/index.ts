@@ -14,6 +14,7 @@ import HakAksesRoutes from './routers/HakAksesRoutes';
 import MenuRoutes from './routers/MenuRoutes';
 import RoleMenuRoutes from './routers/RoleMenuRoutes';
 import TPSRoutes from './routers/TPSRoutes';
+import CustomerRoutes from './routers/CustomerRoutes';
 import SampahRoutes from './routers/SampahRoutes';
 
 class App {
@@ -44,13 +45,14 @@ class App {
     });
 
     this.app.use('/api/v1/auth', AuthRoutes);
-    this.app.use('/api/v1/admin/users', UserRoutes);
-    this.app.use('/api/v1/admin/roles', RoleRoutes);
-    this.app.use('/api/v1/admin/menus', MenuRoutes);
-    this.app.use('/api/v1/admin/hakAkses', HakAksesRoutes);
-    this.app.use('/api/v1/admin/roleMenu', RoleMenuRoutes);
-    this.app.use('/api/v1/admin/tps', TPSRoutes);
-    this.app.use('/api/v1/admin/sampah', SampahRoutes);
+    this.app.use('/api/v1/users', UserRoutes);
+    this.app.use('/api/v1/roles', RoleRoutes);
+    this.app.use('/api/v1/menus', MenuRoutes);
+    this.app.use('/api/v1/hakAkses', HakAksesRoutes);
+    this.app.use('/api/v1/roleMenu', RoleMenuRoutes);
+    this.app.use('/api/v1/tps', TPSRoutes);
+    this.app.use('/api/v1/sampah', SampahRoutes);
+    this.app.use('/api/v1/customers', CustomerRoutes);
   }
 }
 
