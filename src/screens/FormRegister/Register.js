@@ -30,14 +30,14 @@ export default function Scanner() {
                 style={styles.loginBtn}>
                 <Text style={styles.loginText}>Scan e-KTP </Text>
             </TouchableOpacity>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', marginTop: 10 }}>
-                Already a member?{' '}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Already a member?</Text>
                 <TouchableOpacity onPress={handleLoginPress}>
-                    <Text style={{ color: '#57B4A1', fontSize: 15, fontWeight: 'bold' }}>Login</Text>
+                    <Text style={{ color: '#57B4A1', fontSize: 15, fontWeight: 'bold' }}> Login </Text>
                 </TouchableOpacity>
-                {' '}
                 <Text>here</Text>
-            </Text>
+            </View>
+
         </View>
     );
 }

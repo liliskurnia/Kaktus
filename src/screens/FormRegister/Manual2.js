@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Manual2() {
     const [state, setState] = useState({
+        username:'',
         email: '',
         phone: '',
         password: '',
@@ -35,6 +36,11 @@ export default function Manual2() {
             {/* <View style={styles.box}> */}
             <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50, color: '#57B4A1' }}>SIGN-UP</Text>
             <Text style={{ marginTop: 20, marginBottom: 20, color: '#B3B3B3', fontSize: 20 }}>Sign-up to continue your journey with us!</Text>
+            <TextInput
+                style={styles.inputText}
+                placeholder="USERNAME"
+                placeholderTextColor="#B3B3B3"
+                onChangeText={text => setState({ username: text })} />
             <TextInput
                 style={styles.inputText}
                 placeholder="EMAIL"

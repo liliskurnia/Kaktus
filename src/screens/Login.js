@@ -25,7 +25,7 @@ const Login = () => {
     const isVisiblePassword = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const onPressLogin = () => {
         navigation.navigate('Home');
     };
@@ -43,9 +43,11 @@ const Login = () => {
             <Image
                 source={require('../assets/images/logoKaktus.jpeg')}
             />
-            <Text style={styles.title}> Hello,</Text>
-            <Text style={styles.title1}> Welcome Back!</Text>
-            <Text style={styles.signIn}> SIGN IN</Text>
+            <View style={{ width: '90%' }}>
+                <Text style={styles.title}> Hello,</Text>
+                <Text style={styles.title1}> Welcome Back!</Text>
+                <Text style={styles.signIn}> SIGN IN</Text>
+            </View>
             <TextInput
                 style={styles.inputText}
                 placeholder="EMAIL"
@@ -77,22 +79,22 @@ const Login = () => {
                     )}
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={{marginTop: 10, marginRight: -200 }}>
-                <Text style={{ color: '#57B4A1', fontSize: 14}}>Forget Password ?</Text>
+            <TouchableOpacity style={{ marginTop: 10, marginRight: -200 }}>
+                <Text style={{ color: '#57B4A1', fontSize: 14 }}>Forget Password ?</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={onPressLogin}
                 style={styles.loginBtn}>
                 <Text style={styles.loginText}>LOGIN </Text>
             </TouchableOpacity>
-            <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
-                Not a member yet?{' '}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Not a member yet?{' '}</Text>
                 <TouchableOpacity onPress={handleSignUpPress}>
                     <Text style={{ color: '#57B4A1', fontSize: 15, fontWeight: 'bold' }}>Sign-Up</Text>
                 </TouchableOpacity>
-                {' '}
-                <Text>here</Text>
-            </Text>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}> here</Text>
+            </View>
+
         </View>
     );
 }
@@ -109,19 +111,16 @@ const styles = StyleSheet.create({
         fontSize: 40,
         color: "#000000",
         marginTop: 40,
-        marginLeft: -240
     },
     title1: {
         fontWeight: "bold",
         fontSize: 40,
         color: "#57B4A1",
-        marginLeft: -120
     },
     signIn: {
         fontWeight: "bold",
         fontSize: 30,
         color: "#000000",
-        marginLeft: -230,
         marginTop: 20
     },
     inputView: {
