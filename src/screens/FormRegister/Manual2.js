@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Button, Image, TextInput, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Manual2() {
+    const route = useRoute();
+    const { registrationData } = route.params;
     const [state, setState] = useState({
         username:'',
         email: '',
@@ -27,9 +30,43 @@ export default function Manual2() {
         navigation.navigate('Manual1')
     }
 
+    // const handleRegister = () => {
+    //     navigation.navigate('Otp')
+    // }
+
     const handleRegister = () => {
-        navigation.navigate('Otp')
-    }
+
+        // Check if password and confirm password match
+        if (state.password !== state.confirmPassword) {
+            Alert.alert('Passwords do not match');
+            return;
+        }
+    
+        const registrationData = {
+            username: state.username,
+            email: state.email,
+            phone: state.phone,
+            password: state.password,
+            ...route.params.registrationData,
+        };
+    
+        console.log('registrationData', registrationData)
+
+        // Define the URL of your registration endpoint
+        const registrationEndpoint = 'your-registration-api-endpoint';
+    
+        // axios
+        //     .post(registrationEndpoint, registrationData)
+        //     .then((response) => {
+        //         // Handle a successful response from the server
+        //         // For example, you can show a success message or navigate to the next screen.
+        //     })
+        //     .catch((error) => {
+        //         // Handle any errors, e.g., show an error message.
+        //         console.error('Registration error:', error);
+        //     });
+    };
+    
 
     return (
         <View style={styles.container}>
@@ -40,24 +77,24 @@ export default function Manual2() {
                 style={styles.inputText}
                 placeholder="USERNAME"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ username: text })} />
+                onChangeText={text => setState({ ...state, username: text })}/>
             <TextInput
                 style={styles.inputText}
                 placeholder="EMAIL"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ email: text })} />
+                onChangeText={text => setState({ ...state, email: text })} />
             <TextInput
                 style={styles.inputText}
                 placeholder="PHONE NUMBER"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ phone: text })} />
+                onChangeText={text => setState({ ...state, phone: text })} />
             <View style={{ flexDirection: 'row' }}>
                 <TextInput
                     style={styles.inputText}
                     secureTextEntry={!showPassword}
                     placeholder="PASSWORD"
                     placeholderTextColor="#B3B3B3"
-                    onChangeText={text => setState({ password: text })} />
+                    onChangeText={text => setState({ ...state, password: text })} />
                 <TouchableOpacity
                     style={{ position: 'absolute', right: 15, top: 25 }}
                     onPress={isVisiblePassword}
@@ -83,7 +120,7 @@ export default function Manual2() {
                     secureTextEntry={!showConfirmPassword}
                     placeholder="CONFIRM PASSWORD"
                     placeholderTextColor="#B3B3B3"
-                    onChangeText={text => setState({ confirmPassword: text })} />
+                    onChangeText={text => setState({ ...state, confirmPassword: text })} />
                 <TouchableOpacity
                     style={{ position: 'absolute', right: 15, top: 25 }}
                     onPress={isVisibleConfirmPassword}

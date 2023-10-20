@@ -13,7 +13,18 @@ export default function Manual1() {
     const navigation = useNavigation();
 
     const handleNext = () => {
-        navigation.navigate('Manual2')
+        const registrationData = {
+            nik: state.nik,
+            name: state.name,
+            address: state.address,
+            city: state.city,
+            gender: state.gender,
+        };
+
+        console.log('registrationData', registrationData)
+        
+        navigation.navigate('Manual2', { registrationData });
+        
     }
 
     const handleCancle = () => {
@@ -29,22 +40,27 @@ export default function Manual1() {
                 style={styles.inputText}
                 placeholder="NIK"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ nik: text })} />
+                onChangeText={text => setState({ ...state, nik: text })} />
             <TextInput
                 style={styles.inputText}
                 placeholder="FULL NAME"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ name: text })} />
+                onChangeText={text => setState({ ...state, name: text })} />
             <TextInput
                 style={styles.inputText}
                 placeholder="ADDRESS"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ address: text })} />
+                onChangeText={text => setState({ ...state, address: text })} />
             <TextInput
                 style={styles.inputText}
                 placeholder="CITY"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ city: text })} />
+                onChangeText={text => setState({ ...state, city: text })} />
+            <TextInput
+                style={styles.inputText}
+                placeholder="GENDER"
+                placeholderTextColor="#B3B3B3"
+                onChangeText={text => setState({ ...state, gender: text })} />
             <View style={{ flexDirection: 'row', marginTop:100 }}>
                 <View style={styles.cancel}>
                     <TouchableOpacity onPress={handleCancle}>
