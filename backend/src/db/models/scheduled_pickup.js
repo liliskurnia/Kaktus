@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.master_customer_request, { foreignKey: 'orderId' });
       this.belongsTo(models.master_driver, { foreignKey: 'driverId' });
+      this.hasOne(models.pickup_history, { foreignKey: 'historyId' });
     }
   }
   scheduled_pickup.init(

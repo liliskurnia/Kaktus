@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.master_driver, { foreignKey: 'driverId' });
       this.hasOne(models.scheduled_pickup);
       this.hasOne(models.accepted_pickup);
-      this.belongsTo(models.jenis_sampah, { foreignKey: 'jenisSampah' });
+      this.hasOne(models.order_history, { foreignKey: 'historyId' });
+      this.hasOne(models.jenis_sampah, { foreignKey: 'jenisSampah' });
     }
   }
   master_customer_request.init(

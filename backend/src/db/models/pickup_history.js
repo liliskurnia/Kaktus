@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.scheduled_pickup);
+      this.belongsTo(models.accepted_pickup);
     }
   }
   pickup_history.init(
