@@ -13,10 +13,19 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.master_driver, { foreignKey: 'driverId' });
       this.hasOne(models.scheduled_pickup);
       this.hasOne(models.accepted_pickup);
+      this.hasOne(models.order_history, { foreignKey: 'historyId' });
+      this.hasOne(models.jenis_sampah, { foreignKey: 'jenisSampah' });
     }
   }
   master_customer_request.init(
     {
+      historyId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'order_histories',
+          key: 'id',
+        },
+      },
       customerId: {
         type: DataTypes.INTEGER,
         references: {
@@ -32,7 +41,13 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       barcodeSampah: DataTypes.STRING,
-      jenisSampah: DataTypes.STRING,
+      jenisSampah: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'jenis_sampahs',
+          key: 'kode',
+        },
+      },
       status: DataTypes.STRING,
       points: DataTypes.INTEGER,
       latitude: DataTypes.DECIMAL,

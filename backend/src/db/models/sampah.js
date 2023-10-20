@@ -9,11 +9,26 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.master_customer, { foreignKey: 'customerId' });
+      this.hasOne(models.jenis_sampah, { foreignKey: 'jenisSampah' });
     }
   }
   sampah.init(
     {
-      jenis: DataTypes.STRING,
+      customerId: {
+        type: DataTypes.STRING,
+        references: {
+          model: 'master_customers',
+          key: 'id',
+        },
+      },
+      jenisSampah: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'jenis_sampahs',
+          key: 'id',
+        },
+      },
       barcode: DataTypes.STRING,
       status: DataTypes.STRING,
       latitude: DataTypes.DECIMAL,

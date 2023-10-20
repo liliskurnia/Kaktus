@@ -11,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.master_customer_request, { foreignKey: 'orderId' });
       this.belongsTo(models.master_driver, { foreignKey: 'driverId' });
+      this.hasOne(models.pickup_history, { foreignKey: 'historyId' });
     }
   }
   accepted_pickup.init(
     {
+      historyId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'pickup_histories',
+          key: 'id',
+        },
+      },
       orderId: {
         type: DataTypes.INTEGER,
         references: {

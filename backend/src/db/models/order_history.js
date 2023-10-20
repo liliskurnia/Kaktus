@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class order_history extends Model {
     /**
@@ -11,31 +9,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.master_customer_request);
     }
   }
-  order_history.init({
-    orderId: DataTypes.INTEGER,
-    nikCustomer: DataTypes.STRING,
-    namaCustomer: DataTypes.STRING,
-    alamatCustomer: DataTypes.TEXT,
-    telpCustomer: DataTypes.STRING,
-    nikDriver: DataTypes.STRING,
-    namaDriver: DataTypes.STRING,
-    alamatDriver: DataTypes.TEXT,
-    telpDriver: DataTypes.STRING,
-    points: DataTypes.INTEGER,
-    barcodeSampah: DataTypes.STRING,
-    jenisSampah: DataTypes.STRING,
-    status: DataTypes.STRING,
-    namaTps: DataTypes.STRING,
-    latitude: DataTypes.DECIMAL,
-    longitude: DataTypes.DECIMAL,
-    orderedFor: DataTypes.DATE,
-    pickedUpAt: DataTypes.DATE,
-    completedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'order_history',
-  });
+  order_history.init(
+    {
+      orderId: DataTypes.INTEGER,
+      kodeCustomer: DataTypes.STRING,
+      nikCustomer: DataTypes.STRING,
+      namaCustomer: DataTypes.STRING,
+      alamatCustomer: DataTypes.TEXT,
+      telpCustomer: DataTypes.STRING,
+      nikDriver: DataTypes.STRING,
+      namaDriver: DataTypes.STRING,
+      alamatDriver: DataTypes.TEXT,
+      telpDriver: DataTypes.STRING,
+      points: DataTypes.INTEGER,
+      barcodeSampah: DataTypes.STRING,
+      jenisSampah: DataTypes.STRING,
+      status: DataTypes.STRING,
+      namaTps: DataTypes.STRING,
+      latitude: DataTypes.DECIMAL,
+      longitude: DataTypes.DECIMAL,
+      orderedFor: DataTypes.DATE,
+      pickedUpAt: DataTypes.DATE,
+      completedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: 'order_history',
+    }
+  );
   return order_history;
 };
