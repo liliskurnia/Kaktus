@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // this.belongsTo(models.user, { foreignKey: 'userId' });
-      // this.hasMany(models.sampah);
+      this.belongsTo(models.user, { foreignKey: 'userId' });
+      this.hasMany(models.sampah);
     }
   }
   master_customer.init(

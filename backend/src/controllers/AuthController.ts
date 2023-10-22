@@ -76,6 +76,7 @@ class AuthController {
           }
         }
       }
+      console.log(user);
       const compare = await Authentication.passwordCompare(password, user.password);
       if (compare) {
         const token = Authentication.generateToken(user.id, username, user.password);
@@ -83,6 +84,7 @@ class AuthController {
           where: { userId: user.id },
           include: [{ model: db.role, attributes: ['nama'] }],
         });
+        console.log(hakAkses);
         let access = null;
         if (hakAkses) {
           console.log(hakAkses);

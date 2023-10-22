@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // this.hasMany(models.role_menu);
+      this.hasMany(models.role_menu);
     }
   }
   menu.init(
