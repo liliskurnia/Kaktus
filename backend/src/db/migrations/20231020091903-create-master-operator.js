@@ -7,52 +7,74 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       tpsId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'tps',
+          key: 'id',
+        },
       },
       uniqueCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(40),
+        unique: true,
+        allowNull: false,
       },
       nik: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(20),
+        unique: true,
+        allowNull: false,
       },
       nama: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        unique: true,
+        allowNull: false,
       },
       email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        unique: true,
       },
       telp: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(50),
+        unique: true,
       },
       alamat: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT,
+      },
+      gender: {
+        type: Sequelize.STRING(1),
       },
       programName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        defaultValue: 'Postman',
       },
       createdBy: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        defaultValue: 'Admin',
       },
       updatedBy: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('master_operators');
-  }
+  },
 };

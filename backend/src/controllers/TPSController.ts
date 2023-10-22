@@ -1,8 +1,6 @@
 'use strict';
 import { Request, Response } from 'express';
 import IController from './IController';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 
 //database constants
 const db = require('../db/models/');

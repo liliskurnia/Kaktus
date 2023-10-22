@@ -19,6 +19,7 @@ module.exports = {
       },
       uniqueCode: {
         type: Sequelize.STRING(40),
+        unique: true
       },
       nik: {
         type: Sequelize.STRING(20),

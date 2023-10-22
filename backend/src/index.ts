@@ -15,6 +15,8 @@ import MenuRoutes from './routers/MenuRoutes';
 import RoleMenuRoutes from './routers/RoleMenuRoutes';
 import TPSRoutes from './routers/TPSRoutes';
 import CustomerRoutes from './routers/CustomerRoutes';
+import DriverRoutes from './routers/DriverRoutes';
+//import OperatorRoutes from './routers/OperatorRoutes';
 import SampahRoutes from './routers/SampahRoutes';
 import JenisSampahRoutes from './routers/JenisSampahRoutes';
 
@@ -52,9 +54,12 @@ class App {
     this.app.use('/api/v1/hakAkses', HakAksesRoutes);
     this.app.use('/api/v1/roleMenu', RoleMenuRoutes);
     this.app.use('/api/v1/tps', TPSRoutes);
-    this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/customers', CustomerRoutes);
+    this.app.use('/api/v1/drivers', DriverRoutes);
+    //this.app.use('/api/v1/operators', OperatorRoutes);
+    this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
+    //this.app.use('/api/v1/pickup', PickupRoutes);
   }
 }
 
@@ -62,6 +67,5 @@ const port: number = 8000;
 const app = new App().app;
 app.listen(port, () => {
   console.log('Aplikasi ini berjalan di port ' + port);
-
-  console.log(process.env.DB_USER);
+  console.log('db name: ' + process.env.DB_NAME);
 });
