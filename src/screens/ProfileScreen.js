@@ -1,25 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import {
   TouchableOpacity,
   Text as TextRn,
   View,
-  Alert,
   StyleSheet,
-  SectionList,
   ScrollView,
-  StatusBar,
-  TextInput,
   Switch
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { useNavigation } from '@react-navigation/native';
-import { Block, Image, ModalSelect, Input } from '../components';
-import { useData, useTheme, useTranslation } from '../hooks';
+import { Block, Image} from '../components';
 
 export default function ProfileScreen() {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>

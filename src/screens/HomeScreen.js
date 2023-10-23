@@ -47,6 +47,10 @@ export default function HomeScreen() {
     navigation.navigate('TrackOrder')
   }
 
+  const handleDownloadQrcode = () => {
+    navigation.navigate('DownloadQrcode')
+  }
+
   const handleLogout = () => {
     Alert.alert("Logout", `Anda yakin akan keluar dari akun Anda ?`, [
       {
@@ -324,8 +328,20 @@ export default function HomeScreen() {
           </View>
           <View style={styles.circleBody}>
             <TouchableOpacity
+            onPress={handleDownloadQrcode}
               style={styles.circleMenuTouch}
             >
+              <View style={[styles.circleMenu, { backgroundColor: '#FFF6F4' }]}>
+                <MaterialCommunityIcons
+                  name="qrcode"
+                  size={34}
+                  color="#9A3B3B"
+                />
+              </View>
+              <TextRn
+                style={styles.menuText}>
+                Download Qrcode
+              </TextRn>
             </TouchableOpacity>
           </View>
         </View>

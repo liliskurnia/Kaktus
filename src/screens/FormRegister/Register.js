@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Button, Image } from 'react-native';
+import React, { useState} from 'react';
+import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Scanner() {
     const navigation = useNavigation();
+
     const handleLoginPress = () => {
         navigation.navigate('Login');
     };
@@ -47,20 +48,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    box: {
-        width: 300,
-        height: 400,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 4,
-        elevation: 5,
     },
     loginBtn: {
         width: "80%",

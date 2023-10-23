@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     TouchableOpacity,
     Text as TextRn,
@@ -6,12 +6,11 @@ import {
     Alert,
     StyleSheet,
     ScrollView,
-    Dimensions,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Block, Image, Text, ModalSelect, Input } from "../components";
-import { useData, useTheme, useTranslation } from "../hooks";
+import { Block, Image } from "../components";
+import { useTheme } from "../hooks";
 
 export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -63,14 +62,14 @@ export default function OrderHistory() {
                 </View>
             </View>
             <View>
-                <TextRn style={{ fontSize: 30, textAlign: 'center', color: '#819994', fontWeight: 'bold', marginTop: 20 }}>
+                <TextRn style={styles.title}>
                     ORDER HISTORY
                 </TextRn>
             </View>
             <ScrollView>
-                <View style={{ flexDirection: 'row', marginHorizontal: 30, marginTop: 30, justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={styles.subTitleBox}>
                     <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>TODAY</TextRn>
-                    <TouchableOpacity onPress={handleAdd} style={{ flexDirection: 'row', borderWidth: 1, borderRadius: 5, borderColor: '#9EBCB6', padding: 5, alignItems: 'center' }}>
+                    <TouchableOpacity onPress={handleAdd} style={styles.add}>
                         <MaterialCommunityIcons name="plus" size={18} color="#9EBCB6" />
                         <TextRn style={{ color: '#9EBCB6' }}>NEW ORDER</TextRn>
                     </TouchableOpacity>
@@ -156,7 +155,7 @@ export default function OrderHistory() {
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', marginHorizontal: 30, marginTop: 30, justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={styles.subTitleBox}>
                     <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>YESTERDAY</TextRn>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -219,6 +218,28 @@ export default function OrderHistory() {
 }
 
 const styles = StyleSheet.create({
+    add: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '#9EBCB6',
+        padding: 5,
+        alignItems: 'center'
+    },
+    subTitleBox: {
+        flexDirection: 'row',
+        marginHorizontal: 30,
+        marginTop: 30,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    title: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#819994',
+        fontWeight: 'bold',
+        marginTop: 20
+    },
     boxKiri: {
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -228,9 +249,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderTopEndRadius: 0,
         borderBottomEndRadius: 0,
-        width:'25%',
-        alignItems:'center',
-        justifyContent:'center'
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     boxKanan: {
         flexDirection: 'row',
@@ -242,7 +263,7 @@ const styles = StyleSheet.create({
         marginLeft: -30,
         borderTopStartRadius: 0,
         borderBottomStartRadius: 0,
-        alignItems:'center',
+        alignItems: 'center',
     },
     container: {
         flex: 1,

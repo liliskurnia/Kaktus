@@ -1,17 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     TouchableOpacity,
     Text as TextRn,
     View,
     Alert,
     StyleSheet,
-    ScrollView,
-    Dimensions,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Block, Image, Text, ModalSelect, Input } from "../components";
-import { useData, useTheme, useTranslation } from "../hooks";
+import { Block, Image } from "../components";
+import { useTheme } from "../hooks";
 
 export default function ConfirmOrder() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -106,31 +104,6 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         textAlign:'left'
     },
-    boxKiri: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        marginHorizontal: 30,
-        padding: 20,
-        borderRadius: 10,
-        marginVertical: 10,
-        borderTopEndRadius: 0,
-        borderBottomEndRadius: 0,
-        width: '25%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    boxKanan: {
-        flexDirection: 'row',
-        width: '58%',
-        justifyContent: 'space-between',
-        padding: 20,
-        borderRadius: 10,
-        marginVertical: 10,
-        marginLeft: -30,
-        borderTopStartRadius: 0,
-        borderBottomStartRadius: 0,
-        alignItems: 'center',
-    },
     button: {
         width: '80%',
         margin: 10,
@@ -152,10 +125,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 10,
         textAlign: 'center'
-    },
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
     }
 });

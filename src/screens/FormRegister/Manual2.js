@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Button, Image, TextInput, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 
@@ -31,10 +30,6 @@ export default function Manual2() {
     const handleBack = () => {
         navigation.navigate('Manual1')
     }
-
-    // const handleRegister = () => {
-    //     navigation.navigate('Otp')
-    // }
 
     const handleRegister = async () => {
 
@@ -84,7 +79,7 @@ export default function Manual2() {
         try {
             const response = await axios.post('http://192.168.182.111:8000/api/v1/customers/register', registrationData);
             console.log('respon', response.data)
-            // Handle the response
+
             if (response.status === 201) {
                 navigation.navigate('Otp');
             } else {
@@ -98,7 +93,6 @@ export default function Manual2() {
 
     return (
         <View style={styles.container}>
-            {/* <View style={styles.box}> */}
             <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50, color: '#57B4A1' }}>SIGN-UP</Text>
             <Text style={{ marginTop: 20, marginBottom: 20, color: '#B3B3B3', fontSize: 20 }}>Sign-up to continue your journey with us!</Text>
             <TextInput
@@ -247,33 +241,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    box: {
-        width: 300,
-        height: 680,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    loginBtn: {
-        width: "80%",
-        backgroundColor: "#367E18",
-        borderRadius: 5,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 10
-    },
-    loginText: {
-        color: '#FFFFFF',
-        fontSize: 20,
-        fontWeight: 'bold'
     }
 });

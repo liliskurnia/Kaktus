@@ -5,14 +5,12 @@ import {
     View,
     Alert,
     StyleSheet,
-    ScrollView,
-    Dimensions,
     TextInput
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Block, Image, Text, ModalSelect, Input } from "../components";
-import { useData, useTheme, useTranslation } from "../hooks";
+import { Block, Image} from "../components";
+import { useTheme} from "../hooks";
 
 export default function PickUp() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -138,7 +136,7 @@ export default function PickUp() {
                     <MaterialCommunityIcons name="line-scan" size={24} color="#B3B3B3" />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={handleConfirmOrder} style={{ margin: 10, alignSelf: 'center', backgroundColor: '#57B4A1', borderRadius: 10, padding: 10 }}>
+            <TouchableOpacity onPress={handleConfirmOrder} style={styles.button}>
                 <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#ffffff', margin: 10 }}>CONFIRM ORDER</TextRn>
             </TouchableOpacity>
         </Block>
@@ -146,6 +144,13 @@ export default function PickUp() {
 }
 
 const styles = StyleSheet.create({
+    button: {
+        margin: 10, 
+        alignSelf: 'center', 
+        backgroundColor: '#57B4A1', 
+        borderRadius: 10, 
+        padding: 10 
+    },
     inputTextView: {
         marginHorizontal: 30,
         flexDirection: 'row',
@@ -164,33 +169,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    box: {
-        width: 300,
-        height: 500,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    loginBtn: {
-        width: "80%",
-        backgroundColor: "#367E18",
-        borderRadius: 5,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 10
-    },
-    loginText: {
-        color: '#FFFFFF',
-        fontSize: 20,
-        fontWeight: 'bold'
     }
 });

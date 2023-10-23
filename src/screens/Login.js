@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
     View,
     TextInput,
     TouchableOpacity,
@@ -28,10 +24,6 @@ const Login = () => {
     const isVisiblePassword = () => {
         setShowPassword(!showPassword);
     };
-
-    // const onPressLogin = () => {
-    //     navigation.navigate('Home');
-    // };
 
     const handleLogin = async () => {
 
@@ -60,7 +52,7 @@ const Login = () => {
         try {
             const response = await axios.post('http://192.168.182.111:8000/api/v1/auth/login', loginData);
             console.log('respon', response.data)
-            // Handle the response
+           
             if (response.status === 200) {
                 navigation.navigate('Home');
             } else {
@@ -68,7 +60,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            Alert.alert('Error',  `${error.response.data}`);
+            Alert.alert('Error', `${error.response.data}`);
         }
     };
 
@@ -176,25 +168,12 @@ const styles = StyleSheet.create({
         color: "#000000",
         marginTop: 20
     },
-    inputView: {
-        width: "80%",
-        backgroundColor: "#3AB4BA",
-        borderRadius: 25,
-        height: 50,
-        marginBottom: 20,
-        justifyContent: "center",
-        padding: 20
-    },
     inputText: {
         height: 70,
         width: '80%',
         borderBottomWidth: 1,
         borderBottomColor: '#CCCCCC',
         paddingLeft: 10,
-    },
-    forgotAndSignUpText: {
-        color: "white",
-        fontSize: 11
     },
     loginBtn: {
         width: "80%",

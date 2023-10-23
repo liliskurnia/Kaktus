@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Button, Image, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Manual1() {
@@ -21,11 +21,9 @@ export default function Manual1() {
         if (!state.nik) {
             validationErrors.nik = '*Nik is required';
         }
-
         if (state.nik && (state.nik.length < 12 || state.nik.length > 16)) {
             validationErrors.nik = '*Nik must be 12 - 16 numbers';
         }
-
         if (!state.nama) {
             validationErrors.nama = '*Name is required';
         }
@@ -51,7 +49,9 @@ export default function Manual1() {
             kota: state.kota,
             gender: state.gender,
         };
+
         console.log('registrationData', registrationData);
+
         navigation.navigate('Manual2', { registrationData });
     };
 
@@ -61,7 +61,6 @@ export default function Manual1() {
 
     return (
         <View style={styles.container}>
-            {/* <View style={styles.box}> */}
             <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50, color: '#57B4A1' }}>SIGN-UP</Text>
             <Text style={{ marginTop: 20, marginBottom: 20, color: '#B3B3B3', fontSize: 20 }}>Sign-up to continue your journey with us!</Text>
             <TextInput
@@ -168,33 +167,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    box: {
-        width: 300,
-        height: 680,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    loginBtn: {
-        width: "80%",
-        backgroundColor: "#367E18",
-        borderRadius: 5,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 10
-    },
-    loginText: {
-        color: '#FFFFFF',
-        fontSize: 20,
-        fontWeight: 'bold'
     }
 });

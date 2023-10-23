@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Button, Image, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Otp() {
     const navigation = useNavigation();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
-    const [resendCountdown, setResendCountdown] = useState(60); 
+    const [resendCountdown, setResendCountdown] = useState(60);
 
     const handleOtpChange = (value, index) => {
         const newOtp = [...otp];
@@ -29,7 +28,7 @@ export default function Otp() {
         if (resendCountdown > 0) {
             countdownInterval = setInterval(() => {
                 setResendCountdown(resendCountdown - 1);
-            }, 1000); 
+            }, 1000);
         } else {
             clearInterval(countdownInterval);
         }
@@ -56,7 +55,7 @@ export default function Otp() {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop:20
+                marginTop: 20
             }}>
                 {otp.map((digit, index) => (
                     <TextInput
@@ -71,7 +70,7 @@ export default function Otp() {
                         }}
                     />
                 ))}
-            </View> 
+            </View>
             <TouchableOpacity
                 onPress={handleVerify}
                 style={styles.loginBtn}>
@@ -84,40 +83,6 @@ export default function Otp() {
 }
 
 const styles = StyleSheet.create({
-    textbtn: {
-        color: '#ffffff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    cancel: {
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: 10,
-        backgroundColor: '#DBCC96',
-        borderRadius: 10, width: '40%',
-        height: '40%',
-        marginRight: 10
-    },
-    next: {
-        justifyContent: 'center',
-        flexDirection: 'column',
-        padding: 10,
-        backgroundColor: '#57B4A1',
-        borderRadius: 10,
-        width: '40%',
-        height: '40%'
-    },
-    inputText: {
-        height: 70,
-        width: '80%',
-        borderRadius: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: '#CCCCCC',
-        paddingLeft: 10,
-        marginBottom: 10,
-        fontSize: 20
-    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -131,7 +96,7 @@ const styles = StyleSheet.create({
         margin: 10,
         textAlign: 'center',
         fontSize: 20,
-        borderRadius:5
+        borderRadius: 5
     },
     loginBtn: {
         width: "80%",

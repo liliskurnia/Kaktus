@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import {
     TouchableOpacity,
     Text as TextRn,
@@ -7,10 +7,10 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Image, ModalSelect, Input } from '../components';
-import { useData, useTheme, useTranslation } from '../hooks';
+import { Block, Image} from '../components';
+import { useTheme} from '../hooks';
 import { Searchbar } from 'react-native-paper';
 import Modal from "react-native-modal";
 
@@ -285,10 +285,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 10
-    },
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
     }
 });
