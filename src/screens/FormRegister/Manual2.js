@@ -79,7 +79,7 @@ export default function Manual2() {
         console.log('registrationData', registrationData)
 
         try {
-            const response = await axios.post('http://192.168.1.14:8000/api/v1/auth/register', registrationData);
+            const response = await axios.post('http://192.168.182.111:8000/api/v1/customers/register', registrationData);
             console.log('respon', response.data)
             // Handle the response
             if (response.status === 201) {

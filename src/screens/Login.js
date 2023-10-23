@@ -9,25 +9,67 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import axios from 'axios';
 
 const Login = () => {
     const [state, setState] = useState({
-        email: '',
+        username: '',
         password: '',
     })
     const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
+    const [errors, setErrors] = useState({});
 
     const isVisiblePassword = () => {
         setShowPassword(!showPassword);
     };
 
-    const onPressLogin = () => {
-        navigation.navigate('Home');
+    // const onPressLogin = () => {
+    //     navigation.navigate('Home');
+    // };
+
+    const handleLogin = async () => {
+
+        //field required
+        const validationErrors = {};
+
+        if (!state.username) {
+            validationErrors.username = '*Username is required';
+        }
+        if (!state.password) {
+            validationErrors.password = '*Password is required';
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        const loginData = {
+            username: state.username,
+            password: state.password,
+        };
+
+        console.log('loginData', loginData)
+
+        try {
+            const response = await axios.post('http://192.168.182.111:8000/api/v1/auth/login', loginData);
+            console.log('respon', response.data)
+            // Handle the response
+            if (response.status === 200) {
+                navigation.navigate('Home');
+            } else {
+                Alert.alert('Error', 'Failed to login. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Alert.alert('Error', 'Failed to login. Please try again.');
+        }
     };
 
     const onPressForgotPassword = () => {
@@ -50,16 +92,19 @@ const Login = () => {
             </View>
             <TextInput
                 style={styles.inputText}
-                placeholder="EMAIL"
+                placeholder="USERNAME/EMAIL"
                 placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ email: text })} />
+                onChangeText={text => setState({ ...state, username: text })} />
+            <View style={{ width: '80%' }}>
+                {errors.username && <Text style={styles.errorText}>{errors.username}</Text>}
+            </View>
             <View style={{ flexDirection: 'row' }}>
                 <TextInput
                     style={styles.inputText}
                     secureTextEntry={!showPassword}
                     placeholder="PASSWORD"
                     placeholderTextColor="#B3B3B3"
-                    onChangeText={text => setState({ password: text })} />
+                    onChangeText={text => setState({ ...state, password: text })} />
                 <TouchableOpacity
                     style={{ position: 'absolute', right: 15, top: 25 }}
                     onPress={isVisiblePassword}
@@ -79,11 +124,14 @@ const Login = () => {
                     )}
                 </TouchableOpacity>
             </View>
+            <View style={{ width: '80%' }}>
+                {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+            </View>
             <TouchableOpacity style={{ marginTop: 10, marginRight: -200 }}>
                 <Text style={{ color: '#57B4A1', fontSize: 14 }}>Forget Password ?</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={onPressLogin}
+                onPress={handleLogin}
                 style={styles.loginBtn}>
                 <Text style={styles.loginText}>LOGIN </Text>
             </TouchableOpacity>
@@ -99,6 +147,11 @@ const Login = () => {
     );
 }
 const styles = StyleSheet.create({
+    errorText: {
+        textAlign: 'left',
+        color: 'red',
+        alignSelf: "flex-start"
+    },
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
