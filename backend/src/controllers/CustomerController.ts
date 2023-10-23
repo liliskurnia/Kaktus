@@ -223,14 +223,15 @@ class CustomerController implements IController {
     const { id } = req.params;
 
     try {
-      const data = await dm.findByPk(id, {
-        exclude: ['password'],
+      const data = await dm.findAll({
+        where: { masterCustomerId: id },
         order: ['id'],
       });
 
       if (!data) {
         return res.status(404).send('user tidak ditemukan.');
       }
+      console.log(data);
       return res.status(200).json(data);
     } catch (err) {
       console.log(err);
@@ -340,12 +341,31 @@ function generateUserCode(digits?: number, includeAlpha?: boolean): string {
   }
 }
 
-function generateUserBarcode(barcode: string, path: string) {
+enum generationMethod {
+  url,
+  file,
+  string,
+}
+
+function generateUserBarcode(barcode: string, path: string, method: generationMethod) {
   const qr = require('qrcode');
 
-  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
+  switch (method) {
+    case generationMethod.url:
+      qr.toDataURL(barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any, url: string) {
+        if (error) throw error;
+        console.log(url);
+      });
+      break;
+    case generationMethod.file:
+      qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
+        if (error) throw error;
+        console.log('qr code image generated succesfully');
+      });
+      break;
+    case generationMethod.string:
+      qr.toString();
+      break;
+  }
 }
 export default new CustomerController();
