@@ -47,8 +47,8 @@ class TPSController implements IController {
         barcode = generateBarcodeString(12, true);
         exist = await dm.findOne({ where: { barcode } });
       }
-      //   const barcodeImagePath = `../../assets/qrcodes/${barcode}.png`;
-      //   generateBarcodeImage(barcode, barcodeImagePath);
+      const barcodeImagePath = `./assets/qrcodes/${nama}-${barcode}.png`;
+      generateBarcodeImage(barcode, barcodeImagePath);
       const newTps = await dm.create({
         nama,
         barcode,
@@ -137,6 +137,7 @@ class TPSController implements IController {
 function generateBarcodeString(digits?: number, includeAlpha?: boolean): string {
   const length = digits || 12;
   const alphanumeric = includeAlpha || false;
+  const code = 'TPS';
 
   if (alphanumeric === false) {
     let maxString = '';
@@ -144,10 +145,11 @@ function generateBarcodeString(digits?: number, includeAlpha?: boolean): string 
       maxString += '9';
     }
     const maxValue = parseInt(maxString);
-    const output = Math.floor(Math.random() * maxValue);
+    const randomValue = Math.floor(Math.random() * maxValue);
+    const output = `${code}${randomValue}`;
     return output.toString();
   } else {
-    let output = '';
+    let output = `${code}`;
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     for (let i = 0; i < length; i++) {
       output += characters.charAt(Math.floor(Math.random() * characters.length));

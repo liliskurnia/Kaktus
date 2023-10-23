@@ -2,25 +2,38 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('sampahs', {
+    await queryInterface.createTable('sampah_masters', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      jenisSampah: {
+      masterCustomerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_customers',
+          key: 'id',
+        },
+      },
+      jenisSampahId: {
+        type: Sequelize.INTEGER,
+        allowNull: 'false',
         references: {
           model: 'jenis_sampahs',
           key: 'id',
         },
       },
-      barcode: {
+      jenisSampah: {
         type: Sequelize.STRING(50),
         allowNull: false,
+        defaultValue: 'U-Undefined',
+      },
+      barcode: {
+        type: Sequelize.STRING(50),
         unique: true,
+        allowNull: false,
       },
       status: {
         type: Sequelize.STRING(50),
@@ -55,6 +68,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('sampahs');
+    await queryInterface.dropTable('sampah_masters');
   },
 };

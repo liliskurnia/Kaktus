@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.hak_akses);
-      // this.hasOne(models.master_operator);
+      this.hasOne(models.master_operator);
       this.hasOne(models.master_customer);
-      // this.hasOne(models.master_driver);
+      this.hasOne(models.master_driver);
     }
   }
   user.init(

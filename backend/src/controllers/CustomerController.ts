@@ -6,7 +6,7 @@ import IController from './IController';
 const db = require('../db/models');
 const dm = db.master_customer;
 const User = db.user;
-const Sampah = db.sampah;
+const Sampah = db.sampah_master;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 
@@ -40,6 +40,29 @@ class CustomerController implements IController {
       if (!user) {
         return res.status(404).send('user tidak ditemukan');
       }
+      const exists = await dm.findOne({ where: { userId } });
+      if (exists) {
+        const haveSampahRegistered = await Sampah.findAll({ where: { masterCustomerId: exists.id } });
+        if (!haveSampahRegistered) {
+          const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
+          for (const jenisSampah of jenisSampahs) {
+            if (jenisSampah.nama.search('Undefined') !== -1) {
+              continue;
+            }
+            const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
+            await Sampah.create({
+              masterCustomerId: exists.id,
+              jenisSampahId: jenisSampah.id,
+              jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
+              barcode,
+              programName: 'Registration System',
+              createdBy: 'Registration System',
+            });
+          }
+          return res.status(201).send(`registrasi sampah untuk customer ${user.nama} sukses`);
+        }
+        return res.status(400).send('');
+      }
       const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
       if (access) {
         let admin: boolean = false;
@@ -64,6 +87,7 @@ class CustomerController implements IController {
           });
         }
       }
+
       //create unique customer code
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
@@ -86,11 +110,16 @@ class CustomerController implements IController {
         createdBy,
       });
       //get current list of kode sampah
-      const jenisSampahs = await db.jenis_sampah.findAll({ attributes: ['kode'], order: ['id', 'ASC'] });
+      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
+      //get latest user id
+      const customerId = await db.master_customer.max('id');
       //generate unique user trash codes based on types in db
       for (const jenisSampah of jenisSampahs) {
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
         await Sampah.create({
+          masterCustomerId: customerId,
+          jenisSampahId: jenisSampah.id,
+          jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
           barcode,
           programName: 'Registration System',
           createdBy: 'Registration System',
@@ -167,11 +196,17 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      const jenisSampahs = await db.jenis_sampah.findAll();
+      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
+      const customerId = await db.master_customer.max('id');
       for (const jenisSampah of jenisSampahs) {
+        if (jenisSampah.nama.search('Undefined') !== -1) {
+          continue;
+        }
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
         await Sampah.create({
-          jenisSampah: jenisSampah.id,
+          masterCustomerId: customerId,
+          jenisSampahId: jenisSampah.id,
+          jenisSampah: `${jenisSampah.kode}-${jenisSampah.nama}`,
           barcode,
           programName: 'Registration System',
           createdBy: 'Registration System',

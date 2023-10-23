@@ -4,12 +4,12 @@ import Authentication from '../utils/Authentication';
 import IController from './IController';
 
 const db = require('../db/models');
-const dm = db.master_driver;
+const dm = db.master_operator;
 const User = db.user;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 
-class DriverController implements IController {
+class OperatorController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const data = await dm.findAll({
@@ -29,7 +29,7 @@ class DriverController implements IController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { userId, programName, createdBy } = req.body;
+    const { userId, tpsId, programName, createdBy } = req.body;
 
     try {
       if (!userId) {
@@ -46,36 +46,36 @@ class DriverController implements IController {
       console.log(access);
       if (access) {
         let admin: boolean = false;
-        let driver: boolean = false;
-        //checks if role is admin / driver
+        let operator: boolean = false;
+        //checks if role is admin / operator
         for (const acs of access) {
           if (acs.roleName.search('Admin') !== -1) {
             admin = true;
-          } else if (acs.roleName.search('Driver') !== -1) {
-            driver = true;
+          } else if (acs.roleName.search('Operator') !== -1) {
+            operator = true;
           }
         }
         if (admin === true) {
           //if admin, cancel creation
           return res.status(400).send('Admins cannot have other previlages');
-        } else if (driver !== true) {
-          //if role as driver not assigned, assign the role as driver
-          const roleId = await Role.findOne({ where: { nama: 'Driver' } });
+        } else if (operator !== true) {
+          //if role as operator not assigned, assign the role as driver
+          const roleId = await Role.findOne({ where: { nama: 'Operator' } });
           await HakAkses.create({
             userId,
             roleId,
           });
         }
       }
-      //create unique driver code
+      //create unique customer code
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
         uniqueCode = generateUserCode(16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
-      //register user as driver at db
-      const driver = await dm.create({
+      //register user as operator at db
+      const operator = await dm.create({
         userId,
         uniqueCode,
         nik: user.nik,
@@ -83,12 +83,11 @@ class DriverController implements IController {
         email: user.email,
         telp: user.telp,
         alamat: user.alamat,
-        kota: user.kota,
         gender: user.gender,
         programName,
         createdBy,
       });
-      return res.status(201).send(`registrasi driver ${user.nama} sukses`);
+      return res.status(201).send(`registrasi operator ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('registrasi user gagal.');
@@ -138,10 +137,10 @@ class DriverController implements IController {
         createdBy,
       });
       const newUser = await User.max('id');
-      const driverRole = await Role.findOne({ where: { nama: 'Driver' } });
+      const operatorRole = await Role.findOne({ where: { nama: 'Operator' } });
       await HakAkses.create({
         userId: newUser,
-        roleId: driverRole.id,
+        roleId: operatorRole.id,
       });
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
@@ -149,7 +148,7 @@ class DriverController implements IController {
         uniqueCode = generateUserCode(16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
-      const driver = await dm.create({
+      const operator = await dm.create({
         userId: newUser,
         uniqueCode,
         nik,
@@ -162,7 +161,7 @@ class DriverController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      return res.status(200).send('registrasi user(driver) sukses');
+      return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);
       return res.status(500).send('server error');
@@ -190,7 +189,7 @@ class DriverController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { nama, alamat, email, telp, programName, updatedBy } = req.body;
+    const { tpsId, nama, alamat, email, telp, programName, updatedBy } = req.body;
 
     try {
       if (!nama) {
@@ -212,6 +211,7 @@ class DriverController implements IController {
 
       const userName = data.username;
       await data.update({
+        tpsId,
         nama,
         alamat,
         email: email.toLowerCase(),
@@ -223,24 +223,6 @@ class DriverController implements IController {
     } catch (err) {
       console.log(err);
       return res.status(500).send('update data gagal.');
-    }
-  };
-
-  addPoint = async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const { points } = req.body;
-
-    try {
-      const current = await User.FindByPk(id);
-      const currentPoints = current.points;
-      const newPoints = currentPoints + points;
-      await User.update({
-        points: newPoints,
-      });
-      return res.status(200).send('point berhasil ditambah');
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send('server error');
     }
   };
 
@@ -269,7 +251,7 @@ function generateUserCode(digits?: number, includeAlpha?: boolean): string {
   const length = digits || 12;
   const alphanumeric = includeAlpha || false;
   const year = new Date().getFullYear().toString();
-  const code = 'DR';
+  const code = 'OP';
 
   if (alphanumeric === false) {
     let maxString = '';
@@ -298,4 +280,4 @@ function generateUserBarcode(barcode: string, path: string) {
     console.log('qr code image generated succesfully');
   });
 }
-export default new DriverController();
+export default new OperatorController();
