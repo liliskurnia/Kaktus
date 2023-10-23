@@ -21,6 +21,11 @@ export default function Manual1() {
         if (!state.nik) {
             validationErrors.nik = '*Nik is required';
         }
+
+        if (state.nik && (state.nik.length < 12 || state.nik.length > 16)) {
+            validationErrors.nik = '*Nik must be 12 - 16 numbers';
+        }
+
         if (!state.nama) {
             validationErrors.nama = '*Name is required';
         }
