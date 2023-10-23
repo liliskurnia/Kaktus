@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('sampahs', {
+    await queryInterface.createTable('sampah_masters', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,7 +19,7 @@ module.exports = {
       },
       jenisSampahId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: 'false',
         references: {
           model: 'jenis_sampahs',
           key: 'id',
@@ -27,6 +27,8 @@ module.exports = {
       },
       jenisSampah: {
         type: Sequelize.STRING(50),
+        allowNull: false,
+        defaultValue: 'U-Undefined',
       },
       barcode: {
         type: Sequelize.STRING(50),
@@ -66,6 +68,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('sampahs');
+    await queryInterface.dropTable('sampah_masters');
   },
 };

@@ -4,7 +4,7 @@ import IController from './IController';
 
 //database models
 const db = require('../db/models/');
-const dm = db.sampah;
+const dm = db.sampah_master;
 
 class SampahController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {

@@ -6,7 +6,7 @@ import IController from './IController';
 const db = require('../db/models');
 const dm = db.master_customer;
 const User = db.user;
-const Sampah = db.sampah;
+const Sampah = db.sampah_master;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 
@@ -46,6 +46,9 @@ class CustomerController implements IController {
         if (!haveSampahRegistered) {
           const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
           for (const jenisSampah of jenisSampahs) {
+            if (jenisSampah.nama.search('Undefined') !== -1) {
+              continue;
+            }
             const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
             await Sampah.create({
               masterCustomerId: exists.id,
@@ -196,6 +199,9 @@ class CustomerController implements IController {
       const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
       const customerId = await db.master_customer.max('id');
       for (const jenisSampah of jenisSampahs) {
+        if (jenisSampah.nama.search('Undefined') !== -1) {
+          continue;
+        }
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
         await Sampah.create({
           masterCustomerId: customerId,
