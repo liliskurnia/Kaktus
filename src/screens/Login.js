@@ -68,7 +68,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            Alert.alert('Error', 'Failed to login. Please try again.');
+            Alert.alert('Error',  `${error.response.data}`);
         }
     };
 

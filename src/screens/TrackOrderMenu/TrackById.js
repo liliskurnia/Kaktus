@@ -24,7 +24,7 @@ export default function TrackById() {
   }
 
   const handleTrack = () => {
-    navigation.navigate('TrackerPage')
+    // navigation.navigate('TrackerPage')
   }
 
   return (
