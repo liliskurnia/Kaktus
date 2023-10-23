@@ -223,19 +223,31 @@ class CustomerController implements IController {
     const { id } = req.params;
 
     try {
-      const data = await dm.findAll({
-        where: { masterCustomerId: id },
+      const data = await dm.findByPk(id, {
         order: ['id'],
       });
 
       if (!data) {
         return res.status(404).send('user tidak ditemukan.');
       }
-      console.log(data);
       return res.status(200).json(data);
     } catch (err) {
       console.log(err);
       return res.status(500).send('pencarian user gagal.');
+    }
+  };
+
+  getSampahList = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      const data = await db.sampah_master.findAll({ where: { masterCustomerId: id }, order: ['id'] });
+      if (!data) {
+        return res.status(404).send('data sampah not found');
+      }
+      return res.status(200).json(data);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('server error');
     }
   };
 
