@@ -9,19 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // this.belongsTo(models.master_customer, { foreignKey: 'customerId' });
       this.belongsTo(models.jenis_sampah, { foreignKey: 'jenisSampahId' });
+      this.belongsTo(models.master_customer, { foreignKey: 'masterCustomerId' });
     }
   }
   sampah.init(
     {
-      jenisSampah: {
+      masterCustomerId: {
         type: DataTypes.INTEGER,
-        references: {
-          model: 'jenis_sampahs',
-          key: 'id',
-        },
       },
+      jenisSampahId: {
+        type: DataTypes.INTEGER,
+      },
+      jenisSampah: DataTypes.STRING,
       barcode: DataTypes.STRING,
       status: DataTypes.STRING,
       latitude: DataTypes.DECIMAL,

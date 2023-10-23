@@ -6,7 +6,6 @@ import IController from './IController';
 const db = require('../db/models');
 const dm = db.master_driver;
 const User = db.user;
-const Sampah = db.sampah;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 
@@ -47,19 +46,19 @@ class DriverController implements IController {
       console.log(access);
       if (access) {
         let admin: boolean = false;
-        let customer: boolean = false;
+        let driver: boolean = false;
         //checks if role is admin / driver
         for (const acs of access) {
           if (acs.roleName.search('Admin') !== -1) {
             admin = true;
           } else if (acs.roleName.search('Driver') !== -1) {
-            customer = true;
+            driver = true;
           }
         }
         if (admin === true) {
           //if admin, cancel creation
           return res.status(400).send('Admins cannot have other previlages');
-        } else if (customer !== true) {
+        } else if (driver !== true) {
           //if role as driver not assigned, assign the role as driver
           const roleId = await Role.findOne({ where: { nama: 'Driver' } });
           await HakAkses.create({
@@ -68,14 +67,14 @@ class DriverController implements IController {
           });
         }
       }
-      //create unique customer code
+      //create unique driver code
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
         uniqueCode = generateUserCode(16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
-      //register user as customer at db
+      //register user as driver at db
       const driver = await dm.create({
         userId,
         uniqueCode,
@@ -89,7 +88,7 @@ class DriverController implements IController {
         programName,
         createdBy,
       });
-      return res.status(201).send(`registrasi customer ${user.nama} sukses`);
+      return res.status(201).send(`registrasi driver ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('registrasi user gagal.');

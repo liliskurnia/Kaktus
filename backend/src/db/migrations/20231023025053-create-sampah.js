@@ -9,7 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      jenisSampah: {
+      masterCustomerId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'master_customers',
+          key: 'id',
+        },
+      },
+      jenisSampahId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -17,10 +25,13 @@ module.exports = {
           key: 'id',
         },
       },
+      jenisSampah: {
+        type: Sequelize.STRING(50),
+      },
       barcode: {
         type: Sequelize.STRING(50),
-        allowNull: false,
         unique: true,
+        allowNull: false,
       },
       status: {
         type: Sequelize.STRING(50),

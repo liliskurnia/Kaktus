@@ -4,13 +4,12 @@ import Authentication from '../utils/Authentication';
 import IController from './IController';
 
 const db = require('../db/models');
-const dm = db.master_customer;
+const dm = db.master_operator;
 const User = db.user;
-const Sampah = db.sampah;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 
-class CustomerController implements IController {
+class OperatorController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const data = await dm.findAll({
@@ -30,7 +29,7 @@ class CustomerController implements IController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { userId, programName, createdBy } = req.body;
+    const { userId, tpsId, programName, createdBy } = req.body;
 
     try {
       if (!userId) {
@@ -40,51 +39,34 @@ class CustomerController implements IController {
       if (!user) {
         return res.status(404).send('user tidak ditemukan');
       }
-      const exists = await dm.findOne({ where: { userId } });
-      if (exists) {
-        const haveSampahRegistered = await Sampah.findAll({ where: { masterCustomerId: exists.id } });
-        if (!haveSampahRegistered) {
-          const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-          for (const jenisSampah of jenisSampahs) {
-            const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
-            await Sampah.create({
-              masterCustomerId: exists.id,
-              jenisSampahId: jenisSampah.id,
-              jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
-              barcode,
-              programName: 'Registration System',
-              createdBy: 'Registration System',
-            });
-          }
-          return res.status(201).send(`registrasi sampah untuk customer ${user.nama} sukses`);
-        }
-        return res.status(400).send('');
+      if (!user.telp || user.telp === '') {
+        return res.status(400).send('nomor telepon harus di isi di user data');
       }
       const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
+      console.log(access);
       if (access) {
         let admin: boolean = false;
-        let customer: boolean = false;
-        //checks if role is admin / customer
+        let operator: boolean = false;
+        //checks if role is admin / operator
         for (const acs of access) {
           if (acs.roleName.search('Admin') !== -1) {
             admin = true;
-          } else if (acs.roleName.search('Customer') !== -1) {
-            customer = true;
+          } else if (acs.roleName.search('Operator') !== -1) {
+            operator = true;
           }
         }
         if (admin === true) {
           //if admin, cancel creation
           return res.status(400).send('Admins cannot have other previlages');
-        } else if (customer !== true) {
-          //if role as customer not assigned, assign the role as customer
-          const roleId = await Role.findOne({ where: { nama: 'Customer' } });
+        } else if (operator !== true) {
+          //if role as operator not assigned, assign the role as driver
+          const roleId = await Role.findOne({ where: { nama: 'Operator' } });
           await HakAkses.create({
             userId,
             roleId,
           });
         }
       }
-
       //create unique customer code
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
@@ -92,8 +74,8 @@ class CustomerController implements IController {
         uniqueCode = generateUserCode(16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
-      //register user as customer at db
-      const customer = await dm.create({
+      //register user as operator at db
+      const operator = await dm.create({
         userId,
         uniqueCode,
         nik: user.nik,
@@ -101,28 +83,11 @@ class CustomerController implements IController {
         email: user.email,
         telp: user.telp,
         alamat: user.alamat,
-        kota: user.kota,
         gender: user.gender,
         programName,
         createdBy,
       });
-      //get current list of kode sampah
-      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-      //get latest user id
-      const customerId = await db.master_customer.max('id');
-      //generate unique user trash codes based on types in db
-      for (const jenisSampah of jenisSampahs) {
-        const barcode = `${jenisSampah.kode}-${uniqueCode}`;
-        await Sampah.create({
-          masterCustomerId: customerId,
-          jenisSampahId: jenisSampah.id,
-          jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
-          barcode,
-          programName: 'Registration System',
-          createdBy: 'Registration System',
-        });
-      }
-      return res.status(201).send(`registrasi customer ${user.nama} sukses`);
+      return res.status(201).send(`registrasi operator ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('registrasi user gagal.');
@@ -135,6 +100,9 @@ class CustomerController implements IController {
     try {
       if (!nik) {
         return res.status(400).send('nik belum diisi');
+      }
+      if (!telp) {
+        return res.status(400).send('nomor telepon tidak boleh kosong');
       }
       if (!password) {
         return res.status(400).send('password belum diisi');
@@ -169,10 +137,10 @@ class CustomerController implements IController {
         createdBy,
       });
       const newUser = await User.max('id');
-      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
+      const operatorRole = await Role.findOne({ where: { nama: 'Operator' } });
       await HakAkses.create({
         userId: newUser,
-        roleId: customerRole.id,
+        roleId: operatorRole.id,
       });
       let uniqueCode = generateUserCode(16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
@@ -180,7 +148,7 @@ class CustomerController implements IController {
         uniqueCode = generateUserCode(16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
-      const customer = await dm.create({
+      const operator = await dm.create({
         userId: newUser,
         uniqueCode,
         nik,
@@ -193,20 +161,7 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-      const customerId = await db.master_customer.max('id');
-      for (const jenisSampah of jenisSampahs) {
-        const barcode = `${jenisSampah.kode}-${uniqueCode}`;
-        await Sampah.create({
-          masterCustomerId: customerId,
-          jenisSampahId: jenisSampah.id,
-          jenisSampah: `${jenisSampah.kode}-${jenisSampah.nama}`,
-          barcode,
-          programName: 'Registration System',
-          createdBy: 'Registration System',
-        });
-      }
-      return res.status(200).send('registrasi user-customer sukses');
+      return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);
       return res.status(500).send('server error');
@@ -234,7 +189,7 @@ class CustomerController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { nama, alamat, email, telp, programName, updatedBy } = req.body;
+    const { tpsId, nama, alamat, email, telp, programName, updatedBy } = req.body;
 
     try {
       if (!nama) {
@@ -256,6 +211,7 @@ class CustomerController implements IController {
 
       const userName = data.username;
       await data.update({
+        tpsId,
         nama,
         alamat,
         email: email.toLowerCase(),
@@ -267,24 +223,6 @@ class CustomerController implements IController {
     } catch (err) {
       console.log(err);
       return res.status(500).send('update data gagal.');
-    }
-  };
-
-  addPoint = async (req: Request, res: Response): Promise<Response> => {
-    const { id } = req.params;
-    const { points } = req.body;
-
-    try {
-      const current = await User.FindByPk(id);
-      const currentPoints = current.points;
-      const newPoints = currentPoints + points;
-      await User.update({
-        points: newPoints,
-      });
-      return res.status(200).send('point berhasil ditambah');
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send('server error');
     }
   };
 
@@ -313,7 +251,7 @@ function generateUserCode(digits?: number, includeAlpha?: boolean): string {
   const length = digits || 12;
   const alphanumeric = includeAlpha || false;
   const year = new Date().getFullYear().toString();
-  const code = 'CU';
+  const code = 'OP';
 
   if (alphanumeric === false) {
     let maxString = '';
@@ -342,4 +280,4 @@ function generateUserBarcode(barcode: string, path: string) {
     console.log('qr code image generated succesfully');
   });
 }
-export default new CustomerController();
+export default new OperatorController();
