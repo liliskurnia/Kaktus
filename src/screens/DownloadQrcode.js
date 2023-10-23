@@ -8,19 +8,47 @@ import {
     ScrollView,
     Dimensions,
 } from "react-native";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
 import { useData, useTheme, useTranslation } from "../hooks";
+import QRCode from 'react-native-qrcode-svg';
+import axios from 'axios';
 
 export default function DownloadBarcode() {
     const { assets, colors, gradients, sizes } = useTheme();
     const navigation = useNavigation();
+    const [allData, setAllData] = useState([]);
+    const [barcodeData, setBarcodeData] = useState([]);;
 
     const handleAdd = () => {
         navigation.navigate('PickUp')
     }
 
+    useEffect(() => {
+        getQrValue()
+    }, [])
+
+
+    const getQrValue = async () => {
+        try {
+            const response = await axios.get('http://192.168.1.14:8000/api/v1/customers/listSampah/1');
+            // console.log('respon', response)
+
+            if (response.status === 200) {
+                setAllData(response.data)
+                setBarcodeData(response.data.map(item => ({ barcode: item.barcode, jenisSampah: item.jenisSampah })));
+                // console.log('barcode', barcode)
+            } else {
+                Alert.alert('Error', 'Failed to login. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Alert.alert('Error', `${error.response}`);
+        }
+    }
+
+    let base64Logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAA..';
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
             <View
@@ -67,6 +95,26 @@ export default function DownloadBarcode() {
                     QRCODE
                 </TextRn>
             </View>
+            <ScrollView>
+                {barcodeData.map((value, index) => (
+                    <View key={index} style={{ flexDirection: 'column' }}>
+                        <TextRn style={{ fontSize: 18, textAlign: 'left', fontWeight:'bold', color: '#57B4A1', marginBottom: 10, marginTop: 20, marginHorizontal: 30 }}>{value.jenisSampah}</TextRn>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 30, alignItems: 'center' }}>
+                            <QRCode
+                                value={value.barcode}
+                                logo={{ uri: base64Logo }}
+                                size={150}
+                                logoSize={30}
+                                logoBackgroundColor="transparent"
+                            />
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#57B4A1', padding: 10, borderRadius: 10 }}>
+                                <Feather name="download" size={20} color="white" />
+                                <TextRn style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginLeft: 5 }}>Download QR</TextRn>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
         </Block>
     );
 }
@@ -81,9 +129,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderTopEndRadius: 0,
         borderBottomEndRadius: 0,
-        width:'25%',
-        alignItems:'center',
-        justifyContent:'center'
+        width: '25%',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     boxKanan: {
         flexDirection: 'row',
@@ -95,7 +143,7 @@ const styles = StyleSheet.create({
         marginLeft: -30,
         borderTopStartRadius: 0,
         borderBottomStartRadius: 0,
-        alignItems:'center',
+        alignItems: 'center',
     },
     container: {
         flex: 1,

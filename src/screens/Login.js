@@ -50,7 +50,7 @@ const Login = () => {
         console.log('loginData', loginData)
 
         try {
-            const response = await axios.post('http://192.168.182.111:8000/api/v1/auth/login', loginData);
+            const response = await axios.post('http://192.168.1.14:8000/api/v1/auth/login', loginData);
             console.log('respon', response.data)
            
             if (response.status === 200) {
