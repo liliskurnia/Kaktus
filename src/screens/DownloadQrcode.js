@@ -32,7 +32,7 @@ export default function DownloadBarcode() {
 
     const getQrValue = async () => {
         try {
-            const response = await axios.get('http://192.168.1.14:8000/api/v1/customers/listSampah/1');
+            const response = await axios.get('http://192.168.182.111:8000/api/v1/customers/listSampah/1');
             // console.log('respon', response)
 
             if (response.status === 200) {
@@ -91,15 +91,15 @@ export default function DownloadBarcode() {
                 </View>
             </View>
             <View>
-                <TextRn style={{ fontSize: 30, textAlign: 'center', color: '#819994', fontWeight: 'bold', marginTop: 20 }}>
+                <TextRn style={styles.title}>
                     QRCODE
                 </TextRn>
             </View>
             <ScrollView>
                 {barcodeData.map((value, index) => (
-                    <View key={index} style={{ flexDirection: 'column' }}>
-                        <TextRn style={{ fontSize: 18, textAlign: 'left', fontWeight:'bold', color: '#57B4A1', marginBottom: 10, marginTop: 20, marginHorizontal: 30 }}>{value.jenisSampah}</TextRn>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 30, alignItems: 'center' }}>
+                    <View key={index} style={styles.box}>
+                        <TextRn style={styles.subTitle}>{value.jenisSampah}</TextRn>
+                        <View style={styles.boxQr}>
                             <QRCode
                                 value={value.barcode}
                                 logo={{ uri: base64Logo }}
@@ -107,9 +107,9 @@ export default function DownloadBarcode() {
                                 logoSize={30}
                                 logoBackgroundColor="transparent"
                             />
-                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#57B4A1', padding: 10, borderRadius: 10 }}>
+                            <TouchableOpacity style={styles.button}>
                                 <Feather name="download" size={20} color="white" />
-                                <TextRn style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginLeft: 5 }}>Download QR</TextRn>
+                                <TextRn style={styles.textButton}>Download QR</TextRn>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -120,34 +120,46 @@ export default function DownloadBarcode() {
 }
 
 const styles = StyleSheet.create({
-    boxKiri: {
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        marginHorizontal: 30,
-        padding: 20,
-        borderRadius: 10,
-        marginVertical: 10,
-        borderTopEndRadius: 0,
-        borderBottomEndRadius: 0,
-        width: '25%',
-        alignItems: 'center',
-        justifyContent: 'center'
+    title: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#819994',
+        fontWeight: 'bold',
+        marginTop: 20
     },
-    boxKanan: {
-        flexDirection: 'row',
-        width: '58%',
-        justifyContent: 'space-between',
-        padding: 20,
-        borderRadius: 10,
-        marginVertical: 10,
-        marginLeft: -30,
-        borderTopStartRadius: 0,
-        borderBottomStartRadius: 0,
-        alignItems: 'center',
+    box: {
+        flexDirection: 'column',
+        borderWidth: 1,
+        borderColor: '#D0D4CA',
+        margin: 10,
+        borderRadius: 10
     },
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+    subTitle: {
+        fontSize: 18,
+        textAlign: 'left',
+        fontWeight: 'bold',
+        color: '#57B4A1',
+        marginVertical: 10,
+        marginHorizontal: 20
+    },
+    boxQr: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginHorizontal: 20,
+        alignItems: 'center',
+        marginBottom: 10
+    },
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#57B4A1',
+        padding: 10,
+        borderRadius: 10
+    },
+    textButton: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginLeft: 5
     }
 });
