@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
+import path from 'path';
 import { config as dotenv } from 'dotenv';
 
 //Router
@@ -25,6 +26,7 @@ class App {
 
   constructor() {
     this.app = express();
+    this.app.set('view engine', 'ejs');
     this.plugins();
     this.routes();
     dotenv();
@@ -40,7 +42,8 @@ class App {
 
   protected routes(): void {
     this.app.route('/').get((req, res) => {
-      res.send('ini route menggunakan TypeScript');
+      res.render('index');
+      // res.send('ini route menggunakan TypeScript');
     });
 
     this.app.route('/users').post((req, res) => {
@@ -59,6 +62,12 @@ class App {
     this.app.use('/api/v1/operators', OperatorRoutes);
     this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
+    this.app.use(express.static('public'));
+    this.app.route('/download-qrcode/:fileName').get((req, res) => {
+      const { fileName } = req.params;
+      res.download(`./public/qrcodes/${fileName}`);
+    });
+
     //this.app.use('/api/v1/pickup', PickupRoutes);
   }
 }

@@ -85,6 +85,28 @@ class AuthController {
           include: [{ model: db.role, attributes: ['nama'] }],
         });
         console.log(hakAkses);
+        let listSampah = null;
+        if (hakAkses.role.nama === 'Customer') {
+          const customer = await db.master_customer.findOne({ where: { userId: user.id } });
+          listSampah = await db.sampah_master.findAll({
+            where: { masterCustomerId: customer.id },
+            attributes: ['barcode'],
+            include: [
+              {
+                model: db.jenis_sampah,
+                attributes: ['nama'],
+              },
+            ],
+          });
+          const access = {
+            token: token,
+            previllage: 'Customer',
+            userId: user.id,
+            barcodes: listSampah,
+          };
+          console.log(listSampah);
+          return res.status(200).json(access);
+        }
         let access = null;
         if (hakAkses) {
           console.log(hakAkses);

@@ -47,7 +47,7 @@ class TPSController implements IController {
         barcode = generateBarcodeString(12, true);
         exist = await dm.findOne({ where: { barcode } });
       }
-      const barcodeImagePath = `./assets/qrcodes/${nama}-${barcode}.png`;
+      const barcodeImagePath = `./public/qrcodes/${barcode}.png`;
       generateBarcodeImage(barcode, barcodeImagePath);
       const newTps = await dm.create({
         nama,

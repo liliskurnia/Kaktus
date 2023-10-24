@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
 
+const path = require('path');
+
 const db = require('../db/models');
 const dm = db.master_customer;
 const User = db.user;
@@ -50,6 +52,8 @@ class CustomerController implements IController {
               continue;
             }
             const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
+            const barcodePath = `./public/qrcodes/${barcode}.png`;
+            generateBarcodeImage(barcode, barcodePath);
             await Sampah.create({
               masterCustomerId: exists.id,
               jenisSampahId: jenisSampah.id,
@@ -116,6 +120,7 @@ class CustomerController implements IController {
       //generate unique user trash codes based on types in db
       for (const jenisSampah of jenisSampahs) {
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
+        const barcodePath = `./public/qrcodes/${barcode}.png`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
@@ -124,6 +129,7 @@ class CustomerController implements IController {
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
+        generateBarcodeImage(barcode, barcodePath);
       }
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
@@ -203,6 +209,7 @@ class CustomerController implements IController {
           continue;
         }
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
+        const barcodePath = `./public/qrcodes/${barcode}.png`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
@@ -211,6 +218,7 @@ class CustomerController implements IController {
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
+        generateBarcodeImage(barcode, barcodePath);
       }
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
@@ -250,6 +258,61 @@ class CustomerController implements IController {
       return res.status(500).send('server error');
     }
   };
+
+  getSampahBarcodeOutput = async (req: Request, res: Response): Promise<Response> => {
+    const { masterCustomerId, jenisSampahId } = req.body;
+    try {
+      const data = await db.sampah_master.findOne({ where: { masterCustomerId, jenisSampahId } });
+      if (!data) {
+        return res.status(404).send('barcode not found');
+      }
+      const qrcode = generateBarcodeOutput(data.barcode, generationMethod.string);
+      const output = {
+        barcode: data.barcode,
+        qrcode: qrcode,
+      };
+      return res.status(200).json(output);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('barcode url generation error');
+    }
+  };
+
+  createBarcodeSampah = async (req: Request, res: Response): Promise<Response> => {
+    const { masterCustomerId } = req.body;
+    try {
+      const dataCollection = await db.sampah_master.findAll({ where: { masterCustomerId } });
+      if (!dataCollection) {
+        return res.status(404).send('customer info not found');
+      }
+      for (const data of dataCollection) {
+        generateBarcodeImage(data.barcode, `./public/qrcodes/${data.barcode}.png`);
+      }
+      return res.status(200).send('all qr images generated successfully for customer sampahs');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('barcode image generation error');
+    }
+  };
+
+  // downloadBarcode = async (req: Request, res: Response): Promise<Response<any>> => {
+  //   const { barcode } = req.params;
+  //   try {
+  //     const data = await db.sampah_master.findOne({ where: { barcode: barcode } });
+
+  //     if (!data) {
+  //       return res.status(404).send('barcode not found');
+  //     }
+  //     const file = `${barcode}.png`;
+  //     var fileLocation = path.join('./public/qrcodes/', file);
+  //     res.download(`${fileLocation}`);
+  //     console.log(fileLocation);
+  //     return res.status(200).send('download succesfull');
+  //   } catch (error) {
+  //     console.error(error);
+  //     return res.status(500).send('error fetching image file ');
+  //   }
+  // };
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
@@ -355,29 +418,37 @@ function generateUserCode(digits?: number, includeAlpha?: boolean): string {
 
 enum generationMethod {
   url,
-  file,
   string,
 }
 
-function generateUserBarcode(barcode: string, path: string, method: generationMethod) {
+function generateBarcodeImage(barcode: string, path: string) {
+  const qr = require('qrcode');
+
+  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
+    if (error) throw error;
+    console.log('qr code image generated succesfully');
+  });
+}
+
+function generateBarcodeOutput(barcode: string, method: generationMethod): any {
   const qr = require('qrcode');
 
   switch (method) {
     case generationMethod.url:
-      qr.toDataURL(barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any, url: string) {
+      var output;
+      qr.toDataURL(barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any, url: any) {
         if (error) throw error;
-        console.log(url);
+        // console.log(url);
+        output = url;
       });
-      break;
-    case generationMethod.file:
-      qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
-        if (error) throw error;
-        console.log('qr code image generated succesfully');
-      });
-      break;
+      return output;
     case generationMethod.string:
-      qr.toString();
-      break;
+      var output;
+      qr.toString(barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any, string: any) {
+        if (error) throw error;
+        output = string;
+      });
+      return output;
   }
 }
 export default new CustomerController();
