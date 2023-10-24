@@ -5,6 +5,7 @@ import IController from './IController';
 //database constants
 const db = require('../db/models/');
 const dm = require('../db/models/').tps;
+const qrFolderPath = './public/qrcodes';
 
 class TPSController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
@@ -47,8 +48,7 @@ class TPSController implements IController {
         barcode = generateBarcodeString(12, true);
         exist = await dm.findOne({ where: { barcode } });
       }
-      const barcodeImagePath = `./public/qrcodes/${barcode}.png`;
-      generateBarcodeImage(barcode, barcodeImagePath);
+      generateBarcodeImage(barcode, qrFolderPath);
       const newTps = await dm.create({
         nama,
         barcode,
@@ -161,7 +161,11 @@ function generateBarcodeString(digits?: number, includeAlpha?: boolean): string 
 function generateBarcodeImage(barcode: string, path: string) {
   const qr = require('qrcode');
 
-  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
+  qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
+    if (error) throw error;
+    console.log('qr code image generated succesfully');
+  });
+  qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
     if (error) throw error;
     console.log('qr code image generated succesfully');
   });

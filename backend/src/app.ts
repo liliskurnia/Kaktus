@@ -20,6 +20,7 @@ import DriverRoutes from './routers/DriverRoutes';
 import OperatorRoutes from './routers/OperatorRoutes';
 import SampahRoutes from './routers/SampahRoutes';
 import JenisSampahRoutes from './routers/JenisSampahRoutes';
+import DownloadRoutes from './routers/DownloadRoutes';
 
 class App {
   public app: Application;
@@ -62,12 +63,8 @@ class App {
     this.app.use('/api/v1/operators', OperatorRoutes);
     this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
+    this.app.use('/download', DownloadRoutes);
     this.app.use(express.static('public'));
-    this.app.route('/download-qrcode/:fileName').get((req, res) => {
-      const { fileName } = req.params;
-      res.download(`./public/qrcodes/${fileName}`);
-    });
-
     //this.app.use('/api/v1/pickup', PickupRoutes);
   }
 }

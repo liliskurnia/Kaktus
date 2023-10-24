@@ -11,6 +11,7 @@ const User = db.user;
 const Sampah = db.sampah_master;
 const HakAkses = db.hak_akses;
 const Role = db.role;
+const qrFolderPath = './public/qrcodes';
 
 class CustomerController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
@@ -52,8 +53,6 @@ class CustomerController implements IController {
               continue;
             }
             const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
-            const barcodePath = `./public/qrcodes/${barcode}.png`;
-            generateBarcodeImage(barcode, barcodePath);
             await Sampah.create({
               masterCustomerId: exists.id,
               jenisSampahId: jenisSampah.id,
@@ -62,6 +61,7 @@ class CustomerController implements IController {
               programName: 'Registration System',
               createdBy: 'Registration System',
             });
+            generateBarcodeImage(barcode, qrFolderPath);
           }
           return res.status(201).send(`registrasi sampah untuk customer ${user.nama} sukses`);
         }
@@ -120,7 +120,6 @@ class CustomerController implements IController {
       //generate unique user trash codes based on types in db
       for (const jenisSampah of jenisSampahs) {
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
-        const barcodePath = `./public/qrcodes/${barcode}.png`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
@@ -129,7 +128,7 @@ class CustomerController implements IController {
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
-        generateBarcodeImage(barcode, barcodePath);
+        generateBarcodeImage(barcode, qrFolderPath);
       }
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
@@ -209,7 +208,6 @@ class CustomerController implements IController {
           continue;
         }
         const barcode = `${jenisSampah.kode}-${uniqueCode}`;
-        const barcodePath = `./public/qrcodes/${barcode}.png`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
@@ -218,7 +216,7 @@ class CustomerController implements IController {
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
-        generateBarcodeImage(barcode, barcodePath);
+        generateBarcodeImage(barcode, qrFolderPath);
       }
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
@@ -286,7 +284,7 @@ class CustomerController implements IController {
         return res.status(404).send('customer info not found');
       }
       for (const data of dataCollection) {
-        generateBarcodeImage(data.barcode, `./public/qrcodes/${data.barcode}.png`);
+        generateBarcodeImage(data.barcode, qrFolderPath);
       }
       return res.status(200).send('all qr images generated successfully for customer sampahs');
     } catch (error) {
@@ -424,7 +422,11 @@ enum generationMethod {
 function generateBarcodeImage(barcode: string, path: string) {
   const qr = require('qrcode');
 
-  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
+  qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
+    if (error) throw error;
+    console.log('qr code image generated succesfully');
+  });
+  qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
     if (error) throw error;
     console.log('qr code image generated succesfully');
   });
