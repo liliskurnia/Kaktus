@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -52,17 +53,38 @@ const Login = () => {
         try {
             const response = await axios.post('http://192.168.182.111:8000/api/v1/auth/login', loginData);
             console.log('respon', response.data)
-           
+
             if (response.status === 200) {
+                await AsyncStorage.setItem('userData', JSON.stringify(response.data));
                 navigation.navigate('Home');
             } else {
                 Alert.alert('Error', 'Failed to login. Please try again.');
             }
+
         } catch (error) {
             console.error('Error:', error);
             Alert.alert('Error', `${error.response.data}`);
         }
     };
+
+    //cek data yang sudah disimpan di async storage
+    useEffect(() => {
+        const checkAsyncStorageData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('userData');
+                if (userData) {
+                    const userDataObj = JSON.parse(userData);
+                    console.log('Data from AsyncStorage:', userDataObj);
+                } else {
+                    console.log('No data found in AsyncStorage');
+                }
+            } catch (error) {
+                console.error('Error retrieving data from AsyncStorage:', error);
+            }
+        }
+
+        checkAsyncStorageData();
+    }, []); 
 
     const onPressForgotPassword = () => {
         // Do something about forgot password operation
