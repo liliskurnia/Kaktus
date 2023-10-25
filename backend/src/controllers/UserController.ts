@@ -5,6 +5,7 @@ import IController from './IController';
 const db = require('../db/models');
 const dm = db.user;
 
+const fs = require('fs');
 class UserController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -127,7 +128,37 @@ class UserController implements IController {
       }
 
       const userName = data.username;
-
+      const masterCustomer = await db.master_customer.findOne({
+        where: {
+          userId: data.id,
+        },
+      });
+      const sampahCollections = await db.sampah_master.findAll({
+        where: {
+          masterCustomerId: masterCustomer.id,
+        },
+      });
+      for (const sampah of sampahCollections) {
+        await fs.rm(`./public/qrcodes/images/${sampah.barcode}.png`, function (error: any) {
+          if (error) throw error;
+        });
+        await fs.rm(`./public/qrcodes/svgs/${sampah.barcode}.svg`, function (error: any) {
+          if (error) throw error;
+        });
+        await fs.rm(`./public/qrcodes/pdfs/${sampah.barcode}.pdf`, function (error: any) {
+          if (error) throw error;
+        });
+        await sampah.destroy();
+      }
+      await fs.rm(`./public/qrcodes/images/${masterCustomer.uniqueCode}.png`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`./public/qrcodes/svgs/${masterCustomer.uniqueCode}.svg`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`./public/qrcodes/pdfs/${masterCustomer.uniqueCode}.pdf`, function (error: any) {
+        if (error) throw error;
+      });
       await db.hak_akses.destroy({ where: { userId: id } });
       await db.master_customer.destroy({ where: { userId: id } });
       await db.master_driver.destroy({ where: { userId: id } });

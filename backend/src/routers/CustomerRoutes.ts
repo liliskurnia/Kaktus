@@ -7,9 +7,9 @@ class CustomerRoutes extends BaseRoutes {
     this.router.get('/', CustomerController.index);
     this.router.post('/', CustomerController.create);
     this.router.post('/register', CustomerController.register);
-    this.router.post('/generate', CustomerController.createBarcodeSampah);
+    this.router.post('/qr/generate/:id', CustomerController.createBarcode);
+    this.router.post('/qr/sampah/generate/:masterCustomerId', CustomerController.createBarcodeSampah);
     this.router.get('/listSampah/:id', CustomerController.getSampahList);
-    this.router.post('/getBarcode', CustomerController.getSampahBarcodeOutput);
     this.router.get('/:id', CustomerController.show);
     this.router.put('/:id', CustomerController.update);
     this.router.put('/addPoints/:id', CustomerController.addPoint);

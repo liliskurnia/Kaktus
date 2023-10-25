@@ -41,5 +41,30 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'master_customer',
     }
   );
+  master_customer.beforeDestroy(async (customer, options) => {
+    const masterCustomerId = customer.id;
+    try {
+      const sampahs = await sequelize.models.sampah_master.findAll({
+        where: {
+          masterCustomerId,
+        },
+      });
+      console.log(sampahs);
+      for (const sampah of sampahs) {
+        await fs.rm(`./public/qrcodes/images/${sampah.barcode}.png`, function (error) {
+          if (error) throw error;
+        });
+        await fs.rm(`./public/qrcodes/svgs/${sampah.barcode}.svg`, function (error) {
+          if (error) throw error;
+        });
+        await fs.rm(`./public/qrcodes/pdfs/${sampah.barcode}.pdf`, function (error) {
+          if (error) throw error;
+        });
+        await sampah.destroy();
+      }
+    } catch (error) {
+      console.error('gagal menghapus data customer', error);
+    }
+  });
   return master_customer;
 };

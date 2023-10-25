@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.master_operator);
+      this.hasMany(models.master_driver);
     }
   }
   tps.init(

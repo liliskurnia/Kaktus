@@ -1,7 +1,10 @@
 'use strict';
 import { Request, Response } from 'express';
 import IController from './IController';
+import BarcodeGenerator from '../utils/BarcodeGenerator';
 
+//filestream
+const fs = require('fs');
 //database constants
 const db = require('../db/models/');
 const dm = require('../db/models/').tps;
@@ -24,7 +27,7 @@ class TPSController implements IController {
   show = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     try {
-      const data = await dm.findByPk(id, { order: ['id'] });
+      const data = await dm.findByPk(id);
       if (!data) {
         return res.status(404).send('data tps tidak ditemukan');
       } else {
@@ -40,15 +43,33 @@ class TPSController implements IController {
     const { nama, latitude, longitude, programName, createdBy } = req.body;
 
     try {
-      let barcode = generateBarcodeString(12, true);
+      if (nama === 'Unassigned') {
+        let barcode = BarcodeGenerator.generateCode('TPS', 12, true);
+        let exist = await dm.findOne({
+          where: { barcode },
+        });
+        while (exist) {
+          barcode = BarcodeGenerator.generateCode('TPS', 12, true);
+          exist = await dm.findOne({ where: { barcode } });
+        }
+        const newTps = await dm.create({
+          nama,
+          barcode,
+          latitude,
+          longitude,
+          programName,
+          createdBy,
+        });
+        return res.status(200).send('tps telah berhasil dibuat');
+      }
+      let barcode = BarcodeGenerator.generateCode('TPS', 12, true);
       let exist = await dm.findOne({
         where: { barcode },
       });
       while (exist) {
-        barcode = generateBarcodeString(12, true);
+        barcode = BarcodeGenerator.generateCode('TPS', 12, true);
         exist = await dm.findOne({ where: { barcode } });
       }
-      generateBarcodeImage(barcode, qrFolderPath);
       const newTps = await dm.create({
         nama,
         barcode,
@@ -57,10 +78,27 @@ class TPSController implements IController {
         programName,
         createdBy,
       });
+      BarcodeGenerator.generateImage(barcode, qrFolderPath, nama);
+
       return res.status(200).send('tps telah berhasil dibuat');
     } catch (error) {
       console.error(error);
       return res.status(500).send('server error');
+    }
+  };
+
+  createBarcode = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(400).send('customer data not found');
+      }
+      BarcodeGenerator.generateImage(data.barcode, qrFolderPath, data.nama);
+      return res.status(200).send('Barcode file generated successfully');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('barcode generation error');
     }
   };
 
@@ -125,6 +163,15 @@ class TPSController implements IController {
       }
 
       const current = data.nama;
+      await fs.rm(`${qrFolderPath}/images/${data.barcode}.png`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/svgs/${data.barcode}.svg`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/pdfs/${data.barcode}.pdf`, function (error: any) {
+        if (error) throw error;
+      });
       await data.destroy();
       return res.status(200).send(`data tps: ${current} telah berhasil dihapus`);
     } catch (error) {
@@ -132,42 +179,5 @@ class TPSController implements IController {
       return res.status(500).send('server error');
     }
   };
-}
-
-function generateBarcodeString(digits?: number, includeAlpha?: boolean): string {
-  const length = digits || 12;
-  const alphanumeric = includeAlpha || false;
-  const code = 'TPS';
-
-  if (alphanumeric === false) {
-    let maxString = '';
-    for (let i = 0; i < length; i++) {
-      maxString += '9';
-    }
-    const maxValue = parseInt(maxString);
-    const randomValue = Math.floor(Math.random() * maxValue);
-    const output = `${code}${randomValue}`;
-    return output.toString();
-  } else {
-    let output = `${code}`;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < length; i++) {
-      output += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return output;
-  }
-}
-
-function generateBarcodeImage(barcode: string, path: string) {
-  const qr = require('qrcode');
-
-  qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
-  qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
 }
 export default new TPSController();

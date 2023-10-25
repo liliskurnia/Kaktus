@@ -41,9 +41,11 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.6.2",
+    "pdfkit": "^0.13.0",
     "pg": "^8.11.3",
     "qrcode": "^1.5.3",
     "qrcode-reader": "^1.0.4",
-    "sequelize": "^6.33.0"
+    "sequelize": "^6.33.0",
+    "svg-to-pdfkit": "^0.1.8"
   }
 }

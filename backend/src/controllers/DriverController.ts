@@ -2,20 +2,21 @@
 import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
+import BarcodeGenerator from '../utils/BarcodeGenerator';
+
+const fs = require('fs');
 
 const db = require('../db/models');
 const dm = db.master_driver;
 const User = db.user;
 const HakAkses = db.hak_akses;
 const Role = db.role;
+const qrFolderPath = './public/qrcodes';
 
 class DriverController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const data = await dm.findAll({
-        exclude: ['password'],
-        order: ['id'],
-      });
+      const data = await dm.findAll();
 
       if (data.length === 0) {
         return res.status(400).send('Belum ada data.');
@@ -42,16 +43,16 @@ class DriverController implements IController {
       if (!user.telp || user.telp === '') {
         return res.status(400).send('nomor telepon harus di isi di user data');
       }
-      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
+      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: Role, attributes: ['nama'] }] });
       console.log(access);
       if (access) {
         let admin: boolean = false;
         let driver: boolean = false;
         //checks if role is admin / driver
         for (const acs of access) {
-          if (acs.roleName.search('Admin') !== -1) {
+          if (acs.role.nama.search('Admin') !== -1) {
             admin = true;
-          } else if (acs.roleName.search('Driver') !== -1) {
+          } else if (acs.role.nama.search('Driver') !== -1) {
             driver = true;
           }
         }
@@ -68,10 +69,10 @@ class DriverController implements IController {
         }
       }
       //create unique driver code
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as driver at db
@@ -88,6 +89,7 @@ class DriverController implements IController {
         programName,
         createdBy,
       });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(201).send(`registrasi driver ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -110,9 +112,6 @@ class DriverController implements IController {
       }
       if (!nama) {
         return res.status(400).send('nama belum diisi');
-      }
-      if (!email) {
-        return res.status(400).send('email belum diisi');
       }
       if (!alamat) {
         return res.status(400).send('alamat belum diisi');
@@ -143,10 +142,10 @@ class DriverController implements IController {
         userId: newUser,
         roleId: driverRole.id,
       });
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const driver = await dm.create({
@@ -162,6 +161,7 @@ class DriverController implements IController {
         programName,
         createdBy: 'Registration System',
       });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
       return res.status(200).send('registrasi user(driver) sukses');
     } catch (error) {
       console.error(error);
@@ -169,15 +169,26 @@ class DriverController implements IController {
     }
   };
 
+  createBarcode = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(400).send('customer data not found');
+      }
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      return res.status(200).send('Barcode file generated successfully');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('barcode generation error');
+    }
+  };
+
   show = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     try {
-      const data = await dm.findByPk(id, {
-        exclude: ['password'],
-        order: ['id'],
-      });
-
+      const data = await dm.findByPk(id);
       if (!data) {
         return res.status(404).send('user tidak ditemukan.');
       }
@@ -190,9 +201,12 @@ class DriverController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { nama, alamat, email, telp, programName, updatedBy } = req.body;
+    const { tpId, nama, alamat, email, telp, programName, updatedBy } = req.body;
 
     try {
+      if (!tpId) {
+        return res.status(400).send('id tps (tpId) belum di isi');
+      }
       if (!nama) {
         return res.status(400).send('nama belum diisi');
       }
@@ -210,16 +224,17 @@ class DriverController implements IController {
         return res.status(404).send('data user tidak ditemukan.');
       }
 
-      const userName = data.username;
+      const current = data.nama;
       await data.update({
-        nama,
+        tpId,
+        nama: current,
         alamat,
         email: email.toLowerCase(),
         telp,
         programName,
         updatedBy,
       });
-      return res.status(200).send(`update data user "${userName}" sukses.`);
+      return res.status(200).send(`update data user "${current}" sukses.`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('update data gagal.');
@@ -253,11 +268,19 @@ class DriverController implements IController {
         return res.status(404).send('data user tidak ditemukan.');
       }
 
-      const userName = data.username;
+      const nama = data.nama;
 
-      await db.hak_akses.destroy({ where: { userId: id } });
+      await fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/svgs/${data.uniqueCode}.svg`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
+        if (error) throw error;
+      });
       await data.destroy();
-      return res.status(200).send(`data user "${userName}" telah berhasil dihapus.`);
+      return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('gagal menghapus user.');
@@ -265,37 +288,4 @@ class DriverController implements IController {
   };
 }
 
-function generateUserCode(digits?: number, includeAlpha?: boolean): string {
-  const length = digits || 12;
-  const alphanumeric = includeAlpha || false;
-  const year = new Date().getFullYear().toString();
-  const code = 'DR';
-
-  if (alphanumeric === false) {
-    let maxString = '';
-    for (let i = 0; i < length; i++) {
-      maxString += '9';
-    }
-    const maxValue = parseInt(maxString);
-    const id = Math.floor(Math.random() * maxValue);
-    const output: string = `${code}${year}${id}`;
-    return output;
-  } else {
-    let output: string = code + year;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < length; i++) {
-      output += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return output;
-  }
-}
-
-function generateUserBarcode(barcode: string, path: string) {
-  const qr = require('qrcode');
-
-  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
-}
 export default new DriverController();

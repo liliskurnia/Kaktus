@@ -2,8 +2,10 @@
 import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
+import BarcodeGenerator from '../utils/BarcodeGenerator';
 
 const path = require('path');
+const fs = require('fs');
 
 const db = require('../db/models');
 const dm = db.master_customer;
@@ -16,10 +18,7 @@ const qrFolderPath = './public/qrcodes';
 class CustomerController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const data = await dm.findAll({
-        exclude: ['password'],
-        order: ['id'],
-      });
+      const data = await dm.findAll({ include: [{ model: User, attributes: ['points'] }] });
 
       if (data.length === 0) {
         return res.status(400).send('Belum ada data.');
@@ -52,16 +51,17 @@ class CustomerController implements IController {
             if (jenisSampah.nama.search('Undefined') !== -1) {
               continue;
             }
-            const barcode = `${jenisSampah.kode}-${exists.uniqueCode}`;
+            const barcode = `${exists.uniqueCode}-${jenisSampah.kode}`;
+            const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
             await Sampah.create({
               masterCustomerId: exists.id,
               jenisSampahId: jenisSampah.id,
-              jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
+              jenisSampah: kodeDanJenisSampah,
               barcode,
               programName: 'Registration System',
               createdBy: 'Registration System',
             });
-            generateBarcodeImage(barcode, qrFolderPath);
+            BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
           }
           return res.status(201).send(`registrasi sampah untuk customer ${user.nama} sukses`);
         }
@@ -93,10 +93,10 @@ class CustomerController implements IController {
       }
 
       //create unique customer code
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as customer at db
@@ -113,22 +113,26 @@ class CustomerController implements IController {
         programName,
         createdBy,
       });
+      //generate customer's QR Code Assets
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+
       //get current list of kode sampah
       const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
       //get latest user id
       const customerId = await db.master_customer.max('id');
       //generate unique user trash codes based on types in db
       for (const jenisSampah of jenisSampahs) {
-        const barcode = `${jenisSampah.kode}-${uniqueCode}`;
+        const barcode = `${uniqueCode}-${jenisSampah.kode}`;
+        const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
-          jenisSampah: `${jenisSampah.kode} - ${jenisSampah.nama}`,
+          jenisSampah: kodeDanJenisSampah,
           barcode,
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
-        generateBarcodeImage(barcode, qrFolderPath);
+        BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
       }
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
@@ -182,10 +186,10 @@ class CustomerController implements IController {
         userId: newUser,
         roleId: customerRole.id,
       });
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const customer = await dm.create({
@@ -201,22 +205,24 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
       const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
       const customerId = await db.master_customer.max('id');
       for (const jenisSampah of jenisSampahs) {
         if (jenisSampah.nama.search('Undefined') !== -1) {
           continue;
         }
-        const barcode = `${jenisSampah.kode}-${uniqueCode}`;
+        const barcode = `${uniqueCode}-${jenisSampah.kode}`;
+        const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
         await Sampah.create({
           masterCustomerId: customerId,
           jenisSampahId: jenisSampah.id,
-          jenisSampah: `${jenisSampah.kode}-${jenisSampah.nama}`,
+          jenisSampah: kodeDanJenisSampah,
           barcode,
           programName: 'Registration System',
           createdBy: 'Registration System',
         });
-        generateBarcodeImage(barcode, qrFolderPath);
+        BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
       }
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
@@ -230,7 +236,7 @@ class CustomerController implements IController {
 
     try {
       const data = await dm.findByPk(id, {
-        order: ['id'],
+        include: [{ model: User, attributes: ['points'] }],
       });
 
       if (!data) {
@@ -257,34 +263,30 @@ class CustomerController implements IController {
     }
   };
 
-  getSampahBarcodeOutput = async (req: Request, res: Response): Promise<Response> => {
-    const { masterCustomerId, jenisSampahId } = req.body;
+  createBarcode = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
     try {
-      const data = await db.sampah_master.findOne({ where: { masterCustomerId, jenisSampahId } });
+      const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('barcode not found');
+        return res.status(400).send('customer data not found');
       }
-      const qrcode = generateBarcodeOutput(data.barcode, generationMethod.string);
-      const output = {
-        barcode: data.barcode,
-        qrcode: qrcode,
-      };
-      return res.status(200).json(output);
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      return res.status(200).send('Barcode file generated successfully');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('barcode url generation error');
+      return res.status(500).send('barcode generation error');
     }
   };
 
   createBarcodeSampah = async (req: Request, res: Response): Promise<Response> => {
-    const { masterCustomerId } = req.body;
+    const { masterCustomerId } = req.params;
     try {
       const dataCollection = await db.sampah_master.findAll({ where: { masterCustomerId } });
       if (!dataCollection) {
         return res.status(404).send('customer info not found');
       }
       for (const data of dataCollection) {
-        generateBarcodeImage(data.barcode, qrFolderPath);
+        BarcodeGenerator.generateImage(data.barcode, qrFolderPath);
       }
       return res.status(200).send('all qr images generated successfully for customer sampahs');
     } catch (error) {
@@ -292,25 +294,6 @@ class CustomerController implements IController {
       return res.status(500).send('barcode image generation error');
     }
   };
-
-  // downloadBarcode = async (req: Request, res: Response): Promise<Response<any>> => {
-  //   const { barcode } = req.params;
-  //   try {
-  //     const data = await db.sampah_master.findOne({ where: { barcode: barcode } });
-
-  //     if (!data) {
-  //       return res.status(404).send('barcode not found');
-  //     }
-  //     const file = `${barcode}.png`;
-  //     var fileLocation = path.join('./public/qrcodes/', file);
-  //     res.download(`${fileLocation}`);
-  //     console.log(fileLocation);
-  //     return res.status(200).send('download succesfull');
-  //   } catch (error) {
-  //     console.error(error);
-  //     return res.status(500).send('error fetching image file ');
-  //   }
-  // };
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
@@ -377,11 +360,30 @@ class CustomerController implements IController {
         return res.status(404).send('data user tidak ditemukan.');
       }
 
-      const userName = data.username;
-
-      await db.hak_akses.destroy({ where: { userId: id } });
+      const nama = data.nama;
+      const sampahs = await Sampah.findAll({ where: { masterCustomerId: data.id } });
+      for (const sampah of sampahs) {
+        await fs.rm(`${qrFolderPath}/images/${sampah.barcode}.png`, function (error: any) {
+          if (error) throw error;
+        });
+        await fs.rm(`${qrFolderPath}/svgs/${sampah.barcode}.svg`, function (error: any) {
+          if (error) throw error;
+        });
+        await fs.rm(`${qrFolderPath}/pdfs/${sampah.barcode}.pdf`, function (error: any) {
+          if (error) throw error;
+        });
+      }
+      await fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/svgs/${data.uniqueCode}.svg`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
+        if (error) throw error;
+      });
       await data.destroy();
-      return res.status(200).send(`data user "${userName}" telah berhasil dihapus.`);
+      return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);
       return res.status(500).send('gagal menghapus user.');
@@ -389,68 +391,4 @@ class CustomerController implements IController {
   };
 }
 
-function generateUserCode(digits?: number, includeAlpha?: boolean): string {
-  const length = digits || 12;
-  const alphanumeric = includeAlpha || false;
-  const year = new Date().getFullYear().toString();
-  const code = 'CU';
-
-  if (alphanumeric === false) {
-    let maxString = '';
-    for (let i = 0; i < length; i++) {
-      maxString += '9';
-    }
-    const maxValue = parseInt(maxString);
-    const id = Math.floor(Math.random() * maxValue);
-    const output: string = `${code}${year}${id}`;
-    return output;
-  } else {
-    let output: string = code + year;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < length; i++) {
-      output += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return output;
-  }
-}
-
-enum generationMethod {
-  url,
-  string,
-}
-
-function generateBarcodeImage(barcode: string, path: string) {
-  const qr = require('qrcode');
-
-  qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
-  qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
-}
-
-function generateBarcodeOutput(barcode: string, method: generationMethod): any {
-  const qr = require('qrcode');
-
-  switch (method) {
-    case generationMethod.url:
-      var output;
-      qr.toDataURL(barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any, url: any) {
-        if (error) throw error;
-        // console.log(url);
-        output = url;
-      });
-      return output;
-    case generationMethod.string:
-      var output;
-      qr.toString(barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any, string: any) {
-        if (error) throw error;
-        output = string;
-      });
-      return output;
-  }
-}
 export default new CustomerController();

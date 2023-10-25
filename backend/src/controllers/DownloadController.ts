@@ -15,13 +15,7 @@ class DownloadController {
     res.download(`./public/qrcodes/svgs/${barcode}.svg`);
   };
   QRPDFDownload = (req: Request, res: Response) => {
-    const imgToPDF = require('image-to-pdf');
-    const fs = require('fs');
     const { barcode } = req.params;
-
-    const pages = [`./public/qrcodes/images/${barcode}.png`];
-
-    imgToPDF(pages, imgToPDF.sizes.A6).pipe(fs.createWriteStream(`./public/qrcodes/pdfs/${barcode}.pdf`));
     res.download(`./public/qrcodes/pdfs/${barcode}.pdf`);
   };
 }

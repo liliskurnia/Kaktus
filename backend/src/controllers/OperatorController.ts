@@ -2,20 +2,20 @@
 import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
+import BarcodeGenerator from '../utils/BarcodeGenerator';
 
+const fs = require('fs');
 const db = require('../db/models');
 const dm = db.master_operator;
 const User = db.user;
 const HakAkses = db.hak_akses;
 const Role = db.role;
+const qrFolderPath = './public/qrcodes';
 
 class OperatorController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const data = await dm.findAll({
-        exclude: ['password'],
-        order: ['id'],
-      });
+      const data = await dm.findAll();
 
       if (data.length === 0) {
         return res.status(400).send('Belum ada data.');
@@ -29,7 +29,7 @@ class OperatorController implements IController {
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    const { userId, tpsId, programName, createdBy } = req.body;
+    const { userId, tpId, programName, createdBy } = req.body;
 
     try {
       if (!userId) {
@@ -42,16 +42,16 @@ class OperatorController implements IController {
       if (!user.telp || user.telp === '') {
         return res.status(400).send('nomor telepon harus di isi di user data');
       }
-      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
+      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: Role, attributes: ['nama'] }] });
       console.log(access);
       if (access) {
         let admin: boolean = false;
         let operator: boolean = false;
         //checks if role is admin / operator
         for (const acs of access) {
-          if (acs.roleName.search('Admin') !== -1) {
+          if (acs.role.nama.search('Admin') !== -1) {
             admin = true;
-          } else if (acs.roleName.search('Operator') !== -1) {
+          } else if (acs.role.nama.search('Operator') !== -1) {
             operator = true;
           }
         }
@@ -68,15 +68,16 @@ class OperatorController implements IController {
         }
       }
       //create unique customer code
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as operator at db
       const operator = await dm.create({
         userId,
+        tpId,
         uniqueCode,
         nik: user.nik,
         nama: user.nama,
@@ -84,9 +85,11 @@ class OperatorController implements IController {
         telp: user.telp,
         alamat: user.alamat,
         gender: user.gender,
+        kota: user.kota,
         programName,
         createdBy,
       });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(201).send(`registrasi operator ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -142,14 +145,15 @@ class OperatorController implements IController {
         userId: newUser,
         roleId: operatorRole.id,
       });
-      let uniqueCode = generateUserCode(16, true);
+      let uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = generateUserCode(16, true);
+        uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const operator = await dm.create({
         userId: newUser,
+        tpId: 1,
         uniqueCode,
         nik,
         nama,
@@ -161,6 +165,7 @@ class OperatorController implements IController {
         programName,
         createdBy: 'Registration System',
       });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
       return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);
@@ -168,14 +173,26 @@ class OperatorController implements IController {
     }
   };
 
+  createBarcode = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(400).send('operator data not found');
+      }
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      return res.status(200).send('Barcode file generated successfully');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('barcode generation error');
+    }
+  };
+
   show = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
     try {
-      const data = await dm.findByPk(id, {
-        exclude: ['password'],
-        order: ['id'],
-      });
+      const data = await dm.findByPk(id);
 
       if (!data) {
         return res.status(404).send('user tidak ditemukan.');
@@ -189,9 +206,12 @@ class OperatorController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { tpsId, nama, alamat, email, telp, programName, updatedBy } = req.body;
+    const { tpId, nama, alamat, email, telp, programName, updatedBy } = req.body;
 
     try {
+      if (!tpId) {
+        return res.status(400).send('id tps (tpId) belum di isi');
+      }
       if (!nama) {
         return res.status(400).send('nama belum diisi');
       }
@@ -211,7 +231,7 @@ class OperatorController implements IController {
 
       const userName = data.username;
       await data.update({
-        tpsId,
+        tpId,
         nama,
         alamat,
         email: email.toLowerCase(),
@@ -232,52 +252,26 @@ class OperatorController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('data user tidak ditemukan.');
+        return res.status(404).send('data operator tidak ditemukan.');
       }
 
-      const userName = data.username;
+      const nama = data.nama;
 
-      await db.hak_akses.destroy({ where: { userId: id } });
+      await fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/svgs/${data.uniqueCode}.svg`, function (error: any) {
+        if (error) throw error;
+      });
+      await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
+        if (error) throw error;
+      });
       await data.destroy();
-      return res.status(200).send(`data user "${userName}" telah berhasil dihapus.`);
+      return res.status(200).send(`data operator "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);
-      return res.status(500).send('gagal menghapus user.');
+      return res.status(500).send('gagal menghapus operator');
     }
   };
-}
-
-function generateUserCode(digits?: number, includeAlpha?: boolean): string {
-  const length = digits || 12;
-  const alphanumeric = includeAlpha || false;
-  const year = new Date().getFullYear().toString();
-  const code = 'OP';
-
-  if (alphanumeric === false) {
-    let maxString = '';
-    for (let i = 0; i < length; i++) {
-      maxString += '9';
-    }
-    const maxValue = parseInt(maxString);
-    const id = Math.floor(Math.random() * maxValue);
-    const output: string = `${code}${year}${id}`;
-    return output;
-  } else {
-    let output: string = code + year;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    for (let i = 0; i < length; i++) {
-      output += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return output;
-  }
-}
-
-function generateUserBarcode(barcode: string, path: string) {
-  const qr = require('qrcode');
-
-  qr.toFile(path, barcode, { errorCorrectionLevel: 'H', version: 3 }, function (error: any) {
-    if (error) throw error;
-    console.log('qr code image generated succesfully');
-  });
 }
 export default new OperatorController();

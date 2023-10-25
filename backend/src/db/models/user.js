@@ -72,10 +72,21 @@ module.exports = (sequelize, DataTypes) => {
         where: { userId },
       });
       if (customer) {
-        await customer.destroy({
-          where: { userId },
-          ...options,
+        const sampahList = await sequelize.models.sampah_master.findAll({
+          where: { masterCustomerId: customer.id },
         });
+        for (const sampah of sampahList) {
+          await fs.rm(`./public/qrcodes/images/${sampah.barcode}.png`, function (error) {
+            if (error) throw error;
+          });
+          await fs.rm(`./public/qrcodes/svgs/${sampah.barcode}.svg`, function (error) {
+            if (error) throw error;
+          });
+          await fs.rm(`./public/qrcodes/pdfs/${sampah.barcode}.pdf`, function (error) {
+            if (error) throw error;
+          });
+          await sampah.destroy();
+        }
       }
     } catch (error) {
       console.error('gagal menghapus data-data terasosiasi dengan user');

@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'userId' });
+      this.belongsTo(models.tps, { foreignKey: 'tpId' });
     }
   }
   master_driver.init(
@@ -18,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: 'users',
+          key: 'id',
+        },
+      },
+      tpId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'tps',
           key: 'id',
         },
       },
