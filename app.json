@@ -28,6 +28,14 @@
     },
     "plugins": [
       "expo-localization"
+    ],
+    "permissions": [
+      "CAMERA",
+      "AUDIO_RECORDING",
+      "LOCATION",
+      "NOTIFICATIONS",
+      "MEDIA_LIBRARY",
+      "WRITE_EXTERNAL_STORAGE"
     ]
   }
 }
