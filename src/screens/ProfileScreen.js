@@ -9,11 +9,17 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { Block, Image } from '../components';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProfileScreen() {
+
+  const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  const handleLogout = () => {
+    navigation.navigate('Login')
+  }
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>
@@ -29,10 +35,10 @@ export default function ProfileScreen() {
             Michael Cactus
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight:'bold' }}>testUser@kaktus.com</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>testUser@kaktus.com</TextRn>
           </View>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight:'bold'  }}>+62-816-7291-0982</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>+62-816-7291-0982</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -132,7 +138,13 @@ export default function ProfileScreen() {
             <TextRn style={styles.text}>Help Center</TextRn>
           </TouchableOpacity>
         </View>
-
+        <View style={{alignItems:'center'}}>
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={styles.logoutBtn}>
+            <TextRn style={styles.logoutText}>LOGOUT </TextRn>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </Block>
 
@@ -140,6 +152,21 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  logoutBtn: {
+    width: "80%",
+    backgroundColor: "#E26363",
+    borderRadius: 10,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    marginBottom: 40
+  },
+  logoutText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
   field: {
     marginHorizontal: 30,
     marginTop: 10,
