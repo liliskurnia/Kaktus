@@ -90,13 +90,7 @@ class AuthController {
           const customer = await db.master_customer.findOne({ where: { userId: user.id } });
           listSampah = await db.sampah_master.findAll({
             where: { masterCustomerId: customer.id },
-            attributes: ['barcode'],
-            include: [
-              {
-                model: db.jenis_sampah,
-                attributes: ['nama'],
-              },
-            ],
+            attributes: ['id', 'barcode', 'jenisSampah'],
           });
           const access = {
             token: token,
