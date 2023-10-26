@@ -85,10 +85,9 @@ class AuthController {
           include: [{ model: db.role, attributes: ['nama'] }],
         });
         console.log(hakAkses);
-        let listSampah = null;
         if (hakAkses.role.nama === 'Customer') {
           const customer = await db.master_customer.findOne({ where: { userId: user.id } });
-          listSampah = await db.sampah_master.findAll({
+          const listSampah = await db.sampah_master.findAll({
             where: { masterCustomerId: customer.id },
             attributes: ['id', 'barcode', 'jenisSampah'],
           });
@@ -96,9 +95,35 @@ class AuthController {
             token: token,
             previllage: 'Customer',
             userId: user.id,
+            masterCustomerId: customer.id,
+            masterCustomerCode: customer.uniqueCode,
             barcodes: listSampah,
           };
           console.log(listSampah);
+          return res.status(200).json(access);
+        } else if (hakAkses.role.nama === 'Driver') {
+          const driver = await db.master_driver.findOne({ where: { userId: user.id } });
+
+          const access = {
+            token: token,
+            previllage: 'Customer',
+            userId: user.id,
+            masterDriverId: driver.id,
+            tpId: driver.tpsId,
+            masterDriverCode: driver.uniqueCode,
+          };
+          return res.status(200).json(access);
+        } else if (hakAkses.role.nama === 'Operator') {
+          const operator = await db.master_operator.findOne({ where: { userId: user.id } });
+
+          const access = {
+            token: token,
+            previllage: 'Customer',
+            userId: user.id,
+            masterOperatorId: operator.id,
+            tpId: operator.tpsId,
+            masterOperatorCode: operator.uniqueCode,
+          };
           return res.status(200).json(access);
         }
         let access = null;

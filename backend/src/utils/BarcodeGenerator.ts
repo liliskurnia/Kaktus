@@ -1,5 +1,5 @@
 const qr = require('qrcode');
-const imgToPDF = require('image-to-pdf');
+// const imgToPDF = require('image-to-pdf');
 const fs = require('fs');
 const PDFDocument = require('pdfkit');
 const SVGtoPDF = require('svg-to-pdfkit');
@@ -41,8 +41,6 @@ class BarcodeGenerator {
     });
 
     QRPDFFormatter(barcode, `${path}/pdfs/${barcode}.pdf`, title);
-    // const pages = [`./public/qrcodes/images/${barcode}.png`];
-    // imgToPDF(pages, imgToPDF.sizes.A6).pipe(fs.createWriteStream(`./public/qrcodes/pdfs/${barcode}.pdf`));
   };
 }
 
