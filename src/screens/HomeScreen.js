@@ -13,19 +13,63 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image, Text, ModalSelect, Input } from "../components";
 import { useData, useTheme, useTranslation } from "../hooks";
-import OrderHistory from "./OrderHistory";
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function HomeScreen() {
   const { assets, colors, gradients, sizes } = useTheme();
-
-  const data = [
+  const navigation = useNavigation();
+  const [activeSlide, setActiveSlide] = React.useState(0);
+  const [data, setData] = useState([])
+  const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const image = [
     { imageUrl: require("../assets/images/1.jpg") },
     { imageUrl: require("../assets/images/2.jpg") },
     { imageUrl: require("../assets/images/3.jpg") },
   ];
 
-  const navigation = useNavigation();
+  //cek data yang sudah disimpan di async storage
+  useEffect(() => {
+    const checkAsyncStorageData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const userDataObj = JSON.parse(userData);
+          // console.log('Data from AsyncStorage:', userDataObj);
+          setUserData(userDataObj)
+          // console.log(userDataObj, 'USERDATA')
+        } else {
+          console.log('No data found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error retrieving data from AsyncStorage:', error);
+      }
+    }
 
-  const [activeSlide, setActiveSlide] = React.useState(0);
+    checkAsyncStorageData();
+  }, []);
+
+  const id = userData.masterCustomerId
+  // console.log('id', id)
+
+  //get info user berdasarkan id yang login
+  useEffect(() => {
+    if (userData.masterCustomerId) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
+          setData(response);
+        } catch (error) {
+          console.error(error.message);
+        }
+        setLoading(false);
+      }
+
+      fetchData();
+    }
+  }, [userData]);
 
   const renderItem = ({ item }) => {
     return (
@@ -50,21 +94,6 @@ export default function HomeScreen() {
   const handleDownloadQrcode = () => {
     navigation.navigate('DownloadQrcode')
   }
-
-  const handleLogout = () => {
-    Alert.alert("Logout", `Anda yakin akan keluar dari akun Anda ?`, [
-      {
-        text: "Tidak",
-        style: "cancel",
-      },
-      {
-        text: "YA",
-        onPress: async () => {
-          navigation.navigate("Login");
-        },
-      },
-    ]);
-  };
 
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -115,8 +144,8 @@ export default function HomeScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column'}}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 24, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
-            Michael Cactus
+          <TextRn style={{ flexDirection: 'row', fontSize: 20, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
+            {data.nama}
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: 10, alignItems:'center' }}>
             <Image
@@ -161,7 +190,7 @@ export default function HomeScreen() {
           >
             <View style={styles.container}>
               <Carousel
-                data={data}
+                data={image}
                 renderItem={renderItem}
                 sliderWidth={Dimensions.get("window").width}
                 itemWidth={Dimensions.get("window").width}
@@ -170,13 +199,13 @@ export default function HomeScreen() {
                 onSnapToItem={(index) => setActiveSlide(index)}
                 containerCustomStyle={{ borderRadius: 0 }}
                 inactiveSlideScale={1}
-                loopClonesPerSide={data.length - 1}
+                loopClonesPerSide={image.length - 1}
                 autoplay={true}
                 autoplayInterval={5000}
                 loop={true}
               />
               <Pagination
-                dotsLength={data.length}
+                dotsLength={image.length}
                 activeDotIndex={activeSlide}
                 containerStyle={styles.paginationContainer}
                 dotStyle={styles.paginationDot}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity,
   Text as TextRn,
@@ -10,16 +10,68 @@ import {
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { Block, Image } from '../components';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen() {
 
   const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [data, setData] = useState([])
+  const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  //cek data yang sudah disimpan di async storage
+  useEffect(() => {
+    const checkAsyncStorageData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          const userDataObj = JSON.parse(userData);
+          // console.log('Data from AsyncStorage:', userDataObj);
+          setUserData(userDataObj)
+          // console.log(userDataObj, 'USERDATA')
+        } else {
+          console.log('No data found in AsyncStorage');
+        }
+      } catch (error) {
+        console.error('Error retrieving data from AsyncStorage:', error);
+      }
+    }
+
+    checkAsyncStorageData();
+  }, []);
+
+  const id = userData.masterCustomerId
+  // console.log('id', id)
+
+  //get info user berdasarkan id yang login
+  useEffect(() => {
+    if (userData.masterCustomerId) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
+          setData(response);
+        } catch (error) {
+          console.error(error.message);
+        }
+        setLoading(false);
+      }
+
+      fetchData();
+    }
+  }, [userData]);
 
   const handleLogout = () => {
     navigation.navigate('Login')
   }
+
+  const handleOrderHistory = () => {
+    navigation.navigate('OrderHistory')
+  }
+
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>
@@ -32,13 +84,13 @@ export default function ProfileScreen() {
         />
         <View style={{ flexDirection: 'column' }}>
           <TextRn style={{ color: '#819994', lexDirection: 'row', fontSize: 26, fontWeight: 'bold', marginLeft: -40 }}>
-            Michael Cactus
+            {data.nama}
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>testUser@kaktus.com</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>{data.email}</TextRn>
           </View>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>+62-816-7291-0982</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>{data.telp}</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -75,7 +127,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={handleOrderHistory} style={{ flexDirection: 'row' }}>
             <MaterialCommunityIcons name="clipboard-text" size={35} color="#819994" />
             <TextRn style={styles.text}>Order History</TextRn>
           </TouchableOpacity>
@@ -138,7 +190,7 @@ export default function ProfileScreen() {
             <TextRn style={styles.text}>Help Center</TextRn>
           </TouchableOpacity>
         </View>
-        <View style={{alignItems:'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <TouchableOpacity
             onPress={handleLogout}
             style={styles.logoutBtn}>
