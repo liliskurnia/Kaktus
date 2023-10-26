@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import {
   TouchableOpacity,
   Text as TextRn,
@@ -7,13 +7,13 @@ import {
   ScrollView,
   Switch
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { Block, Image} from '../components';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Block, Image } from '../components';
 
 export default function ProfileScreen() {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  
+
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>
@@ -25,19 +25,19 @@ export default function ProfileScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', marginLeft: -40 }}>
+          <TextRn style={{ color: '#819994', lexDirection: 'row', fontSize: 26, fontWeight: 'bold', marginLeft: -40 }}>
             Michael Cactus
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ flexDirection: 'column' }}>testUser@kaktus.com</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight:'bold' }}>testUser@kaktus.com</TextRn>
           </View>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ flexDirection: 'column' }}>+62-816-7291-0982</TextRn>
+            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight:'bold'  }}>+62-816-7291-0982</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
           <TouchableOpacity>
-            <Ionicons name="pencil" size={24} color="#819994" />
+            <Ionicons name="pencil" size={26} color="#819994" />
           </TouchableOpacity>
 
         </View>
@@ -57,7 +57,7 @@ export default function ProfileScreen() {
                 source={require('../assets/images/point.png')}
                 style={{ marginRight: 10 }}
               />
-              <TextRn style={{ fontSize: 18, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
+              <TextRn style={{ fontSize: 16, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
             </View>
           </TouchableOpacity>
         </View>
@@ -105,7 +105,7 @@ export default function ProfileScreen() {
             <TextRn style={styles.text}>Change Security Code</TextRn>
           </TouchableOpacity>
         </View>
-        <View style={[styles.field, { marginBottom: 20 }]}>
+        <View style={styles.field}>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialIcons name="language" size={35} color="#819994" />
             <TextRn style={styles.text}>Face ID</TextRn>
@@ -118,6 +118,18 @@ export default function ProfileScreen() {
                 value={isEnabled}
               />
             </View>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.field}>
+          <TouchableOpacity style={{ flexDirection: 'row' }}>
+            <Ionicons name="settings" size={35} color="#819994" />
+            <TextRn style={styles.text}>Setting</TextRn>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.field, { marginBottom: 20 }]}>
+          <TouchableOpacity style={{ flexDirection: 'row' }}>
+            <FontAwesome5 name="hands-helping" size={35} color="#819994" />
+            <TextRn style={styles.text}>Help Center</TextRn>
           </TouchableOpacity>
         </View>
 
@@ -136,15 +148,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#819994',
     paddingTop: 10,
     marginLeft: 20,
   },
   box: {
-    width: 315,
-    height: 80,
+    width: '90%',
+    height: '12%',
     backgroundColor: '#ffffff',
     alignItems: 'center',
     borderRadius: 10,

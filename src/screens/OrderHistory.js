@@ -87,10 +87,10 @@ export default function OrderHistory() {
                     <View style={[styles.boxKanan, { backgroundColor: '#FFB2B2', }]}>
                         <View style={{ flexDirection: 'column' }}>
                             <TextRn style={{ marginBottom: 5 }}>02-10-2023</TextRn>
-                            <TextRn style={{ marginBottom: 10, fontSize: 20, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
+                            <TextRn style={{ marginBottom: 10, fontSize: 16, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                <TextRn style={{ fontSize: 26, fontWeight: 'bold' }}>B3</TextRn>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold' }}>B3</TextRn>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -114,10 +114,10 @@ export default function OrderHistory() {
                     <View style={[styles.boxKanan, { backgroundColor: '#FFB2B2', }]}>
                         <View style={{ flexDirection: 'column' }}>
                             <TextRn style={{ marginBottom: 5 }}>02-10-2023</TextRn>
-                            <TextRn style={{ marginBottom: 10, fontSize: 20, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
+                            <TextRn style={{ marginBottom: 10, fontSize: 16, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                <TextRn style={{ fontSize: 26, fontWeight: 'bold' }}>B3</TextRn>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold' }}>B3</TextRn>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -141,10 +141,10 @@ export default function OrderHistory() {
                     <View style={[styles.boxKanan, { backgroundColor: '#F9E5B1', }]}>
                         <View style={{ flexDirection: 'column' }}>
                             <TextRn style={{ marginBottom: 5 }}>02-10-2023</TextRn>
-                            <TextRn style={{ marginBottom: 10, fontSize: 20, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
+                            <TextRn style={{ marginBottom: 10, fontSize: 16, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                <TextRn style={{ fontSize: 26, fontWeight: 'bold' }}>A3</TextRn>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold' }}>A3</TextRn>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -171,10 +171,10 @@ export default function OrderHistory() {
                     <View style={[styles.boxKanan, { backgroundColor: '#A1EDCD', }]}>
                         <View style={{ flexDirection: 'column' }}>
                             <TextRn style={{ marginBottom: 5 }}>02-10-2023</TextRn>
-                            <TextRn style={{ marginBottom: 10, fontSize: 20, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
+                            <TextRn style={{ marginBottom: 10, fontSize: 16, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                <TextRn style={{ fontSize: 26, fontWeight: 'bold' }}>C3</TextRn>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold' }}>C3</TextRn>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -198,10 +198,10 @@ export default function OrderHistory() {
                     <View style={[styles.boxKanan, { backgroundColor: '#ABE1FF', }]}>
                         <View style={{ flexDirection: 'column' }}>
                             <TextRn style={{ marginBottom: 5 }}>02-10-2023</TextRn>
-                            <TextRn style={{ marginBottom: 10, fontSize: 20, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
+                            <TextRn style={{ marginBottom: 10, fontSize: 16, fontWeight: 'bold' }}>ID: Order ID#</TextRn>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                <TextRn style={{ fontSize: 26, fontWeight: 'bold' }}>D3</TextRn>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold' }}>D3</TextRn>
                             </View>
                         </View>
                         <View style={{ flexDirection: 'column', alignItems: 'flex-end' }}>

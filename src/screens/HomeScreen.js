@@ -114,16 +114,16 @@ export default function HomeScreen() {
           style={{ alignSelf: 'flex-start', margin: 5, flexDirection: 'column' }}
           source={require('../assets/images/profil.png')}
         />
-        <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
+        <View style={{ flexDirection: 'column'}}>
+          <TextRn style={{ flexDirection: 'row', fontSize: 24, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
             Michael Cactus
           </TextRn>
-          <View style={{ flexDirection: 'row', marginLeft: 10 }}>
+          <View style={{ flexDirection: 'row', marginLeft: 10, alignItems:'center' }}>
             <Image
               style={{ flexDirection: 'column' }}
               source={require('../assets/images/point.png')}
             />
-            <TextRn style={{ flexDirection: 'column', color: '#3B4341' }}>4,483 Points</TextRn>
+            <TextRn style={{ flexDirection: 'column', color: '#3B4341', marginLeft:5 }}>4,483 Points</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
@@ -352,7 +352,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   menuText: {
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'poppins-regular',
     marginTop: 10,
     fontWeight: 'bold',
@@ -374,8 +374,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   box: {
-    width: 300,
-    height: 80,
+    width: '85%',
+    height: '12%',
     backgroundColor: '#ffffff',
     alignItems: 'center',
     borderRadius: 10,

@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import {
     TouchableOpacity,
     Text as TextRn,
@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Image} from '../components';
-import { useTheme} from '../hooks';
+import { Block, Image } from '../components';
+import { useTheme } from '../hooks';
 import { Searchbar } from 'react-native-paper';
 import Modal from "react-native-modal";
 
@@ -89,15 +89,15 @@ export default function Vouchers() {
                     source={require('../assets/images/profil.png')}
                 />
                 <View style={{ flexDirection: 'column' }}>
-                    <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
+                    <TextRn style={{ flexDirection: 'row', fontSize: 24, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
                         Michael Cactus
                     </TextRn>
-                    <View style={{ flexDirection: 'row', marginLeft: 10 }}>
+                    <View style={{ flexDirection: 'row', marginLeft: 10, alignItems: 'center' }}>
                         <Image
                             style={{ flexDirection: 'column' }}
                             source={require('../assets/images/point.png')}
                         />
-                        <TextRn style={{ flexDirection: 'column', color: '#3B4341' }}>4,483 Points</TextRn>
+                        <TextRn style={{ flexDirection: 'column', color: '#3B4341', marginLeft: 5 }}>4,483 Points</TextRn>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'column' }}>
@@ -267,8 +267,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     box: {
-        width: 300,
-        height: 80,
+        width: '85%',
+        height: '12%',
         backgroundColor: '#ffffff',
         alignItems: 'center',
         borderRadius: 10,

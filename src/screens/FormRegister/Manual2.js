@@ -54,8 +54,8 @@ export default function Manual2() {
         if (!state.password) {
             validationErrors.password = '*Password is required';
         }
-        if (state.password && state.password !== 6) {
-            validationErrors.password = '*Password must be 6 character';
+        if (state.password && state.password < 6) {
+            validationErrors.password = '*Password min 6 character';
         }
         if (!state.confirmPassword) {
             validationErrors.confirmPassword = '*Confirm password is required';
