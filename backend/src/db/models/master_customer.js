@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'userId' });
       this.hasMany(models.sampah_master);
+      this.hasMany(models.customer_request_history);
     }
   }
   master_customer.init(

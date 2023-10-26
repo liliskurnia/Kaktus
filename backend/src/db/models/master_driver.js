@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.user, { foreignKey: 'userId' });
       this.belongsTo(models.tps, { foreignKey: 'tpId' });
+      this.hasMany(models.accepted_request_history);
     }
   }
   master_driver.init(
