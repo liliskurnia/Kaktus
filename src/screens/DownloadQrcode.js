@@ -7,38 +7,66 @@ import {
     StyleSheet,
     ScrollView,
     Dimensions,
+    PermissionsAndroid
 } from 'react-native';
 import {
     Feather,
     MaterialCommunityIcons,
     MaterialIcons,
 } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Block, Image, Text, ModalSelect, Input } from '../components';
 import { useData, useTheme, useTranslation } from '../hooks';
 import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
-import * as FileSystem from 'expo-file-system'; // Import komponen untuk penyimpanan file
-
+import * as FileSystem from 'expo-file-system'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DownloadBarcode() {
     const { assets, colors, gradients, sizes } = useTheme();
     const navigation = useNavigation();
     const [allData, setAllData] = useState([]);
     const [barcodeData, setBarcodeData] = useState([]);
+    const [userData, setUserData] = useState([]);
+
+     //cek data yang sudah disimpan di async storage
+     useEffect(() => {
+        const checkAsyncStorageData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('userData');
+                if (userData) {
+                    const userDataObj = JSON.parse(userData);
+                    // console.log('Data from AsyncStorage:', userDataObj);
+                    setUserData(userDataObj)
+                    // console.log(userDataObj, 'USERDATA')
+                } else {
+                    console.log('No data found in AsyncStorage');
+                }
+            } catch (error) {
+                console.error('Error retrieving data from AsyncStorage:', error);
+            }
+        }
+
+        checkAsyncStorageData();
+    }, []); 
+
+    const id = userData.masterCustomerId
+    // console.log(id, 'masterCustomerId')
 
     const handleAdd = () => {
         navigation.navigate('PickUp');
     };
 
     useEffect(() => {
-        getQrValue();
-    }, []);
+        if (userData.masterCustomerId) {
+            getQrValue();
+        }
+    }, [userData]);    
 
     const getQrValue = async () => {
         try {
             const response = await axios.get(
-                `http://192.168.182.111:8000/api/v1/customers/listSampah/1`
+                `http://192.168.182.111:8000/api/v1/customers/listSampah/${id}`
             );
             // console.log('respon', response)
 
