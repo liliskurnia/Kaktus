@@ -11,6 +11,7 @@ const dm = db.master_driver;
 const User = db.user;
 const HakAkses = db.hak_akses;
 const Role = db.role;
+const History = db.accepted_request_history;
 const qrFolderPath = './public/qrcodes';
 
 class DriverController implements IController {
@@ -269,7 +270,7 @@ class DriverController implements IController {
       }
 
       const nama = data.nama;
-
+      const historyData = await History.findAll({ where: { masterDriverId: data.id } });
       await fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
         if (error) throw error;
       });
@@ -279,6 +280,7 @@ class DriverController implements IController {
       await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
         if (error) throw error;
       });
+      await historyData.destroy();
       await data.destroy();
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {

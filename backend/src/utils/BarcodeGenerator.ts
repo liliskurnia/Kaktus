@@ -6,10 +6,9 @@ const SVGtoPDF = require('svg-to-pdfkit');
 
 class BarcodeGenerator {
   public static generateCode = (code?: string, digits?: number, alphaNumeric?: boolean): string => {
-    const length = digits || 12;
-    const alphanumeric = alphaNumeric || false;
-    const year = new Date().getFullYear().toString();
-    const initial = code || '';
+    const length: number = digits || 16;
+    const alphanumeric: boolean = alphaNumeric || false;
+    const initial: string = code || '';
 
     if (alphanumeric === false) {
       let maxString = '';
@@ -18,14 +17,42 @@ class BarcodeGenerator {
       }
       const maxValue = parseInt(maxString);
       const id = Math.floor(Math.random() * maxValue);
-      const output: string = `${initial}${year}${id}`;
+      const output: string = `${initial}${id}`;
       return output;
     } else {
-      let output: string = code + year;
+      let output: string = initial;
       const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       for (let i = 0; i < length; i++) {
         output += characters.charAt(Math.floor(Math.random() * characters.length));
       }
+      return output;
+    }
+  };
+
+  public static generateRequestCode = (requestType: string, trashTypeCode: string, digits?: number, alphaNumeric?: boolean): string => {
+    const length: number = digits || 16;
+    const alphanumeric: boolean = alphaNumeric || false;
+    const trashType: string = `-${trashTypeCode}` || '';
+    const d = new Date();
+    const year: string = d.getFullYear().toString();
+    const month: string = d.getMonth().toString();
+    const day: string = d.getDate().toString();
+    if (alphanumeric === false) {
+      let maxString = '';
+      for (let i = 0; i < length; i++) {
+        maxString += '9';
+      }
+      const maxValue = parseInt(maxString);
+      const id = Math.floor(Math.random() * maxValue);
+      const output: string = `${requestType}-${year}${month}${day}-${id}${trashType}`;
+      return output;
+    } else {
+      let output: string = `${requestType}-${year}${month}${day}-`;
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      for (let i = 0; i < length; i++) {
+        output += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      output += trashType;
       return output;
     }
   };

@@ -21,6 +21,7 @@ import OperatorRoutes from './routers/OperatorRoutes';
 import SampahRoutes from './routers/SampahRoutes';
 import JenisSampahRoutes from './routers/JenisSampahRoutes';
 import DownloadRoutes from './routers/DownloadRoutes';
+import RequestRoutes from './routers/RequestRoutes';
 
 class App {
   public app: Application;
@@ -44,7 +45,6 @@ class App {
   protected routes(): void {
     this.app.route('/').get((req, res) => {
       res.render('index');
-      // res.send('ini route menggunakan TypeScript');
     });
 
     this.app.route('/users').post((req, res) => {
@@ -63,9 +63,9 @@ class App {
     this.app.use('/api/v1/operators', OperatorRoutes);
     this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
+    this.app.use('/api/v1/requests', RequestRoutes);
     this.app.use('/download', DownloadRoutes);
     this.app.use(express.static('public'));
-    //this.app.use('/api/v1/pickup', PickupRoutes);
   }
 }
 

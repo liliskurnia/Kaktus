@@ -157,6 +157,39 @@ class AuthController {
   profile = (req: Request, res: Response): Response => {
     return res.send(req.app.locals.credential);
   };
+
+  resetPassword = async (req: Request, res: Response): Promise<Response> => {
+    const { email, nik, telp, username, password } = req.body;
+    try {
+      if (!password) {
+        return res.status(400).send('new password is blank, please enter the new password');
+      }
+      let data;
+      if (username) {
+        data = db.user.findOne({ where: { username } });
+      } else if (telp) {
+        data = db.user.findOne({ where: { telp } });
+      } else if (email) {
+        data = db.user.findOne({ where: { email } });
+      } else if (nik) {
+        data = db.user.findOne({ where: { nik } });
+      } else {
+        return res.status(400).send('please provide either email / nik / nomor telpon / username');
+      }
+      if (!data) {
+        return res.status(404).send('user not found');
+      }
+
+      const hashedPassword: string = await Authentication.passwordHash(password);
+      await db.user.update({
+        password: hashedPassword,
+      });
+
+      return res.send('password reset successful, new password has been applied');
+    } catch (error) {
+      return res.status(500).send('error reset password');
+    }
+  };
 }
 
 export default new AuthController();

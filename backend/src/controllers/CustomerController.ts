@@ -4,7 +4,6 @@ import Authentication from '../utils/Authentication';
 import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
 
-const path = require('path');
 const fs = require('fs');
 
 const db = require('../db/models');
@@ -13,6 +12,7 @@ const User = db.user;
 const Sampah = db.sampah_master;
 const HakAkses = db.hak_akses;
 const Role = db.role;
+const History = db.customer_request_history;
 const qrFolderPath = './public/qrcodes';
 
 class CustomerController implements IController {
@@ -42,40 +42,16 @@ class CustomerController implements IController {
       if (!user) {
         return res.status(404).send('user tidak ditemukan');
       }
-      const exists = await dm.findOne({ where: { userId } });
-      if (exists) {
-        const haveSampahRegistered = await Sampah.findAll({ where: { masterCustomerId: exists.id } });
-        if (!haveSampahRegistered) {
-          const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-          for (const jenisSampah of jenisSampahs) {
-            if (jenisSampah.nama.search('Undefined') !== -1) {
-              continue;
-            }
-            const barcode = `${exists.uniqueCode}-${jenisSampah.kode}`;
-            const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
-            await Sampah.create({
-              masterCustomerId: exists.id,
-              jenisSampahId: jenisSampah.id,
-              jenisSampah: kodeDanJenisSampah,
-              barcode,
-              programName: 'Registration System',
-              createdBy: 'Registration System',
-            });
-            BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
-          }
-          return res.status(201).send(`registrasi sampah untuk customer ${user.nama} sukses`);
-        }
-        return res.status(400).send('');
-      }
-      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'], as: 'roleName' }] });
+
+      const access = await HakAkses.findAll({ where: { userId }, include: [{ model: 'roles', attributes: ['nama'] }] });
       if (access) {
         let admin: boolean = false;
         let customer: boolean = false;
         //checks if role is admin / customer
         for (const acs of access) {
-          if (acs.roleName.search('Admin') !== -1) {
+          if (acs.role.nama.search('Admin') !== -1) {
             admin = true;
-          } else if (acs.roleName.search('Customer') !== -1) {
+          } else if (acs.role.nama.search('Customer') !== -1) {
             customer = true;
           }
         }
@@ -116,24 +92,6 @@ class CustomerController implements IController {
       //generate customer's QR Code Assets
       BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
 
-      //get current list of kode sampah
-      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-      //get latest user id
-      const customerId = await db.master_customer.max('id');
-      //generate unique user trash codes based on types in db
-      for (const jenisSampah of jenisSampahs) {
-        const barcode = `${uniqueCode}-${jenisSampah.kode}`;
-        const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
-        await Sampah.create({
-          masterCustomerId: customerId,
-          jenisSampahId: jenisSampah.id,
-          jenisSampah: kodeDanJenisSampah,
-          barcode,
-          programName: 'Registration System',
-          createdBy: 'Registration System',
-        });
-        BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
-      }
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -361,6 +319,7 @@ class CustomerController implements IController {
       }
 
       const nama = data.nama;
+      const historyData = await History.findAll({ where: { masterCustomerId: data.id } });
       const sampahs = await Sampah.findAll({ where: { masterCustomerId: data.id } });
       for (const sampah of sampahs) {
         await fs.rm(`${qrFolderPath}/images/${sampah.barcode}.png`, function (error: any) {
@@ -382,7 +341,7 @@ class CustomerController implements IController {
       await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
         if (error) throw error;
       });
-      await data.destroy();
+      await historyData.destroy(), await data.destroy();
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);

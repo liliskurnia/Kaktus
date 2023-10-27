@@ -14,7 +14,6 @@ class CustomerRoutes extends BaseRoutes {
     this.router.put('/:id', CustomerController.update);
     this.router.put('/addPoints/:id', CustomerController.addPoint);
     this.router.delete('/:id', CustomerController.delete);
-    // this.router.get('/download/:barcode', CustomerController.downloadBarcode);
   }
 }
 
