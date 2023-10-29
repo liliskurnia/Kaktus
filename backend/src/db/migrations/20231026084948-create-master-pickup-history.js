@@ -59,10 +59,13 @@ module.exports = {
       driverGender: {
         type: Sequelize.STRING(1),
       },
+      scheduledDate: {
+        type: Sequelize.DATE,
+      },
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        defaultValue: 'Requested',
+        defaultValue: 'Registered',
       },
       pickedAt: {
         type: Sequelize.DATE,

@@ -8,6 +8,7 @@ class OperatorRoutes extends BaseRoutes {
     this.router.post('/', OperatorController.create);
     this.router.post('/register', OperatorController.register);
     this.router.post('/qr/generate/:id', OperatorController.createBarcode);
+    this.router.put('/managetps/:id', OperatorController.updateTPS);
     this.router.get('/:id', OperatorController.show);
     this.router.put('/:id', OperatorController.update);
     this.router.delete('/:id', OperatorController.delete);

@@ -57,6 +57,22 @@ class SampahController implements IController {
     }
   };
 
+  updateLocation = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { latitude, longitude, status } = req.body;
+    try {
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(404).send('data sampah not found');
+      }
+      data.update({ latitude, longitude, status });
+      return res.status(200).send('loaction updated succesfully');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('failed to update location');
+    }
+  };
+
   updateStatus = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { status, programName, updatedBy } = req.body;

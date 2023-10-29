@@ -164,24 +164,7 @@ class CustomerController implements IController {
         createdBy: 'Registration System',
       });
       BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
-      const jenisSampahs = await db.jenis_sampah.findAll({ order: ['id'] });
-      const customerId = await db.master_customer.max('id');
-      for (const jenisSampah of jenisSampahs) {
-        if (jenisSampah.nama.search('Undefined') !== -1) {
-          continue;
-        }
-        const barcode = `${uniqueCode}-${jenisSampah.kode}`;
-        const kodeDanJenisSampah = `${jenisSampah.kode} - ${jenisSampah.nama}`;
-        await Sampah.create({
-          masterCustomerId: customerId,
-          jenisSampahId: jenisSampah.id,
-          jenisSampah: kodeDanJenisSampah,
-          barcode,
-          programName: 'Registration System',
-          createdBy: 'Registration System',
-        });
-        BarcodeGenerator.generateImage(barcode, qrFolderPath, kodeDanJenisSampah);
-      }
+
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
       console.error(error);
@@ -210,7 +193,11 @@ class CustomerController implements IController {
   getSampahList = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     try {
-      const data = await db.sampah_master.findAll({ where: { masterCustomerId: id }, order: ['id'] });
+      const customer = await db.master_customer.findByPk(id);
+      if (!customer) {
+        return res.status(404).send('data customer tidak ditemukan');
+      }
+      const data = await db.sampah_master.findAll({ where: { ownerCode: customer.uniqueCode }, order: ['id'] });
       if (!data) {
         return res.status(404).send('data sampah not found');
       }
@@ -233,23 +220,6 @@ class CustomerController implements IController {
     } catch (error) {
       console.error(error);
       return res.status(500).send('barcode generation error');
-    }
-  };
-
-  createBarcodeSampah = async (req: Request, res: Response): Promise<Response> => {
-    const { masterCustomerId } = req.params;
-    try {
-      const dataCollection = await db.sampah_master.findAll({ where: { masterCustomerId } });
-      if (!dataCollection) {
-        return res.status(404).send('customer info not found');
-      }
-      for (const data of dataCollection) {
-        BarcodeGenerator.generateImage(data.barcode, qrFolderPath);
-      }
-      return res.status(200).send('all qr images generated successfully for customer sampahs');
-    } catch (error) {
-      console.error(error);
-      return res.status(500).send('barcode image generation error');
     }
   };
 
@@ -320,7 +290,7 @@ class CustomerController implements IController {
 
       const nama = data.nama;
       const historyData = await History.findAll({ where: { masterCustomerId: data.id } });
-      const sampahs = await Sampah.findAll({ where: { masterCustomerId: data.id } });
+      const sampahs = await Sampah.findAll({ where: { ownerCode: data.uniqueCode } });
       for (const sampah of sampahs) {
         await fs.rm(`${qrFolderPath}/images/${sampah.barcode}.png`, function (error: any) {
           if (error) throw error;
@@ -341,7 +311,8 @@ class CustomerController implements IController {
       await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
         if (error) throw error;
       });
-      await historyData.destroy(), await data.destroy();
+      await historyData.destroy();
+      await data.destroy();
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);

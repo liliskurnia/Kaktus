@@ -1,6 +1,6 @@
 node_modules/
-documentation/
 backup/
 build/
 test/
+documentation/kaktus-db.vuerd.json
 .env

@@ -1,0 +1,42 @@
+general format:
+
+    general code: CU-X4A138OQ11BCSO20
+        'CU' = entity identifier
+        'X4A1...' = Unique 16D code
+
+    request codes: CR-2023-02-20-MX0238NP29NS67PX-A0
+        'CR' = Request type
+        '2023-02-20' = Request creation date
+        'MX02...67PX' = unique 16D code
+        'A0' = trash type
+
+    trash codes: TPS1-CJS3O094LR8390MX-A0
+        'TPS1-' = specified tps owner, user trashcodes doesn't generate one
+        'CJS3...90MX'= unique 16D code
+        'A0' = trash type
+
+entity identifiers:
+    CU = Customer
+    OP = Operator
+    DR = Driver
+    ADM / *blank* = Admin (shouldn't have a unique code in the first place)
+
+request types: 
+    CR = Customer Request
+    SP = Scheduled Pickup
+
+general trash types: 
+    U = Undefined (not an option as customers need to specify)
+    A0 = Organik
+    B0 = Daur Ulang
+    NB = Non-Burnable
+    K0 = Khusus
+
+Request Statuses:
+    Requested
+    Accepted
+    Cancled
+    Delayed
+    Picking-Up
+    Picked-Up
+    Completed

@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       requestType: DataTypes.STRING,
       masterDriverId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'master_drivers',
           key: 'id',
@@ -26,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
       trashCode: DataTypes.STRING,
       trashType: DataTypes.STRING,
       status: DataTypes.STRING,
-      customeCode: DataTypes.STRING,
+      customerCode: DataTypes.STRING,
       customerNik: DataTypes.STRING,
       customerName: DataTypes.STRING,
       customerPhone: DataTypes.STRING,
-      pickedAt: DataTypes.DATE,
-      completedAt: DataTypes.DATE,
+      pickedAt: DataTypes.STRING,
+      completedAt: DataTypes.STRING,
     },
     {
       sequelize,

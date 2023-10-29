@@ -132,27 +132,27 @@ class HakAksesController implements IController {
     }
   };
 
-  getAccess = async (req: Request, res: Response): Promise<Response> => {
-    const { username } = req.body;
+  // getAccess = async (req: Request, res: Response): Promise<Response> => {
+  //   const { username } = req.body;
 
-    try {
-      const user = await db.user.findOne({ where: { username } });
-      console.log(user);
-      if (!user) {
-        return res.status(404).send('user not found');
-      }
-      const hakAkses = await dm.findOne({ where: { userId: user.id } });
-      console.log(hakAkses);
-      if (!hakAkses) {
-        return res.status(200).json({ userId: user.id, roleId: 7 });
-      }
+  //   try {
+  //     const user = await db.user.findOne({ where: { username } });
+  //     console.log(user);
+  //     if (!user) {
+  //       return res.status(404).send('user not found');
+  //     }
+  //     const hakAkses = await dm.findOne({ where: { userId: user.id } });
+  //     console.log(hakAkses);
+  //     if (!hakAkses) {
+  //       return res.status(200).json({ userId: user.id, roleId: 7 });
+  //     }
 
-      return res.status(200).json(hakAkses);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).send(`failed to get user previlages`);
-    }
-  };
+  //     return res.status(200).json(hakAkses);
+  //   } catch (err) {
+  //     console.error(err);
+  //     return res.status(500).send(`failed to get user previlages`);
+  //   }
+  // };
 }
 
 export default new HakAksesController();

@@ -38,6 +38,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,
+        defaultValue: 'Requested',
       },
       driverCode: {
         type: Sequelize.STRING(50),

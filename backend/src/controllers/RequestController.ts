@@ -1,23 +1,24 @@
 'use strict';
 import { Request, Response } from 'express';
-import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
+import DateManager from '../utils/DateManager';
 
-const fs = require('fs');
 const qrFolderPath = './public/qrcodes';
 
 const db = require('../db/models');
-const RequestDB = db.master_request;
+const RequestDB = db.master_pickup;
 const DriverHistory = db.accepted_request_history;
 const CustomerHistory = db.customer_request_history;
-const History = db.master_request_history;
+const History = db.master_pickup_history;
 const Driver = db.master_driver;
 const Customer = db.master_customer;
+
+const requestType = 'REQUEST';
 
 class RequestController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const data = await RequestDB.findAll();
+      const data = await RequestDB.findAll({ where: { requestType } });
       if (data.length === 0) {
         return res.status(400).send('belum ada data');
       }
@@ -56,6 +57,20 @@ class RequestController {
     }
   };
 
+  fetchDriverHistory = async (req: Request, res: Response): Promise<Response> => {
+    const { masterDriverId } = req.params;
+    try {
+      const data = await DriverHistory.findAll({ where: { masterDriverId } });
+      if (data.length === 0) {
+        return res.status(400).send('belum ada data');
+      }
+      return res.status(200).json(data);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('error fetching request history');
+    }
+  };
+
   delete = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     try {
@@ -63,7 +78,7 @@ class RequestController {
       if (!data) {
         return res.status(404).send('customer request data not found');
       }
-      const cHistory = await CustomerHistory.findOne({ where: { requestcode: data.requestCode } });
+      const cHistory = await CustomerHistory.findOne({ where: { requestCode: data.requestCode } });
       const dHistory = await DriverHistory.findOne({ where: { requestCode: data.requestCode } });
 
       if (cHistory) {
@@ -80,15 +95,15 @@ class RequestController {
     }
   };
 
-  request = async (req: Request, res: Response): Promise<Response> => {
-    const { masterCustomerId, trashTypeId, programName, createdBy } = req.body;
+  create = async (req: Request, res: Response): Promise<Response> => {
+    const { masterCustomerId, trashTypeId, scheduledDate, programName } = req.body;
 
     try {
-      const customer = await Customer.findByPk({ id: masterCustomerId });
+      const customer = await Customer.findByPk(masterCustomerId);
       if (!customer) {
         return res.status(404).send('customer info not found');
       }
-      const jenis = await db.jenisSampah.findByPk({ id: trashTypeId });
+      const jenis = await db.jenis_sampah.findByPk(trashTypeId);
       let requestCode = BarcodeGenerator.generateRequestCode('CR', jenis.kode, 16, true);
       let exist = await RequestDB.findOne({ where: { requestCode } });
       while (exist) {
@@ -105,10 +120,11 @@ class RequestController {
       const jenisSampah = `${jenis.kode}-${jenis.nama}`;
       //create a new sampah barcode for customer
       await db.sampah_master.create({
-        masterCustomerId: customer.id,
+        ownerCode: customer.uniqueCode,
         jenisSampahId: trashTypeId,
         jenisSampah,
         barcode: trashCode,
+        status: 'Active',
       });
       //generate barcode image for sampah
       BarcodeGenerator.generateImage(trashCode, qrFolderPath, jenisSampah);
@@ -116,14 +132,17 @@ class RequestController {
       //creates request at the request db collections
       await RequestDB.create({
         requestCode,
-        customerCode: customer.uniqueCode,
-        customerNik: customer.nik,
-        customerName: customer.nama,
-        customerPhone: customer.telp,
+        requestType,
+        requesterCode: customer.uniqueCode,
+        requesterNik: customer.nik,
+        requesterName: customer.nama,
+        requesterPhone: customer.telp,
+        requesterGender: customer.gender,
         trashCode,
         trashType: jenisSampah,
+        scheduledDate,
         programName,
-        createdBy,
+        createdBy: customer.uniqueCode,
       });
 
       //create customer's history
@@ -132,17 +151,19 @@ class RequestController {
         masterCustomerId: customer.id,
         trashCode,
         trashType: jenisSampah,
+        status: 'Requested',
       });
 
       //writes the transaction to the master history table
       await History.create({
         requestCode,
-        requestType: 'REQUEST',
+        requestType,
         requesterCode: customer.uniqueCode,
         requesterNik: customer.nik,
         requesterName: customer.nama,
         requesterPhone: customer.telp,
         requesterGender: customer.gender,
+        scheduledDate,
         trashCode,
         trashType: jenisSampah,
         status: 'Requested',
@@ -186,6 +207,7 @@ class RequestController {
         driverNik: driver.nik,
         driverName: driver.nama,
         driverPhone: driver.telp,
+        driverGender: driver.gender,
       });
       await history.update({
         status,
@@ -193,17 +215,34 @@ class RequestController {
         driverNik: driver.nik,
         driverName: driver.nama,
         driverPhone: driver.telp,
+        driverGender: driver.gender,
       });
+
+      const driverHistoryExist = await DriverHistory.findOne({ where: { requestCode } });
+      if (driverHistoryExist) {
+        await DriverHistory.update({
+          requestCode,
+          requestType,
+          masterDriverId: driver.id,
+          trashCode: data.trashCode,
+          trashType: data.trashType,
+          customerCode: data.requesterCode,
+          customerNik: data.requesterNik,
+          customerName: data.requesterName,
+          customerPhone: data.requesterPhone,
+        });
+        return res.status(200).send('request successfuly accepted');
+      }
       await DriverHistory.create({
         requestCode,
-        requestType: 'REQUEST',
+        requestType,
         masterDriverId: driver.id,
         trashCode: data.trashCode,
         trashType: data.trashType,
-        customerCode: data.customerCode,
-        customerNik: data.customerNik,
-        customerName: data.customerName,
-        customerPhone: data.customerPhone,
+        customerCode: data.requesterCode,
+        customerNik: data.requesterNik,
+        customerName: data.requesterName,
+        customerPhone: data.requesterPhone,
       });
       return res.status(200).send('request successfuly accepted');
     } catch (error) {
@@ -214,6 +253,7 @@ class RequestController {
 
   cancel = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
+    const { requesterCode } = req.body;
     const status = 'Cancled';
 
     try {
@@ -226,7 +266,7 @@ class RequestController {
       const dHistory = await DriverHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
 
-      await data.update({ status });
+      await data.update({ status, updatedBy: requesterCode });
       await cHistory.update({ status });
       await dHistory.update({ status });
       await history.update({ status });
@@ -252,12 +292,12 @@ class RequestController {
       const dHistory = await DriverHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
 
-      await data.update({ status });
+      await data.update({ status, updatedBy: data.driverCode });
       await cHistory.update({ status });
       await dHistory.update({ status });
       await history.update({ status });
 
-      return res.status(200).send('status has been successfuly updated to cancled');
+      return res.status(200).send('status has been successfuly updated to delayed');
     } catch (error) {
       console.error(error);
       return res.status(500).send('unable to update status');
@@ -278,12 +318,12 @@ class RequestController {
       const dHistory = await DriverHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
 
-      await data.update({ status });
+      await data.update({ status, updatedBy: data.driverCode });
       await cHistory.update({ status });
       await dHistory.update({ status });
       await history.update({ status });
 
-      return res.status(200).send('status has been successfuly updated to cancled');
+      return res.status(200).send('status has been successfuly updated to picking-up');
     } catch (error) {
       console.error(error);
       return res.status(500).send('unable to update status');
@@ -293,7 +333,7 @@ class RequestController {
   pickedup = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const status = 'Picked Up';
-
+    const now = DateManager.getTimestamp();
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
@@ -304,12 +344,12 @@ class RequestController {
       const dHistory = await DriverHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
 
-      await data.update({ status });
-      await cHistory.update({ status });
-      await dHistory.update({ status });
-      await history.update({ status });
+      await data.update({ status, pickedAt: now, updatedBy: data.driverCode });
+      await cHistory.update({ status, pickedAt: now });
+      await dHistory.update({ status, pickedAt: now });
+      await history.update({ status, pickedAt: now });
 
-      return res.status(200).send('status has been successfuly updated to cancled');
+      return res.status(200).send('status has been successfuly updated to picked-up');
     } catch (error) {
       console.error(error);
       return res.status(500).send('unable to update status');
@@ -318,7 +358,9 @@ class RequestController {
 
   complete = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
+    const { tpsCode } = req.body;
     const status = 'Completed';
+    const now = DateManager.getTimestamp();
 
     try {
       const data = await RequestDB.findByPk(id);
@@ -326,16 +368,20 @@ class RequestController {
         return res.status(404).send('customer request data not found');
       }
       const requestCode = data.requestCode;
+      const barcode = data.trashCode;
+      const tps = await db.tps.findOne({ where: { barcode: tpsCode } });
       const cHistory = await CustomerHistory.findOne({ where: { requestCode } });
       const dHistory = await DriverHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
+      const sampah = await db.sampah_master.findOne({ where: { barcode } });
 
-      await data.update({ status });
-      await cHistory.update({ status });
-      await dHistory.update({ status });
-      await history.update({ status });
+      await data.update({ status, completedAt: now, updatedBy: data.driverCode });
+      await cHistory.update({ status, completedAt: now });
+      await dHistory.update({ status, completedAt: now });
+      await history.update({ status, completedAt: now });
+      await sampah.update({ status: 'Collected', latitude: tps.latitude, longitude: tps.longitude, updatedBy: data.driverCode });
 
-      return res.status(200).send('status has been successfuly updated to cancled');
+      return res.status(200).send('status has been successfuly updated to completed');
     } catch (error) {
       console.error(error);
       return res.status(500).send('unable to update status');

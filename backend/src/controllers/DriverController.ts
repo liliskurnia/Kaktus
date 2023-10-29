@@ -242,6 +242,49 @@ class DriverController implements IController {
     }
   };
 
+  updateTPS = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { tpId } = req.body;
+    try {
+      if (!tpId) {
+        return res.status(400).send('tps belum di isi');
+      }
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(404).send('driver data not found');
+      }
+      const tps = await db.tps.findByPk(tpId);
+      if (!tps) {
+        return res.status(404).send('data tps tidak ditemukan');
+      }
+      await data.update({ tpId });
+      return res.status(200).send(`${data.nama} berhasil didaftarkan sebagai driver ${tps.nama}`);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('failed to update tps');
+    }
+  };
+
+  updateLocation = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { latitude, longitude } = req.body;
+    try {
+      if (!latitude || !longitude) {
+        return res.status(400).send('location data not complete');
+      }
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(404).send('driver data not found');
+      }
+
+      await data.update({ latitude, longitude });
+      return res.status(200).send('driver location updated');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('failed to update driver location');
+    }
+  };
+
   addPoint = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { points } = req.body;

@@ -246,6 +246,29 @@ class OperatorController implements IController {
     }
   };
 
+  updateTPS = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { tpId } = req.body;
+    try {
+      if (!tpId) {
+        return res.status(400).send('tps belum di isi');
+      }
+      const data = await dm.findByPk(id);
+      if (!data) {
+        return res.status(404).send('operator data not found');
+      }
+      const tps = await db.tps.findByPk(tpId);
+      if (!tps) {
+        return res.status(404).send('data tps tidak ditemukan');
+      }
+      await data.update({ tpId });
+      return res.status(200).send(`${data.nama} berhasil didaftarkan sebagai operator ${tps.nama}`);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('failed to update tps');
+    }
+  };
+
   delete = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 

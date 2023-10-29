@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       requestType: DataTypes.STRING,
       masterCustomerId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
           model: 'master_customers',
           key: 'id',

@@ -6,7 +6,7 @@ class HakAksesRoutes extends BaseRoutes {
     this.router.get('/', HakAksesController.index);
     this.router.post('/', HakAksesController.create);
     this.router.get('/:id', HakAksesController.show);
-    this.router.post('/access', HakAksesController.getAccess);
+    // this.router.post('/access', HakAksesController.getAccess);
     this.router.put('/:id', HakAksesController.update);
     this.router.delete('/:id', HakAksesController.delete);
   }

@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     driverName: DataTypes.STRING,
     driverPhone: DataTypes.STRING,
     driverGender: DataTypes.STRING,
+    scheduledDate: DataTypes.DATE,
     status: DataTypes.STRING,
     pickedAt: DataTypes.DATE,
     completedAt: DataTypes.DATE

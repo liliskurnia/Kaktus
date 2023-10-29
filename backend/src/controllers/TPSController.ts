@@ -102,6 +102,43 @@ class TPSController implements IController {
     }
   };
 
+  registerTempatSampah = async (req: Request, res: Response): Promise<Response> => {
+    const { tpsId, jenisSampahId } = req.body;
+    try {
+      if (!tpsId) {
+        return res.status(400).send('id tps belum diisi');
+      }
+      if (!jenisSampahId) {
+        return res.status(400).send('jenis sampah belum diisi');
+      }
+      if (tpsId === 1 || jenisSampahId === 1) {
+        return res.status(400).send('this is an id reserved for unassigned values, unable to register tempat sampah');
+      }
+      const tps = await dm.findByPk(tpsId);
+      const jenis = await db.jenis_sampah.findByPk(jenisSampahId);
+      if (!tps) {
+        return res.status(404).send('tps tidak ditemukan/terdaftar');
+      }
+      if (!jenis) {
+        return res.status(404).send('jenis sampah tidak ditemukan/terdaftar');
+      }
+      const jenisSampah = `${jenis.kode}-${jenis.nama}`;
+      const barcode = `${BarcodeGenerator.generateCode(`TPS${tpsId - 1}-`, 16, true)}-${jenis.kode}`;
+      await db.sampah_master.create({
+        ownerCode: tps.barcode,
+        jenisSampahId,
+        jenisSampah,
+        barcode,
+        status: 'Inactive',
+      });
+      BarcodeGenerator.generateImage(barcode, './public/qrcodes', `${tps.nama}-${jenisSampah}`);
+      return res.status(200).send('sampah has been registered successfully');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('registrasi tempat sampah error');
+    }
+  };
+
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     const { nama, latitude, longitude, programName, updatedBy } = req.body;

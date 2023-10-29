@@ -9,13 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      masterCustomerId: {
-        type: Sequelize.INTEGER,
+      ownerCode: {
+        type: Sequelize.STRING(50),
         allowNull: false,
-        references: {
-          model: 'master_customers',
-          key: 'id',
-        },
       },
       jenisSampahId: {
         type: Sequelize.INTEGER,

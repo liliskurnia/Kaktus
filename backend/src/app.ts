@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
-import path from 'path';
 import { config as dotenv } from 'dotenv';
 
 //Router
@@ -22,6 +21,7 @@ import SampahRoutes from './routers/SampahRoutes';
 import JenisSampahRoutes from './routers/JenisSampahRoutes';
 import DownloadRoutes from './routers/DownloadRoutes';
 import RequestRoutes from './routers/RequestRoutes';
+import ScheduleRoutes from './routers/ScheduleRoutes';
 
 class App {
   public app: Application;
@@ -43,14 +43,13 @@ class App {
   }
 
   protected routes(): void {
-    this.app.route('/').get((req, res) => {
-      res.render('index');
-    });
+    // this.app.route('/').get((req, res) => {
+    //   res.render('index');
+    // });
 
-    this.app.route('/users').post((req, res) => {
-      res.send(req.body);
-    });
-
+    // this.app.route('/users').post((req, res) => {
+    //   res.send(req.body);
+    // });
     this.app.use('/api/v1/auth', AuthRoutes);
     this.app.use('/api/v1/users', UserRoutes);
     this.app.use('/api/v1/roles', RoleRoutes);
@@ -64,6 +63,7 @@ class App {
     this.app.use('/api/v1/sampah', SampahRoutes);
     this.app.use('/api/v1/jenisSampah', JenisSampahRoutes);
     this.app.use('/api/v1/requests', RequestRoutes);
+    this.app.use('/api/v1/schedules', ScheduleRoutes);
     this.app.use('/download', DownloadRoutes);
     this.app.use(express.static('public'));
   }
