@@ -7,6 +7,7 @@ class ScheduleRoutes extends BaseRoutes {
   public routes(): void {
     this.router.get('/', ScheduleController.index);
     this.router.get('/:id', ScheduleController.show);
+    this.router.get('/tps/:tpId', ScheduleController.indexByTps);
     this.router.delete('/:id', ScheduleController.delete);
     this.router.post('/', validateSchedule, ScheduleController.create);
     this.router.put('/:id', ScheduleController.update);

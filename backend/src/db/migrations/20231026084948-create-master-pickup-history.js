@@ -37,7 +37,6 @@ module.exports = {
       },
       trashCode: {
         type: Sequelize.STRING(50),
-        unique: true,
         allowNull: false,
       },
       trashType: {

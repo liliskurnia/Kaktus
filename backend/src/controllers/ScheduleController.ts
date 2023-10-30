@@ -23,7 +23,25 @@ class ScheduleController implements IController {
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to fetch schedule data');
+      return res.status(500).send('gagal mengambil data scheduled request');
+    }
+  };
+
+  indexByTps = async (req: Request, res: Response): Promise<Response> => {
+    const { tpId } = req.params;
+    try {
+      const tps = await TPS.findByPk(tpId);
+      if (!tps) {
+        return res.status(404).send('data tps tidak dapat ditemukan');
+      }
+      const data = await RequestDB.findAll({ where: { requesterCode: tps.barcode } });
+      if (!data || data.length === 0) {
+        return res.status(404).send('data schedule tps tidak dapat ditemukan/belum ada');
+      }
+      return res.status(200).json(data);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('gagal mengambil data schedule tps');
     }
   };
 
@@ -32,12 +50,12 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('specified data not found');
+        return res.status(404).send('data request yang dicari tidak dapat ditemukan');
       }
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to fetch specified schedule data');
+      return res.status(500).send('gagal mengambil data scheduled request yang dipilih');
     }
   };
 
@@ -48,16 +66,19 @@ class ScheduleController implements IController {
       const operator = await Operator.findOne({ where: { uniqueCode: operatorCode } });
       const driver = await Driver.findOne({ where: { uniqueCode: driverCode } });
       if (!tps) {
-        return res.status(404).send('tps data not found');
+        return res.status(404).send('data tps tidak dapat ditemukan');
       }
       if (!operator) {
-        return res.status(404).send('operator data not found');
+        return res.status(404).send('data operator tidak dapat ditemukan');
       }
       if (!driver) {
-        return res.status(404).send('driver data not found');
+        return res.status(404).send('data driver tidak dapat ditemukan');
       }
       if (!trashCode) {
         return res.status(400).send('kode sampah belum diisi');
+      }
+      if (operator.tpId !== tps.id && operator.tpId !== driver.tpId) {
+        return res.status(400).send('akses pembuatan schedule ditolak (id operator tidak sama dengan id tps and id tps driver)');
       }
       const sampah = await Sampah.findOne({ where: { barcode: trashCode } });
       const jenis = await db.jenis_sampah.findByPk(sampah.jenisSampahId);
@@ -76,21 +97,7 @@ class ScheduleController implements IController {
         requestType,
         requesterCode: tps.barcode,
         requesterName: tps.nama,
-        driverCode,
-        driverNik: driver.nik,
-        driverName: driver.nama,
-        driverPhone: driver.telp,
-        trashCode,
-        trashType: sampah.jenisSampah,
-        scheduledDate,
-        status: 'Assigned',
-        createdBy: assignedBy,
-      });
-      await History.create({
-        requestCode,
-        requestType,
-        requesterCode: tps.barcode,
-        requesterName: tps.nama,
+        requesterGender: 'X',
         driverCode,
         driverNik: driver.nik,
         driverName: driver.nama,
@@ -102,10 +109,27 @@ class ScheduleController implements IController {
         status: 'Assigned',
         createdBy: assignedBy,
       });
-      return res.status(200).send('schedule created successfully');
+      await History.create({
+        requestCode,
+        requestType,
+        requesterCode: tps.barcode,
+        requesterName: tps.nama,
+        requesterGender: 'X',
+        driverCode,
+        driverNik: driver.nik,
+        driverName: driver.nama,
+        driverPhone: driver.telp,
+        driverGender: driver.gender,
+        trashCode,
+        trashType: sampah.jenisSampah,
+        scheduledDate,
+        status: 'Assigned',
+        createdBy: assignedBy,
+      });
+      return res.status(200).send('pembuatan schedule berhasil');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule creation error');
+      return res.status(500).send('gagal menmbuat schedule');
     }
   };
 
@@ -115,23 +139,26 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('schedule data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
       const tps = await TPS.findOne({ where: { barcode: tpsCode }, attributes: ['nama'] });
       const operator = await Operator.findOne({ where: { uniqueCode: operatorCode }, attributes: ['nama'] });
       const driver = await Driver.findOne({ where: { uniqueCode: driverCode }, attributes: ['nama'] });
       if (!tps) {
-        return res.status(404).send('tps data not found');
+        return res.status(404).send('data tps tidak dapat ditemukan');
       }
       if (!operator) {
-        return res.status(404).send('operator data not found');
+        return res.status(404).send('data operator tidak dapat ditemukan');
       }
       if (!driver) {
-        return res.status(404).send('driver data not found');
+        return res.status(404).send('data driver tidak dapat ditemukan');
       }
       if (!trashCode) {
         return res.status(400).send('kode sampah belum diisi');
+      }
+      if (operator.tpId !== tps.id && operator.tpId !== driver.tpId) {
+        return res.status(400).send('akses pengubahan schedule ditolak (id operator tidak sama dengan id tps and id tps driver)');
       }
       const sampah = await Sampah.findOne({ where: { barcode: trashCode } });
       if (!sampah) {
@@ -145,6 +172,7 @@ class ScheduleController implements IController {
         driverNik: driver.nik,
         driverName: driver.nama,
         driverPhone: driver.telp,
+        driverGender: driver.gender,
         trashCode,
         trashType: sampah.jenisSampah,
         scheduledDate,
@@ -163,10 +191,10 @@ class ScheduleController implements IController {
         scheduledDate,
         updatedBy: assignedBy,
       });
-      return res.status(200).send('schedule data updated successfully');
+      return res.status(200).send('data schedule berhasil diupdate');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('update error');
+      return res.status(500).send('gagal mengupdate data schedule');
     }
   };
 
@@ -177,16 +205,16 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
 
       await data.update({ status });
       await history.update({ status });
-      return res.status(200).send('request status successfuly updated');
+      return res.status(200).send("berhasil mengubah status request menjadi 'Picking-Up'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule deletion error');
+      return res.status(500).send('gagal mengupdate status request');
     }
   };
 
@@ -198,13 +226,13 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
 
       await data.update({ status, updatedBy: requesterCode });
       await history.update({ status });
-      return res.status(200).send('request status successfuly updated');
+      return res.status(200).send("berhasil mengubah status request menjadi 'Cancled'");
     } catch (error) {
       console.error(error);
       return res.status(500).send('schedule deletion error');
@@ -219,16 +247,16 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
 
       await data.update({ status, pickedAt: now, updatedBy: data.driverCode });
       await history.update({ status, pickedAt: now });
-      return res.status(200).send('request status successfuly updated');
+      return res.status(200).send("berhasil mengubah status request menjadi 'Picked-Up'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule deletion error');
+      return res.status(500).send('gagal mengupdate status request');
     }
   };
 
@@ -240,7 +268,7 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
       const sampah = await Sampah.findOne({ where: { barcode: data.trashCode } });
@@ -248,10 +276,10 @@ class ScheduleController implements IController {
       await data.update({ status, completedAt: now, updatedBy: data.driverCode });
       await history.update({ status, completedAt: now });
       await sampah.update({ status: 'Collected', latitude: tps.latitude, longitude: tps.longitude, updatedBy: data.driverCode });
-      return res.status(200).send('request status successfuly updated');
+      return res.status(200).send("berhasil mengupdate status request menjadi 'Completed'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule deletion error');
+      return res.status(500).send('gagal mengupdate status request');
     }
   };
 
@@ -261,16 +289,16 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const history = await History.findOne({ where: { requestCode: data.requestCode } });
 
       await data.update({ status, updatedBy: data.driverCode });
       await history.update({ status });
-      return res.status(200).send('request status successfuly updated');
+      return res.status(200).send("berhasil mengupdate status request menjadi 'Delayed'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule deletion error');
+      return res.status(500).send('gagal mengupdate status request');
     }
   };
   //delete
@@ -279,14 +307,14 @@ class ScheduleController implements IController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('schedule data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const current = data.requestCode;
       await data.destroy();
-      return res.status(200).send(`record ${current} has been successfully deleted`);
+      return res.status(200).send(`data ${current} telah berhasil dihapus`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('schedule deletion error');
+      return res.status(500).send('gagal menghapus schedule');
     }
   };
 }

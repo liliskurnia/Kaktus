@@ -10,6 +10,7 @@ class DriverRoutes extends BaseRoutes {
     this.router.post('/register', validateDReg, DriverController.register);
     this.router.post('/qr/generate/:id', DriverController.createBarcode);
     this.router.get('/:id', DriverController.show);
+    this.router.get('/scheduled/:id', DriverController.getSchedule);
     this.router.put('/:id', DriverController.update);
     this.router.put('/geo/:id', DriverController.updateLocation);
     this.router.put('/managetps/:id', DriverController.updateTPS);

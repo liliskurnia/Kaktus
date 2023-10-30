@@ -20,7 +20,7 @@ class TPSController implements IController {
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengambil data tps');
     }
   };
 
@@ -29,13 +29,13 @@ class TPSController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('data tps tidak ditemukan');
+        return res.status(404).send('data tps yang dipilih tidak dapat ditemukan');
       } else {
         return res.status(200).json(data);
       }
     } catch (err) {
       console.error(err);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengambil data tps yang dipilih');
     }
   };
 
@@ -83,7 +83,7 @@ class TPSController implements IController {
       return res.status(200).send('tps telah berhasil dibuat');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal membuat data tps baru');
     }
   };
 
@@ -92,13 +92,13 @@ class TPSController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(400).send('customer data not found');
+        return res.status(400).send('data tps tidak dapat ditemukan');
       }
       BarcodeGenerator.generateImage(data.barcode, qrFolderPath, data.nama);
-      return res.status(200).send('Barcode file generated successfully');
+      return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('barcode generation error');
+      return res.status(500).send('gagal membuat barcode');
     }
   };
 
@@ -112,7 +112,7 @@ class TPSController implements IController {
         return res.status(400).send('jenis sampah belum diisi');
       }
       if (tpsId === 1 || jenisSampahId === 1) {
-        return res.status(400).send('this is an id reserved for unassigned values, unable to register tempat sampah');
+        return res.status(400).send("ID ini eksklusif untuk 'Unassigned', tidak dapat mendaftarkan sampah dengan id ini");
       }
       const tps = await dm.findByPk(tpsId);
       const jenis = await db.jenis_sampah.findByPk(jenisSampahId);
@@ -132,7 +132,7 @@ class TPSController implements IController {
         status: 'Inactive',
       });
       BarcodeGenerator.generateImage(barcode, './public/qrcodes', `${tps.nama}-${jenisSampah}`);
-      return res.status(200).send('sampah has been registered successfully');
+      return res.status(200).send('tempat sampah telah berhasil diregistrasi');
     } catch (error) {
       console.error(error);
       return res.status(500).send('registrasi tempat sampah error');
@@ -162,7 +162,7 @@ class TPSController implements IController {
       return res.status(200).send(`data tps: ${current} telah berhasil diubah`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengupdate tps');
     }
   };
 
@@ -187,7 +187,7 @@ class TPSController implements IController {
       return res.status(200).send(`data tps: ${current} telah berhasil diubah`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengupdate status tps');
     }
   };
 
@@ -213,7 +213,7 @@ class TPSController implements IController {
       return res.status(200).send(`data tps: ${current} telah berhasil dihapus`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal menghapus tps');
     }
   };
 }

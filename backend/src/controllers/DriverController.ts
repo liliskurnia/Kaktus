@@ -303,6 +303,41 @@ class DriverController implements IController {
     }
   };
 
+  getSchedule = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    try {
+      const driver = await dm.findByPk(id);
+      if (!driver) {
+        return res.status(404).send('data driver tidak dapat ditemukan');
+      }
+      const datas = await db.master_pickup.findAll({
+        where: {
+          requestType: 'SCHEDULED',
+          driverCode: driver.uniqueCode,
+        },
+        attributes: ['id', 'requestCode', 'requesterCode', 'trashCode', 'trashType', 'scheduledDate', 'status', 'pickedAt', 'completedAt'],
+        order: [['scheduledDate', 'DESC']],
+      });
+      if (!datas || datas.length === 0) {
+        return res.status(404).send('data schedule tidak ditemukan/ belum ada data');
+      }
+      for (var data of datas) {
+        var trash = await db.sampah_master.findOne({ where: { barcode: data.trashCode } });
+        if (!trash) {
+          console.log('data not found');
+        }
+        const latitude = trash.latitude;
+        const longitude = trash.longitude;
+        data.dataValues['trashLocation'] = { latitude, longitude };
+      }
+
+      return res.status(200).json(datas);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('gagal mengambil data schedule');
+    }
+  };
+
   delete = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 

@@ -96,6 +96,7 @@ Driver Routes
         update tps:             PUT       /api/v1/drivers/managetps/:id         tpId*
         update location:        PUT       /api/v1/drivers/geo/:id               latitude*, longitude*
         add points:             PUT       /api/v1/drivers/addPoints/:id         points*
+        get schedule            GET       /api/v1/drivers/scheduled/:id
 
 Operator Routes
     route: {ip:port}/api/v1/operators
@@ -162,6 +163,7 @@ Scheduled Request Routes
         picking up request:     PUT       /api/v1/schedules/pickingup/:id
         picked up request:      PUT       /api/v1/schedules/pickedup/:id
         completed request:      PUT       /api/v1/schedules/complete/:id
+        get tps schedule index: GET       /api/v1/schedules/tps/:tpId
 
 Download Routes
     route: {ip:port}/download
