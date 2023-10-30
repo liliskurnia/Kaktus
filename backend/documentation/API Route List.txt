@@ -2,163 +2,162 @@ APP INDEX = {ip:port}/
 AUTH 
     route: {ip:port}/api/v1/auth
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
-        register:               POST      /api/v1/auth/register                 username, password*, nik*, nama*, email, telp, alamat, kota, gender
+        register:               POST      /api/v1/auth/register                 username, password*, nik*, nama*, email, telp, alamat, kota, gender, programName, createdBy
         login:                  POST      /api/v1/auth/login                    username/nik/email/telp*, password*
         profile:                GET       /api/v1/auth/profile
-        reset password:         POST      /api/v1/auth/reset
+        reset password:         POST      /api/v1/auth/reset                    email/nik/telp/username*,password
 
 USER Manager
     route: {ip:port}/api/v1/users
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/users/                        
-        create:                 POST      /api/v1/users/                        
-        get by id:              GET       /api/v1/users/:id
-        update:                 PUT       /api/v1/users/:id
+        create:                 POST      /api/v1/users/                        username, password*, nik*, nama*, email, telp, alamat*, kota*, gender*, programName, createdBy
+        get by id:              GET       /api/v1/users/:id                     
+        update:                 PUT       /api/v1/users/:id                     nama*, alamat*, email*, telp*, programName, updateBy
         delete:                 DELETE    /api/v1/users/:id
 
         get max id:             GET       /api/v1/users/maxId
-        check if admin:         POST      /api/v1/users/check
+        check if admin:         POST      /api/v1/users/check                   password
 
 ROLE Manager
     route: {ip:port}/api/v1/roles
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
-        index:                  GET       /api/v1/roles/
-        create:                 POST      /api/v1/roles/
-        get by id:              GET       /api/v1/roles/:id
-        update:                 PUT       /api/v1/roles/:id
-        delete:                 DELETE    /api/v1/roles/:id
+        index:                  GET       /api/v1/roles/                        
+        create:                 POST      /api/v1/roles/                        nama*, programName, createdBy
+        get by id:              GET       /api/v1/roles/:id                     
+        update:                 PUT       /api/v1/roles/:id                     nama*, programName, updatedBy
+        delete:                 DELETE    /api/v1/roles/:id                     
 
 MENU Manager
     route: {ip:port}/api/v1/menus
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/menus/
-        create:                 POST      /api/v1/menus/
+        create:                 POST      /api/v1/menus/                        nama*, icon, url, programName, createdBy
         get by id:              GET       /api/v1/menus/:id
-        update:                 PUT       /api/v1/menus/:id
+        update:                 PUT       /api/v1/menus/:id                     nama*, icon, url, programName, updatedBy
         delete:                 DELETE    /api/v1/menus/:id
 
 HAK AKSES Manager
     route: {ip:port}/api/v1/hakAkses
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/hakAkses/
-        create:                 POST      /api/v1/hakAkses/
+        create:                 POST      /api/v1/hakAkses/                     userId*, roleId*, programName, createdBy
         get by id:              GET       /api/v1/hakAkses/:id
-        update:                 PUT       /api/v1/hakAkses/:id
+        update:                 PUT       /api/v1/hakAkses/:id                  userId*, roleId*, programName, updatedBy
         delete:                 DELETE    /api/v1/hakAkses/:id
 
 ROLE MENU Manager
     route: {ip:port}/api/v1/roleMenu
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/roleMenu/
-        create:                 POST      /api/v1/roleMenu/
+        create:                 POST      /api/v1/roleMenu/                     roleId*, menuId*, programName, createdBy
         get by id:              GET       /api/v1/roleMenu/:id
-        update:                 PUT       /api/v1/roleMenu/:id
+        update:                 PUT       /api/v1/roleMenu/:id                  roleId*, menuId*, programName, updatedBy
         delete:                 DELETE    /api/v1/roleMenu/:id
 
 TPS Manager
     route: {ip:port}/api/v1/tps
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/tps/
-        create:                 POST      /api/v1/tps/
+        create:                 POST      /api/v1/tps/                          nama*, latitude*, longitude*, programName, createdBy
         get by id:              GET       /api/v1/tps/:id
-        update:                 PUT       /api/v1/tps/:id
+        update:                 PUT       /api/v1/tps/:id                       nama*, latitude*, longitude*, programName, updatedBy
         delete:                 DELETE    /api/v1/tps/:id
 
-        register sampah:        POST      /api/v1/tps/sampah/register
-        generate barcode img:   POST      /api/v1/tps/qr/generate/:id
-        update status:          PUT       /api/v1/tps/status/:id
+        register sampah:        POST      /api/v1/tps/sampah/register           tpsId*, jenisSampahId*
+        generate barcode img:   POST      /api/v1/tps/qr/generate/:id           
+        update status:          PUT       /api/v1/tps/status/:id                status*, programName, updatedBy
 
 Customer Routes
     route: {ip:port}/api/v1/customers
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/customers/
-        create:                 POST      /api/v1/customers/
+        create:                 POST      /api/v1/customers/                    userId*, programName, createdBy
         get by id:              GET       /api/v1/customers/:id
-        update:                 PUT       /api/v1/customers/:id
+        update:                 PUT       /api/v1/customers/:id                 nama*, alamat*, email*, telp, programName, updatedBy
         delete:                 DELETE    /api/v1/customers/:id
 
-        register:               POST      /api/v1/customers/register
+        register:               POST      /api/v1/customers/register            username, password*, nik*, nama*, email*, telp, alamat*, kota*, gender*, programName, createdBy
         generate barcode img:   POST      /api/v1/customers/qr/generate/:id
         index sampah:           GET       /api/v1/customers/listSampah/:id
-        add points:             PUT       /api/v1/customers/addPoints/:id
+        add points:             PUT       /api/v1/customers/addPoints/:id       points*
 
 Driver Routes
     route: {ip:port}/api/v1/drivers
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/drivers/
-        create:                 POST      /api/v1/drivers/
+        create:                 POST      /api/v1/drivers/                      userId*, programnName, createdBy
         get by id:              GET       /api/v1/drivers/:id
-        update:                 PUT       /api/v1/drivers/:id
+        update:                 PUT       /api/v1/drivers/:id                   tpId*, nama*, alamat*, email, telp*, programName, updatedBy
         delete:                 DELETE    /api/v1/drivers/:id
 
-        register:               POST      /api/v1/drivers/register
+        register:               POST      /api/v1/drivers/register              username, password*, nik*, nama*, email, telp*, alamat*, kota*, gender*, programName, createdBy
         generate barcode img:   POST      /api/v1/drivers/qr/generate/:id
-        update tps:             PUT       /api/v1/drivers/managetps/:id
-        update location:        PUT       /api/v1/drivers/geo/:id
-        add points:             PUT       /api/v1/drivers/addPoints/:id
+        update tps:             PUT       /api/v1/drivers/managetps/:id         tpId*
+        update location:        PUT       /api/v1/drivers/geo/:id               latitude*, longitude*
+        add points:             PUT       /api/v1/drivers/addPoints/:id         points*
 
 Operator Routes
     route: {ip:port}/api/v1/operators
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/operators/
-        create:                 POST      /api/v1/operators/
+        create:                 POST      /api/v1/operators/                    userId*, tpId*, programName, createdBy
         get by id:              GET       /api/v1/operators/:id
-        update:                 PUT       /api/v1/operators/:id
+        update:                 PUT       /api/v1/operators/:id                 tpId*, nama*, alamat*, email*, telp*, programName, updatedBy
         delete:                 DELETE    /api/v1/operators/:id
 
+        register:               POST      /api/v1/operators/register            username*, password*, nik*, nama*, email*, telp, alamat*, kota*, gender*, programName, createdBy
         generate barcode img:   POST      /api/v1/operators/qr/generate/:id
-        update tps:             PUT       /api/v1/operators/managetps/:id
+        update tps:             PUT       /api/v1/operators/managetps/:id       tpId*
 
 Trash Bin Manager
     route: {ip:port}/api/v1/sampah
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/sampah/
-        create:                 POST      /api/v1/sampah/
         get by id:              GET       /api/v1/sampah/:id
-        update:                 PUT       /api/v1/sampah/:id
+        update:                 PUT       /api/v1/sampah/:id                    latitude, longitude
         delete:                 DELETE    /api/v1/sampah/:id
 
-        update location:        PUT       /api/v1/sampah/location/:id
-        update status:          PUT       /api/v1/sampah/status/:id
+        update location:        PUT       /api/v1/sampah/location/:id           latitude, longitude, status
+        update status:          PUT       /api/v1/sampah/status/:id             status, programName, updatedBy
 
 Trash Type Manager
     route: {ip:port}/api/v1/jenisSampah
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/jenisSampah/
-        create:                 POST      /api/v1/jenisSampah/
+        create:                 POST      /api/v1/jenisSampah/                  nama, kode, programName, createdBy
         get by id:              GET       /api/v1/jenisSampah/:id
-        update:                 PUT       /api/v1/jenisSampah/:id
+        update:                 PUT       /api/v1/jenisSampah/:id               nama, kode, programName, updatedBy
         delete:                 DELETE    /api/v1/jenisSampah/:id
 
 Request Routes
     route: {ip:port}/api/v1/requests
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/requests/
-        create:                 POST      /api/v1/requests/
+        create:                 POST      /api/v1/requests/                     masterCustomerId, trashTypeId, scheduleDate, programName
         get by id:              GET       /api/v1/requests/:id
-        update:                 PUT       /api/v1/requests/:id
         delete:                 DELETE    /api/v1/requests/:id
 
-        fetch customer history: GET       /api/v1/requests/:masterCustomerId
+        fetch customer history: GET       /api/v1/requests/:masterCustomerId    
         fetch driver history:   GET       /api/v1/requests/:masterDriverId
         
-        accept request(driver): PUT       /api/v1/requests/accept/:id
-        cancel request:         PUT       /api/v1/requests/cancel/:id
+        accept request(driver): PUT       /api/v1/requests/accept/:id           driverCode, programName
+        cancel request:         PUT       /api/v1/requests/cancel/:id           requesterCode
         delayed request(driver):PUT       /api/v1/requests/delayed/:id
         picking up request:     PUT       /api/v1/requests/pickingup/:id
         picked up request:      PUT       /api/v1/requests/pickedup/:id
-        completed request:      PUT       /api/v1/requests/complete/:id
+        completed request:      PUT       /api/v1/requests/complete/:id         tpsCode
 
 Scheduled Request Routes
     route: {ip:port}/api/v1/schedules
         #FUNCTION               #TYPE     #ROUTE                                #REQ.BODY
         index:                  GET       /api/v1/schedules/
-        create:                 POST      /api/v1/schedules/
-        get by id:              GET       /api/v1/schedules/:id
-        update:                 PUT       /api/v1/schedules/:id
+        create:                 POST      /api/v1/schedules/                    tpsCode, operatorCode, driverCode, trashCode, scheduleDate, createdBy
+        get by id:              GET       /api/v1/schedules/:id                 
+        update:                 PUT       /api/v1/schedules/:id                 tpsCode, operatorCode, driverCode, trashCode, scheduleDate, updatedBy
         delete:                 DELETE    /api/v1/schedules/:id
 
-        cancel request(?):      PUT       /api/v1/schedules/cancel/:id
+        cancel request(?):      PUT       /api/v1/schedules/cancel/:id          requesterCode
         delayed request(driver):PUT       /api/v1/schedules/delayed/:id
         picking up request:     PUT       /api/v1/schedules/pickingup/:id
         picked up request:      PUT       /api/v1/schedules/pickedup/:id
