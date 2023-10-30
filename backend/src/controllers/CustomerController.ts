@@ -57,7 +57,7 @@ class CustomerController implements IController {
         }
         if (admin === true) {
           //if admin, cancel creation
-          return res.status(400).send('Admins cannot have other previlages');
+          return res.status(400).send('Admin tidak boleh memiliki hak akses lain');
         } else if (customer !== true) {
           //if role as customer not assigned, assign the role as customer
           const roleId = await Role.findOne({ where: { nama: 'Customer' } });
@@ -168,7 +168,7 @@ class CustomerController implements IController {
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('registrasi user error');
     }
   };
 
@@ -199,12 +199,12 @@ class CustomerController implements IController {
       }
       const data = await db.sampah_master.findAll({ where: { ownerCode: customer.uniqueCode }, order: ['id'] });
       if (!data) {
-        return res.status(404).send('data sampah not found');
+        return res.status(404).send('data sampah tidak ditemukan');
       }
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mencari data sampah');
     }
   };
 
@@ -213,13 +213,13 @@ class CustomerController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(400).send('customer data not found');
+        return res.status(400).send('data customer tidak ditemukan');
       }
       BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
-      return res.status(200).send('Barcode file generated successfully');
+      return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('barcode generation error');
+      return res.status(500).send('gagal membuat barcode');
     }
   };
 
@@ -275,7 +275,7 @@ class CustomerController implements IController {
       return res.status(200).send('point berhasil ditambah');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('penambahan point error');
     }
   };
 

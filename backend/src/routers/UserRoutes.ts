@@ -1,5 +1,6 @@
 import UserController from '../controllers/UserController';
 import { auth } from '../middlewares/AuthMiddleware';
+import validateUser from '../middlewares/UserValidator';
 import BaseRoutes from './BaseRouter';
 
 class UserRoutes extends BaseRoutes {

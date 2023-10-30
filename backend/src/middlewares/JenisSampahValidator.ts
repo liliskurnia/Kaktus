@@ -2,10 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { check } from 'express-validator/src/middlewares/validation-chain-builders';
 import { validationResult } from 'express-validator/src/validation-result';
 
-const validate = [
-  check('nik').isLength({ min: 12 }),
-  check('password').isLength({ min: 6 }),
+const validateJSampah = [
   check('nama').isString(),
+  check('kode').isString(),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
@@ -17,4 +16,4 @@ const validate = [
   },
 ];
 
-export default validate;
+export default validateJSampah;

@@ -1,12 +1,13 @@
 import OperatorController from '../controllers/OperatorController';
 import { auth } from '../middlewares/AuthMiddleware';
+import validateOReg from '../middlewares/OperatorValidator';
 import BaseRoutes from './BaseRouter';
 
 class OperatorRoutes extends BaseRoutes {
   public routes(): void {
     this.router.get('/', OperatorController.index);
     this.router.post('/', OperatorController.create);
-    this.router.post('/register', OperatorController.register);
+    this.router.post('/register', validateOReg, OperatorController.register);
     this.router.post('/qr/generate/:id', OperatorController.createBarcode);
     this.router.put('/managetps/:id', OperatorController.updateTPS);
     this.router.get('/:id', OperatorController.show);

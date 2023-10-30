@@ -1,5 +1,6 @@
 import ScheduleController from '../controllers/ScheduleController';
 import { auth } from '../middlewares/AuthMiddleware';
+import validateSchedule from '../middlewares/SchedulingValidator';
 import BaseRoutes from './BaseRouter';
 
 class ScheduleRoutes extends BaseRoutes {
@@ -7,7 +8,7 @@ class ScheduleRoutes extends BaseRoutes {
     this.router.get('/', ScheduleController.index);
     this.router.get('/:id', ScheduleController.show);
     this.router.delete('/:id', ScheduleController.delete);
-    this.router.post('/', ScheduleController.create);
+    this.router.post('/', validateSchedule, ScheduleController.create);
     this.router.put('/:id', ScheduleController.update);
     this.router.put('/cancel/:id', ScheduleController.cancel);
     this.router.put('/delayed/:id', ScheduleController.delayed);

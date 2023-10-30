@@ -25,7 +25,7 @@ class RequestController {
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to fetch all request data');
+      return res.status(500).send('gagal mengambil semua data request customer');
     }
   };
 
@@ -34,12 +34,12 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('the specified customer request data not found');
+        return res.status(404).send('data request customer yang dicari tidak ditemukan');
       }
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to fetch selected request');
+      return res.status(500).send('gagal mengambil data request customer yang dicari');
     }
   };
 
@@ -53,7 +53,7 @@ class RequestController {
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('error fetching request history');
+      return res.status(500).send('gagal mengambil data histori request customer');
     }
   };
 
@@ -67,7 +67,7 @@ class RequestController {
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('error fetching request history');
+      return res.status(500).send('gagal mengambil data histori driver');
     }
   };
 
@@ -76,7 +76,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request customer tidak ditemukan');
       }
       const cHistory = await CustomerHistory.findOne({ where: { requestCode: data.requestCode } });
       const dHistory = await DriverHistory.findOne({ where: { requestCode: data.requestCode } });
@@ -88,10 +88,10 @@ class RequestController {
         await dHistory.destroy();
       }
       await data.destroy();
-      return res.status(200).send('customer request data berhasil dihapus');
+      return res.status(200).send('data request customer berhasil dihapus');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to delete selected request');
+      return res.status(500).send('gagal menghapus data yang dipilih');
     }
   };
 
@@ -101,7 +101,7 @@ class RequestController {
     try {
       const customer = await Customer.findByPk(masterCustomerId);
       if (!customer) {
-        return res.status(404).send('customer info not found');
+        return res.status(404).send('data customer tidak ditemukan');
       }
       const jenis = await db.jenis_sampah.findByPk(trashTypeId);
       let requestCode = BarcodeGenerator.generateRequestCode('CR', jenis.kode, 16, true);
@@ -172,7 +172,7 @@ class RequestController {
       return res.status(200).send(`request pickup berhasil dibuat, request id: ${requestCode}`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('request creation error');
+      return res.status(500).send('gagal membuat request');
     }
   };
 
@@ -183,14 +183,14 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send("the requested data doesn't exist");
+        return res.status(404).send('data request yang dipilih tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const reqHistory = await CustomerHistory.findOne({ where: { requestCode } });
       const history = await History.findOne({ where: { requestCode } });
       const driver = await Driver.findOne({ where: { uniqueCode: driverCode } });
       if (!driver) {
-        return res.status(404).send('driver data not found');
+        return res.status(404).send('data driver tidak ditemukan');
       }
       await data.update({
         status,
@@ -231,7 +231,7 @@ class RequestController {
           customerName: data.requesterName,
           customerPhone: data.requesterPhone,
         });
-        return res.status(200).send('request successfuly accepted');
+        return res.status(200).send('berhasil mengambil request');
       }
       await DriverHistory.create({
         requestCode,
@@ -244,10 +244,10 @@ class RequestController {
         customerName: data.requesterName,
         customerPhone: data.requesterPhone,
       });
-      return res.status(200).send('request successfuly accepted');
+      return res.status(200).send('berhasil mengambil request');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengambil request');
     }
   };
 
@@ -259,7 +259,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const cHistory = await CustomerHistory.findOne({ where: { requestCode } });
@@ -271,10 +271,10 @@ class RequestController {
       await dHistory.update({ status });
       await history.update({ status });
 
-      return res.status(200).send('status has been successfuly updated to cancled');
+      return res.status(200).send("berhasil mengubah status request menjadi 'Canceled'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengubah status request');
     }
   };
 
@@ -285,7 +285,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const cHistory = await CustomerHistory.findOne({ where: { requestCode } });
@@ -297,10 +297,10 @@ class RequestController {
       await dHistory.update({ status });
       await history.update({ status });
 
-      return res.status(200).send('status has been successfuly updated to delayed');
+      return res.status(200).send("berhasil mengubah status request menjadi'Delayed'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengubah status request');
     }
   };
 
@@ -311,7 +311,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const cHistory = await CustomerHistory.findOne({ where: { requestCode } });
@@ -323,10 +323,10 @@ class RequestController {
       await dHistory.update({ status });
       await history.update({ status });
 
-      return res.status(200).send('status has been successfuly updated to picking-up');
+      return res.status(200).send("berhasil mengubah status request menjadi'Picking-Up'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengubah status request');
     }
   };
 
@@ -337,7 +337,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const cHistory = await CustomerHistory.findOne({ where: { requestCode } });
@@ -349,10 +349,10 @@ class RequestController {
       await dHistory.update({ status, pickedAt: now });
       await history.update({ status, pickedAt: now });
 
-      return res.status(200).send('status has been successfuly updated to picked-up');
+      return res.status(200).send("berhasil mengubah status request menjadi 'Picked-Up'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengubah status request');
     }
   };
 
@@ -365,7 +365,7 @@ class RequestController {
     try {
       const data = await RequestDB.findByPk(id);
       if (!data) {
-        return res.status(404).send('customer request data not found');
+        return res.status(404).send('data request tidak dapat ditemukan');
       }
       const requestCode = data.requestCode;
       const barcode = data.trashCode;
@@ -381,10 +381,10 @@ class RequestController {
       await history.update({ status, completedAt: now });
       await sampah.update({ status: 'Collected', latitude: tps.latitude, longitude: tps.longitude, updatedBy: data.driverCode });
 
-      return res.status(200).send('status has been successfuly updated to completed');
+      return res.status(200).send("berhasil mengubah status request menjadi'Completed'");
     } catch (error) {
       console.error(error);
-      return res.status(500).send('unable to update status');
+      return res.status(500).send('gagal mengubah status request');
     }
   };
 }

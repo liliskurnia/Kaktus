@@ -88,7 +88,7 @@ class AuthController {
         if (hakAkses.role.nama === 'Customer') {
           const customer = await db.master_customer.findOne({ where: { userId: user.id } });
           const listSampah = await db.sampah_master.findAll({
-            where: { masterCustomerId: customer.id },
+            where: { ownerCode: customer.uniqueCode },
             attributes: ['id', 'barcode', 'jenisSampah'],
           });
           const access = {
@@ -106,7 +106,7 @@ class AuthController {
 
           const access = {
             token: token,
-            previllage: 'Customer',
+            previllage: 'Driver',
             userId: user.id,
             masterDriverId: driver.id,
             tpId: driver.tpsId,
@@ -118,7 +118,7 @@ class AuthController {
 
           const access = {
             token: token,
-            previllage: 'Customer',
+            previllage: 'Operator',
             userId: user.id,
             masterOperatorId: operator.id,
             tpId: operator.tpsId,
@@ -147,10 +147,10 @@ class AuthController {
           access,
         });
       }
-      return res.status(401).send('Authentication failed, Wrong Password');
+      return res.status(401).send('Authentikasi gagal, password tidak benar');
     } catch (err) {
       console.log(err);
-      return res.status(500).send('Login authentication error');
+      return res.status(500).send('Authentikasi login error');
     }
   };
 
@@ -162,7 +162,7 @@ class AuthController {
     const { email, nik, telp, username, password } = req.body;
     try {
       if (!password) {
-        return res.status(400).send('new password is blank, please enter the new password');
+        return res.status(400).send('password baru tidak boleh kosong');
       }
       let data;
       if (username) {
@@ -174,10 +174,10 @@ class AuthController {
       } else if (nik) {
         data = db.user.findOne({ where: { nik } });
       } else {
-        return res.status(400).send('please provide either email / nik / nomor telpon / username');
+        return res.status(400).send('salah satu dari email / nik / nomor telpon / username harus diisi');
       }
       if (!data) {
-        return res.status(404).send('user not found');
+        return res.status(404).send('user tidak ditemukan');
       }
 
       const hashedPassword: string = await Authentication.passwordHash(password);
@@ -185,9 +185,9 @@ class AuthController {
         password: hashedPassword,
       });
 
-      return res.send('password reset successful, new password has been applied');
+      return res.send('reset password berhasil');
     } catch (error) {
-      return res.status(500).send('error reset password');
+      return res.status(500).send('gagal mereset password');
     }
   };
 }

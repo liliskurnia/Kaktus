@@ -57,7 +57,7 @@ class OperatorController implements IController {
         }
         if (admin === true) {
           //if admin, cancel creation
-          return res.status(400).send('Admins cannot have other previlages');
+          return res.status(400).send('admin tidak boleh memiliki hak akses lain');
         } else if (operator !== true) {
           //if role as operator not assigned, assign the role as driver
           const roleId = await Role.findOne({ where: { nama: 'Operator' } });
@@ -169,7 +169,7 @@ class OperatorController implements IController {
       return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('registrati user error');
     }
   };
 
@@ -178,13 +178,13 @@ class OperatorController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(400).send('operator data not found');
+        return res.status(400).send('data operator tidak ditemukan');
       }
       BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
-      return res.status(200).send('Barcode file generated successfully');
+      return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('barcode generation error');
+      return res.status(500).send('pembuatan barcode error');
     }
   };
 
@@ -255,7 +255,7 @@ class OperatorController implements IController {
       }
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('operator data not found');
+        return res.status(404).send('data operator tidak ditemukan');
       }
       const tps = await db.tps.findByPk(tpId);
       if (!tps) {
@@ -265,7 +265,7 @@ class OperatorController implements IController {
       return res.status(200).send(`${data.nama} berhasil didaftarkan sebagai operator ${tps.nama}`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to update tps');
+      return res.status(500).send('gagal update tps');
     }
   };
 

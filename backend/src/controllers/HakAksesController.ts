@@ -26,7 +26,7 @@ class HakAksesController implements IController {
       }
     } catch (err) {
       console.error(err);
-      return res.status(500).send('server error');
+      return res.status(500).send('error pencarian data hak akses');
     }
   };
 

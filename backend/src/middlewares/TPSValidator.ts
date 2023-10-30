@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import { check } from 'express-validator/src/middlewares/validation-chain-builders';
 import { validationResult } from 'express-validator/src/validation-result';
 
-const validateAuth = [
-  check('username').isString(),
-  check('password').isLength({ min: 6 }),
+const validateTps = [
+  check('nama').isString(),
+  check('latitude').isDecimal(),
+  check('longitude').isDecimal(),
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
@@ -16,4 +17,4 @@ const validateAuth = [
   },
 ];
 
-export default validateAuth;
+export default validateTps;

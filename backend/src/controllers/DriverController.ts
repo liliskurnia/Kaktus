@@ -59,7 +59,7 @@ class DriverController implements IController {
         }
         if (admin === true) {
           //if admin, cancel creation
-          return res.status(400).send('Admins cannot have other previlages');
+          return res.status(400).send('admin tidak boleh memiliki hak akses lain');
         } else if (driver !== true) {
           //if role as driver not assigned, assign the role as driver
           const roleId = await Role.findOne({ where: { nama: 'Driver' } });
@@ -166,7 +166,7 @@ class DriverController implements IController {
       return res.status(200).send('registrasi user(driver) sukses');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('registrasi driver error');
     }
   };
 
@@ -175,13 +175,13 @@ class DriverController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(400).send('customer data not found');
+        return res.status(400).send('data customer tidak ditemukan');
       }
       BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
-      return res.status(200).send('Barcode file generated successfully');
+      return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('barcode generation error');
+      return res.status(500).send('pembuatan barcode error');
     }
   };
 
@@ -251,7 +251,7 @@ class DriverController implements IController {
       }
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('driver data not found');
+        return res.status(404).send('data driver tidak ditemukan');
       }
       const tps = await db.tps.findByPk(tpId);
       if (!tps) {
@@ -261,7 +261,7 @@ class DriverController implements IController {
       return res.status(200).send(`${data.nama} berhasil didaftarkan sebagai driver ${tps.nama}`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to update tps');
+      return res.status(500).send('update tps error');
     }
   };
 
@@ -270,18 +270,18 @@ class DriverController implements IController {
     const { latitude, longitude } = req.body;
     try {
       if (!latitude || !longitude) {
-        return res.status(400).send('location data not complete');
+        return res.status(400).send('data lokasi tidak lengkap');
       }
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('driver data not found');
+        return res.status(404).send('data driver tidak ditemukan');
       }
 
       await data.update({ latitude, longitude });
-      return res.status(200).send('driver location updated');
+      return res.status(200).send('lokasi driver berhasil diupdate');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to update driver location');
+      return res.status(500).send('error update lokasi driver');
     }
   };
 
@@ -299,7 +299,7 @@ class DriverController implements IController {
       return res.status(200).send('point berhasil ditambah');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('penambahan point error');
     }
   };
 
@@ -328,7 +328,7 @@ class DriverController implements IController {
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {
       console.log(err);
-      return res.status(500).send('gagal menghapus user.');
+      return res.status(500).send('gagal menghapus user');
     }
   };
 }

@@ -15,7 +15,7 @@ class SampahController implements IController {
       }
       return res.status(200).json(data);
     } catch (error) {
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengambil data sampah');
     }
   };
 
@@ -24,17 +24,17 @@ class SampahController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('data tidak ditemukam');
+        return res.status(404).send('data yang dipilih tidak ditemukan');
       }
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal megambil data sampah yang dipilih');
     }
   };
 
   create = async (req: Request, res: Response): Promise<Response> => {
-    return res.status(500).send('unavailible');
+    return res.status(500).send('Create Route Unavailible');
   };
 
   update = async (req: Request, res: Response): Promise<Response> => {
@@ -50,10 +50,10 @@ class SampahController implements IController {
         latitude,
         longitude,
       });
-      return res.status(200).send(`location of ${current} has been updated`);
+      return res.status(200).send(`${current} berhasil diupdate`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengupdate data sampah');
     }
   };
 
@@ -63,13 +63,13 @@ class SampahController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('data sampah not found');
+        return res.status(404).send('data sampah tidak ditemukan');
       }
       data.update({ latitude, longitude, status });
-      return res.status(200).send('loaction updated succesfully');
+      return res.status(200).send('berhasil mengupdate lokasi sampah');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('failed to update location');
+      return res.status(500).send('gagal mengupdate lokasi sampah');
     }
   };
 
@@ -93,7 +93,7 @@ class SampahController implements IController {
       return res.status(200).send(`status tempat sampah: ${current} telah berhasil diubah`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal mengupdate status sampah');
     }
   };
 
@@ -110,7 +110,7 @@ class SampahController implements IController {
       return res.status(200).send(`tempat sampah: ${current} telah berhasil dihapus`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal menghapus data sampah');
     }
   };
 }

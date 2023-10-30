@@ -15,7 +15,7 @@ class JenisSampahController implements IController {
       }
       return res.status(200).json(data);
     } catch (error) {
-      return res.status(500).send('server error');
+      return res.status(500).send('pencarian data jenis sampah error');
     }
   };
 
@@ -24,12 +24,12 @@ class JenisSampahController implements IController {
     try {
       const data = await dm.findByPk(id);
       if (!data) {
-        return res.status(404).send('data tidak ditemukam');
+        return res.status(404).send('data tidak ditemukan');
       }
       return res.status(200).json(data);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('pencarian data spesifik jenis sampah error');
     }
   };
 
@@ -55,7 +55,7 @@ class JenisSampahController implements IController {
       return res.status(200).send('jenis sampah baru berhasil didaftarkan');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('jenis sampah backend error');
+      return res.status(500).send('pembuatan jenis sampah error');
     }
   };
 
@@ -74,10 +74,10 @@ class JenisSampahController implements IController {
         programName,
         updatedBy,
       });
-      return res.status(200).send(`location of ${current} has been updated`);
+      return res.status(200).send(`${current} telah berhasil diupdate`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('update jenis sampah error');
     }
   };
 
@@ -94,7 +94,7 @@ class JenisSampahController implements IController {
       return res.status(200).send(`tempat sampah: ${current} telah berhasil dihapus`);
     } catch (error) {
       console.error(error);
-      return res.status(500).send('server error');
+      return res.status(500).send('gagal menghapus jenis sampah');
     }
   };
 }

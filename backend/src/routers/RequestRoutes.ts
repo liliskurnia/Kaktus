@@ -1,5 +1,6 @@
 import RequestController from '../controllers/RequestController';
 import { auth } from '../middlewares/AuthMiddleware';
+import validateRequest from '../middlewares/RequestValidator';
 import BaseRoutes from './BaseRouter';
 
 class RequestRoutes extends BaseRoutes {
@@ -9,7 +10,7 @@ class RequestRoutes extends BaseRoutes {
     this.router.get('/:masterCustomerId', RequestController.fetchCustomerHistory);
     this.router.get('/:masterDriverId', RequestController.fetchDriverHistory);
     this.router.delete('/:id', RequestController.delete);
-    this.router.post('/', RequestController.create);
+    this.router.post('/', validateRequest, RequestController.create);
     this.router.put('/accept/:id', RequestController.accept);
     this.router.put('/cancel/:id', RequestController.cancel);
     this.router.put('/delayed/:id', RequestController.delayed);
