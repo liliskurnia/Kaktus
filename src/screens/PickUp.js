@@ -15,6 +15,7 @@ import { useTheme } from "../hooks";
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DatePicker from 'react-native-modern-datepicker';
 
 export default function PickUp() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -22,6 +23,8 @@ export default function PickUp() {
     const [data, setData] = useState([])
     const [userData, setUserData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedDate, setSelectedDate] = useState('');
+    const [errors, setErrors] = useState({});
     const [state, setState] = useState({
         masterCustomerId: '',
         phone: '',
@@ -32,7 +35,7 @@ export default function PickUp() {
         // garbageId: ''
     })
 
-    //cek data yang sudah disimpan di async storage
+    //get data yang sudah disimpan di async storage
     useEffect(() => {
         const checkAsyncStorageData = async () => {
             try {
@@ -84,13 +87,29 @@ export default function PickUp() {
     }
 
     const handleConfirmOrder = async () => {
+
+        //field required
+        const validationErrors = {};
+
+        if (!selectedDate) {
+            validationErrors.selectedDate = '*Date & Time is required';
+        }
+        if (!state.trashTypeId) {
+            validationErrors.trashTypeId = '*Garbage Type is required';
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         const pickUpData = {
             masterCustomerId: state.masterCustomerId,
             phone: state.phone,
             address: state.address,
-            date: state.date,
-            time: state.time,
+            scheduledDate: selectedDate,
             trashTypeId: state.trashTypeId,
+            jenisSampahId: state.trashTypeId
             // garbageId: state.garbageId
         };
 
@@ -155,55 +174,48 @@ export default function PickUp() {
                 </View>
             </View>
             <View>
-                <TextRn style={{ fontSize: 30, textAlign: 'center', color: '#819994', fontWeight: 'bold', marginVertical: 30 }}>
+                <TextRn style={styles.title}>
                     ORDER PICK-UP
                 </TextRn>
             </View>
             <ScrollView>
+                <TextRn style={styles.formTitle}>Full Name :</TextRn>
                 <View style={[styles.inputTextView, { backgroundColor: '#F0F0F0' }]}>
                     <TextInput
                         value={data.nama}
                         editable={false}
                         style={styles.inputText}
                         placeholder="FULL NAME"
-                        placeholderTextColor="#B3B3B3"
-                        onChangeText={text => setState({ ...state, masterCustomerId: text })} />
+                        placeholderTextColor="#B3B3B3" />
                 </View>
+                <TextRn style={styles.formTitle}>Phone Number :</TextRn>
                 <View style={[styles.inputTextView, { backgroundColor: '#F0F0F0' }]}>
                     <TextInput
                         value={data.telp}
                         editable={false}
                         style={styles.inputText}
                         placeholder="PHONE NUMBER"
-                        placeholderTextColor="#B3B3B3"
-                        onChangeText={text => setState({ ...state, phone: text })} />
+                        placeholderTextColor="#B3B3B3" />
                 </View>
+                <TextRn style={styles.formTitle}>Address :</TextRn>
                 <View style={[styles.inputTextView, { backgroundColor: '#F0F0F0' }]}>
                     <TextInput
                         value={data.alamat}
                         editable={false}
                         style={styles.inputText}
                         placeholder="ADDRESS"
-                        placeholderTextColor="#B3B3B3"
-                        onChangeText={text => setState({ ...state, address: text })} />
+                        placeholderTextColor="#B3B3B3" />
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.inputTextView}>
-                        <TextInput
-                            style={[styles.inputText, { width: '40%' }]}
-                            placeholder="DATE"
-                            placeholderTextColor="#B3B3B3"
-                            onChangeText={text => setState({ ...state, date: text })} />
-                    </View>
-                    <View style={styles.inputTextView}>
-                        <TextInput
-                            style={[styles.inputText, { width: '40%' }]}
-                            placeholder="TIME"
-                            placeholderTextColor="#B3B3B3"
-                            onChangeText={text => setState({ ...state, time: text })} />
-                    </View>
-
+                <TextRn style={styles.formTitle}>Date & Time :</TextRn>
+                <View style={styles.inputTextView}>
+                    <DatePicker
+                        onSelectedChange={date => setSelectedDate(date)}
+                    />
                 </View>
+                <View style={{ width: '80%' }}>
+                    {errors.selectedDate && <TextRn style={styles.errorText}>{errors.selectedDate}</TextRn>}
+                </View>
+                <TextRn style={styles.formTitle}>Garbage Type :</TextRn>
                 <View style={[styles.inputTextView, { flex: 1 }]}>
                     <Picker
                         selectedValue={state.trashTypeId}
@@ -225,6 +237,9 @@ export default function PickUp() {
                         <Picker.Item label="K0-Khusus" value="12" />
                     </Picker>
                 </View>
+                <View style={{ width: '80%' }}>
+                    {errors.trashTypeId && <TextRn style={styles.errorText}>{errors.trashTypeId}</TextRn>}
+                </View>
                 {/* <View style={styles.inputTextView}>
                     <TextInput
                         style={styles.inputText}
@@ -236,7 +251,7 @@ export default function PickUp() {
                     </TouchableOpacity>
                 </View> */}
                 <TouchableOpacity onPress={handleConfirmOrder} style={styles.button}>
-                    <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#ffffff', margin: 10 }}>CONFIRM ORDER</TextRn>
+                    <TextRn style={styles.btnText}>CONFIRM ORDER</TextRn>
                 </TouchableOpacity>
             </ScrollView>
         </Block>
@@ -244,6 +259,33 @@ export default function PickUp() {
 }
 
 const styles = StyleSheet.create({
+    errorText: {
+        textAlign: 'left',
+        color: 'red',
+        alignSelf: "flex-start",
+        marginLeft:30,
+        marginBottom:20
+    },
+    btnText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#ffffff',
+        margin: 10
+    },
+    title: {
+        fontSize: 30,
+        textAlign: 'center',
+        color: '#819994',
+        fontWeight: 'bold',
+        marginVertical: 30
+    },
+    formTitle: {
+        marginHorizontal: 30,
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+        color: '#57B4A1'
+    },
     button: {
         marginTop: 50,
         margin: 10,
