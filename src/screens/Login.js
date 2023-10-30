@@ -26,6 +26,10 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
+    // const handleLogin = () => {
+    //     navigation.navigate('Home')
+    // }
+
     const handleLogin = async () => {
 
         //field required
