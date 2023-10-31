@@ -77,6 +77,8 @@ Customer Routes
         update:                 PUT       /api/v1/customers/:id                 nama*, alamat*, email*, telp, programName, updatedBy
         delete:                 DELETE    /api/v1/customers/:id
 
+        register(need otp):     POST      /api/v1/customers/signup              username, password*, nik*, nama*, email*, telp, alamat*, kota*, gender*
+        verify email:           POST      /api/v1/customers/verify/email        email*, otp*, programName
         register:               POST      /api/v1/customers/register            username, password*, nik*, nama*, email*, telp, alamat*, kota*, gender*, programName, createdBy
         generate barcode img:   POST      /api/v1/customers/qr/generate/:id
         index sampah:           GET       /api/v1/customers/listSampah/:id
@@ -139,8 +141,8 @@ Request Routes
         get by id:              GET       /api/v1/requests/:id
         delete:                 DELETE    /api/v1/requests/:id
 
-        fetch customer history: GET       /api/v1/requests/:masterCustomerId    
-        fetch driver history:   GET       /api/v1/requests/:masterDriverId
+        fetch customer history: GET       /api/v1/requests/orderHistory/:masterCustomerId  
+        fetch driver history:   GET       /api/v1/requests/accepted/:masterDriverId
         
         accept request(driver): PUT       /api/v1/requests/accept/:id           driverCode, programName
         cancel request:         PUT       /api/v1/requests/cancel/:id           requesterCode
