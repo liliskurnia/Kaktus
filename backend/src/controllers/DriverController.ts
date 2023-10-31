@@ -3,8 +3,10 @@ import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
+import mailSender from '../utils/mailSender';
 
 const fs = require('fs');
+const otpGenerator = require('otp-generator');
 
 const db = require('../db/models');
 const dm = db.master_driver;
@@ -12,6 +14,7 @@ const User = db.user;
 const HakAkses = db.hak_akses;
 const Role = db.role;
 const History = db.accepted_request_history;
+const OTPHolder = db.otp_holder;
 const qrFolderPath = './public/qrcodes';
 
 class DriverController implements IController {
@@ -167,6 +170,237 @@ class DriverController implements IController {
     } catch (error) {
       console.error(error);
       return res.status(500).send('registrasi driver error');
+    }
+  };
+
+  registerWithVerification = async (req: Request, res: Response): Promise<Response> => {
+    const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
+    const now = new Date();
+    try {
+      if (!nik) {
+        return res.status(400).send('nik belum diisi');
+      }
+      if (!telp) {
+        return res.status(400).send('nomor telepon tidak boleh kosong');
+      }
+      if (!password) {
+        return res.status(400).send('password belum diisi');
+      }
+      if (!nama) {
+        return res.status(400).send('nama belum diisi');
+      }
+      if (!email) {
+        return res.status(400).send('email belum di isi');
+      }
+      if (!alamat) {
+        return res.status(400).send('alamat belum diisi');
+      }
+      if (!kota) {
+        return res.status(400).send('kota belum diisi');
+      }
+      if (!gender) {
+        return res.status(400).send('gender tidak boleh kosong');
+      }
+
+      const existingApplicant = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
+      if (existingApplicant) {
+        const expiryDate = new Date(existingApplicant.expiredAt);
+        if (expiryDate.valueOf() <= now.valueOf()) {
+          console.log('token has expired, generating a new token (valid for 5 minutes)');
+          const currentTime = new Date();
+          let otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+          });
+          let otpExists = await OTPHolder.findOne({ where: { otp } });
+          while (otpExists) {
+            otp = otpGenerator.generate(6, {
+              upperCaseAlphabets: false,
+              lowerCaseAlphabets: false,
+              specialChars: false,
+            });
+            otpExists = await OTPHolder.findOne({ where: { otp } });
+          }
+          const expiredAt = currentTime.valueOf() + 60 * 5 * 1000;
+          const oldData = await OTPHolder.findAll({ where: { email: existingApplicant.email } });
+          for (const data of oldData) {
+            await data.destroy();
+          }
+
+          const newOTP = await OTPHolder.create({
+            username: existingApplicant.username,
+            password: existingApplicant.password,
+            nik: existingApplicant.nik,
+            nama: existingApplicant.nama,
+            email: existingApplicant.email,
+            telp: existingApplicant.telp,
+            alamat: existingApplicant.alamat,
+            kota: existingApplicant.kota,
+            gender: existingApplicant.gender,
+            otp,
+            expiredAt,
+          });
+          const email = newOTP.email;
+          mailSender(
+            email,
+            'Email Verification',
+            `Please verify your email using this OTP code: ${newOTP.otp}`,
+            `<h1>Please verify your email using OTP</h1>
+             <p>Your OTP Code: ${newOTP.otp}</p>`
+          );
+          return res.status(400).send('OTP Expired, sending a new OTP (valid for 5 minutes)');
+        } else if (expiryDate.valueOf() > now.valueOf()) {
+          return res.status(400).send('user sudah terdaftar, tapi belum melakukan verifikasi');
+        }
+      }
+
+      const verified = await User.findOne({ where: { nik } });
+      if (verified) {
+        return res.status(400).send('user sudah terdafatar dan terverifikasi');
+      }
+      const hashedPassword: string = await Authentication.passwordHash(password);
+      let otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
+        specialChars: false,
+      });
+      let otpExists = await OTPHolder.findOne({ where: { otp } });
+      while (otpExists) {
+        otp = otpGenerator.generate(6, {
+          upperCaseAlphabets: false,
+          lowerCaseAlphabets: false,
+          specialChars: false,
+        });
+        otpExists = await OTPHolder.findOne({ where: { otp } });
+      }
+      const expiredAt = now.valueOf() + 60 * 5 * 1000;
+      await OTPHolder.create({
+        username,
+        password: hashedPassword,
+        nik,
+        nama,
+        email: email.toLowerCase(),
+        telp,
+        alamat,
+        kota,
+        gender,
+        otp,
+        expiredAt,
+      });
+      mailSender(
+        email,
+        'Email Verification',
+        `Please verify your email using this OTP code: ${otp}`,
+        `<h1>Please verify your email using OTP</h1>
+        <p>Your OTP Code: ${otp}</p>`
+      );
+      return res.status(200).send('registrasi driver sukses, menunggu verifikasi user');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('registrasi driver gagal');
+    }
+  };
+
+  verifyEmail = async (req: Request, res: Response): Promise<Response> => {
+    const { email, otp, programName } = req.body;
+    const now = new Date();
+    try {
+      //find data in temporary OTP table
+      const data = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
+      if (!data) {
+        return res.status(404).send('data user tidak ditemukan');
+      }
+      const expiryDate = new Date(data.expiredAt);
+      if (expiryDate.valueOf() < now.valueOf()) {
+        //if otp has expired, create new otp and delete the old otp
+        let otp = otpGenerator.generate(6, {
+          upperCaseAlphabets: false,
+          lowerCaseAlphabets: false,
+          specialChars: false,
+        });
+        let otpExists = await OTPHolder.findOne({ otp });
+        while (otpExists) {
+          otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+          });
+          otpExists = await OTPHolder.findOne({ otp });
+        }
+        const expiredAt = now.valueOf() + 60 * 5;
+        const newOTP = await OTPHolder.create({
+          username: data.username,
+          password: data.password,
+          nik: data.nik,
+          nama: data.nama,
+          email: data.email,
+          telp: data.telp,
+          alamat: data.alamat,
+          kota: data.kota,
+          gender: data.gender,
+          otp,
+          expiredAt,
+        });
+        await data.destroy();
+        const email = newOTP.email;
+        mailSender(
+          email,
+          'Email Verification',
+          `Please verify your email using this OTP code: ${newOTP.otp}`,
+          `<h1>Please verify your email using OTP</h1>
+         <p>Your OTP Code: ${newOTP.otp}</p>`
+        );
+        return res.status(400).send('OTP has expired, sending a new OTP (valid for 5 minutes)');
+      }
+      console.log(data);
+      if (data.otp !== otp) {
+        return res.status(400).send('OTP tidak sesuai, gagal memverifikasi user');
+      }
+      const user = await User.create({
+        username: data.username,
+        password: data.password,
+        nik: data.nik,
+        nama: data.nama,
+        email: data.email,
+        telp: data.telp,
+        alamat: data.alamat,
+        kota: data.kota,
+        gender: data.gender,
+        programName,
+        createdBy: 'Registration System',
+      });
+      await data.destroy();
+      const newUser = await User.max('id');
+      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
+      await HakAkses.create({
+        userId: newUser,
+        roleId: customerRole.id,
+      });
+      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+      let exist = await dm.findOne({ where: { uniqueCode } });
+      while (exist) {
+        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+        exist = await dm.findOne({ where: { uniqueCode } });
+      }
+      const customer = await dm.create({
+        userId: newUser,
+        uniqueCode,
+        nik: user.nik,
+        nama: user.nama,
+        email: user.email,
+        telp: user.telp,
+        alamat: user.alamat,
+        kota: user.kota,
+        gender: user.gender,
+        programName,
+        createdBy: 'Registration System',
+      });
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      return res.status(200).send('user berhasil diverifikasi dan terdaftar di db');
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send('failed to verify user');
     }
   };
 

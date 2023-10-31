@@ -131,7 +131,7 @@ class CustomerController implements IController {
       const userExist = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
       if (userExist) {
         const expiryDate = new Date(userExist.expiredAt);
-        if (expiryDate.valueOf() < now.valueOf()) {
+        if (expiryDate.valueOf() <= now.valueOf()) {
           console.log('token has expired, generating new otp code');
           const currentTime = new Date();
           let otp = otpGenerator.generate(6, {
@@ -311,7 +311,9 @@ class CustomerController implements IController {
       const data = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
       if (!data) {
         return res.status(404).send('data user tidak ditemukan');
-      } else if (data && data.expiredAt < now.valueOf()) {
+      }
+      const expiryDate = new Date(data.expiredAt);
+      if (expiryDate.valueOf() < now.valueOf()) {
         //if otp has expired, create new otp and delete the old otp
         let otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,

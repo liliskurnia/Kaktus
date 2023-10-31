@@ -93,6 +93,8 @@ Driver Routes
         update:                 PUT       /api/v1/drivers/:id                   tpId*, nama*, alamat*, email, telp*, programName, updatedBy
         delete:                 DELETE    /api/v1/drivers/:id
 
+        register(need otp):     POST      /api/v1/drivers/signup                username, password*, nik*, nama*, email*, telp*, alamat*, kota*, gender*
+        verify email:           POST      /api/v1/drivers/verify/email          email*, otp*, programName
         register:               POST      /api/v1/drivers/register              username, password*, nik*, nama*, email, telp*, alamat*, kota*, gender*, programName, createdBy
         generate barcode img:   POST      /api/v1/drivers/qr/generate/:id
         update tps:             PUT       /api/v1/drivers/managetps/:id         tpId*
