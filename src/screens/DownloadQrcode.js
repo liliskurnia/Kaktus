@@ -21,12 +21,14 @@ import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import RNFetchBlob from 'rn-fetch-blob';
+// import Share from 'react-native-share';
 
 export default function DownloadBarcode() {
     const { assets, colors, gradients, sizes } = useTheme();
     const navigation = useNavigation();
-    // const [allData, setAllData] = useState([]);
-    // const [barcodeData, setBarcodeData] = useState([]);
+    const [allData, setAllData] = useState([]);
+    const [barcodeData, setBarcodeData] = useState([]);
     const [userData, setUserData] = useState([]);
     const [historyData, setHistoryData] = useState([])
     const [loading, setLoading] = useState(true);
@@ -78,36 +80,32 @@ export default function DownloadBarcode() {
         }
     }, [userData]);
 
-    // useEffect(() => {
-    //     if (userData.masterCustomerId) {
-    //         getQrValue();
+    // const handleDownload = async () => {
+    //     if (Platform.OS === 'android') {
+    //     var isReadGranted = await PermissionsAndroid.request(
+    //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    //       );
     //     }
-    // }, [userData]);    
-
-    // const getQrValue = async () => {
+    //     if (isReadGranted === PermissionsAndroid.RESULTS.GRANTED) {
+    //       const dirs = RNFetchBlob.fs.dirs
+    //       var qrcode_data = QRImage.split('data:image/png;base64,');
+    //       const filePath = dirs.DownloadDir+"/"+'QRCode'+new Date().getSeconds()+'.png'
+    //       RNFetchBlob.fs.writeFile(filePath, qrcode_data[1], 'base64')
+    //       .then(() =>  console.log("Saved successfully"))
+    //       .catch((errorMessage) =>console.log(errorMessage))      
+    //       }
+    //       if (Platform.OS ==='ios') {
+    //       const options={
+    //         title: 'Share is your QRcode',
+    //         url: QRImage,
+    //       }
     //     try {
-    //         const response = await axios.get(
-    //             `http://192.168.182.111:8000/api/v1/customers/listSampah/${id}`
-    //         );
-    //         // console.log('respon', response)
-
-    //         if (response.status === 200) {
-    //             setAllData(response.data);
-    //             setBarcodeData(
-    //                 response.data.map((item) => ({
-    //                     barcode: item.barcode,
-    //                     jenisSampah: item.jenisSampah,
-    //                 }))
-    //             );
-    //             console.log('barcode', barcodeData)
-    //         } else {
-    //             Alert.alert('Error', 'Failed to login. Please try again.');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //         Alert.alert('Error', `${error.response}`);
+    //       await Share.open(options);
+    //     } catch (err) {
+    //       console.log(err)
     //     }
-    // };
+    //     }
+    //   }
 
     const handleDownload = async (barcode) => {
         const downloadUrl = `http://192.168.182.111:8000/download/pdfQR/${barcode}`;

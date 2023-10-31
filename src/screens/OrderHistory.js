@@ -14,6 +14,7 @@ import { useTheme } from "../hooks";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCode from 'react-native-qrcode-svg';
+import moment from 'moment';
 
 export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -55,7 +56,7 @@ export default function OrderHistory() {
                 try {
                     const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/requests/orderHistory/${userData.masterCustomerId}`);
                     setHistoryData(response);
-                    // console.log('DATA', historyData)
+                    console.log('DATA', historyData)
                 } catch (error) {
                     console.error(error.message);
                 }
@@ -67,6 +68,8 @@ export default function OrderHistory() {
     }, [userData]);
 
     let base64Logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAA..';
+
+    historyData.sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
 
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -116,48 +119,53 @@ export default function OrderHistory() {
             </View>
             <ScrollView>
                 <View style={styles.subTitleBox}>
-                    {/* <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>TODAY</TextRn> */}
                     <TouchableOpacity onPress={handleAdd} style={styles.add}>
                         <MaterialCommunityIcons name="plus" size={18} color="#9EBCB6" />
                         <TextRn style={{ color: '#9EBCB6' }}>NEW ORDER</TextRn>
                     </TouchableOpacity>
                 </View>
-                {historyData.map((value, index) => (
-                    <View key={index} style={{ flexDirection: 'row' }}>
-                        <View style={[styles.boxKiri, { backgroundColor: '#DDF7E3' }]}>
-                            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                                <QRCode
-                                    value={value.trashCode}
-                                    logo={{ uri: base64Logo }}
-                                    size={70}
-                                    logoSize={30}
-                                    logoBackgroundColor='transparent'
-                                />
-                                <TouchableOpacity style={{ borderRadius: 10,borderColor: '#1C7360', backgroundColor: '#ffffff', padding: 5, marginTop: 10 }}>
-                                    <TextRn style={{ color: '#A2A2A2' }}>{value.status}</TextRn>
-                                </TouchableOpacity>
-                                {/* <TextRn style={{ fontWeight: 'bold' }}>Earnings</TextRn> */}
+                {historyData.map((value, index) => {
+                    const currentDate = moment(value.createdAt).format('YYYY-MM-DD');
+                    const prevItem = index > 0 ? moment(historyData[index - 1].createdAt).format('YYYY-MM-DD') : null;
+
+                    if (currentDate !== prevItem) {
+                        // Tampilkan subjudul jika tanggal berbeda
+                        return (
+                            <View key={currentDate} style={{marginHorizontal: 30, marginTop: 30, alignItems:'flex-start'}}>
+                                <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>{moment(value.createdAt).format('D MMMM YYYY')}</TextRn>
                             </View>
-                            {/* <View style={{ flexDirection: 'column' }}>
-                                <Image
-                                    style={{ marginBottom: 10 }}
-                                    source={require('../assets/images/organic.png')}
-                                />
-                                <TextRn style={{ fontWeight: 'bold' }}>Organic</TextRn>
-                            </View> */}
-                        </View>
-                        <View style={[styles.boxKanan, { backgroundColor: '#A1EDCD', }]}>
-                            <View style={{ flexDirection: 'column' }}>
-                                <TextRn style={{ marginBottom: 5, fontSize: 12 }}>{value.createdAt}</TextRn>
-                                <TextRn style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bold' }}>ID: {value.requestCode}</TextRn>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <MaterialCommunityIcons name="trash-can" size={24} color="black" />
-                                    <TextRn style={{ fontSize: 16, fontWeight: 'bold' }}>{value.trashType}</TextRn>
+                        );
+                    }
+
+                    return (
+                        <View key={index} style={{ flexDirection: 'row' }}>
+                            <View style={[styles.boxKiri, { backgroundColor: '#DDF7E3' }]}>
+                                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                                    <QRCode
+                                        value={value.trashCode}
+                                        logo={{ uri: base64Logo }}
+                                        size={70}
+                                        logoSize={30}
+                                        logoBackgroundColor='transparent'
+                                    />
+                                    <TouchableOpacity style={{ borderRadius: 10, borderColor: '#1C7360', backgroundColor: '#ffffff', padding: 5, marginTop: 10 }}>
+                                        <TextRn style={{ color: '#A2A2A2' }}>{value.status}</TextRn>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={[styles.boxKanan, { backgroundColor: '#A1EDCD', }]}>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <TextRn style={{ marginBottom: 5, fontSize: 12 }}>{value.createdAt}</TextRn>
+                                    <TextRn style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bold' }}>ID: {value.requestCode}</TextRn>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <MaterialCommunityIcons name="trash-can" size={24} color="black" />
+                                        <TextRn style={{ fontSize: 16, fontWeight: 'bold' }}>{value.trashType}</TextRn>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
-                ))}
+                    );
+                })}
             </ScrollView>
         </Block>
     );
@@ -173,10 +181,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     subTitleBox: {
-        // flexDirection: 'row',
         marginHorizontal: 30,
         marginTop: 30,
-        // justifyContent: 'space-between',
         alignItems: 'flex-end'
     },
     title: {
