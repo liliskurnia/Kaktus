@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
-import mailSender from '../utils/mailSender';
+import mailSender from '../utils/EMailSender';
 
 const fs = require('fs');
 const otpGenerator = require('otp-generator');
@@ -247,7 +247,7 @@ class DriverController implements IController {
             'Email Verification',
             `Please verify your email using this OTP code: ${newOTP.otp}`,
             `<h1>Please verify your email using OTP</h1>
-             <p>Your OTP Code: ${newOTP.otp}</p>`
+             <p>Your OTP Code: <b>${newOTP.otp}</b></p>`
           );
           return res.status(400).send('OTP Expired, sending a new OTP (valid for 5 minutes)');
         } else if (expiryDate.valueOf() > now.valueOf()) {
@@ -293,7 +293,7 @@ class DriverController implements IController {
         'Email Verification',
         `Please verify your email using this OTP code: ${otp}`,
         `<h1>Please verify your email using OTP</h1>
-        <p>Your OTP Code: ${otp}</p>`
+        <p>Your OTP Code: <b>${otp}</b></p>`
       );
       return res.status(200).send('registrasi driver sukses, menunggu verifikasi user');
     } catch (error) {
@@ -349,7 +349,7 @@ class DriverController implements IController {
           'Email Verification',
           `Please verify your email using this OTP code: ${newOTP.otp}`,
           `<h1>Please verify your email using OTP</h1>
-         <p>Your OTP Code: ${newOTP.otp}</p>`
+         <p>Your OTP Code: <b>${newOTP.otp}<b></p>`
         );
         return res.status(400).send('OTP has expired, sending a new OTP (valid for 5 minutes)');
       }
