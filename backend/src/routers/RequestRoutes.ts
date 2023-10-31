@@ -7,8 +7,8 @@ class RequestRoutes extends BaseRoutes {
   public routes(): void {
     this.router.get('/', RequestController.index);
     this.router.get('/:id', RequestController.show);
-    this.router.get('/:masterCustomerId', RequestController.fetchCustomerHistory);
-    this.router.get('/:masterDriverId', RequestController.fetchDriverHistory);
+    this.router.get('/orderHistory/:masterCustomerId', RequestController.fetchCustomerHistory);
+    this.router.get('/accepted/:masterDriverId', RequestController.fetchDriverHistory);
     this.router.delete('/:id', RequestController.delete);
     this.router.post('/', validateRequest, RequestController.create);
     this.router.put('/accept/:id', RequestController.accept);
