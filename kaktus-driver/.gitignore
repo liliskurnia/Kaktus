@@ -8,10 +8,6 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
-.pnp.cjs
-.pnp.loader.mjs
-.yarn/
-.vscode/
 web-build/
 
 # macOS

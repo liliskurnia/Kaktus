@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState } from 'react';
 import {
   TouchableOpacity,
   Text as TextRn,
@@ -7,71 +7,13 @@ import {
   ScrollView,
   Switch
 } from 'react-native';
-import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { Block, Image } from '../components';
-import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Block, Image} from '../components';
 
 export default function ProfileScreen() {
-
-  const navigation = useNavigation();
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const [data, setData] = useState([])
-  const [userData, setUserData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  //cek data yang sudah disimpan di async storage
-  useEffect(() => {
-    const checkAsyncStorageData = async () => {
-      try {
-        const userData = await AsyncStorage.getItem('userData');
-        if (userData) {
-          const userDataObj = JSON.parse(userData);
-          // console.log('Data from AsyncStorage:', userDataObj);
-          setUserData(userDataObj)
-          // console.log(userDataObj, 'USERDATA')
-        } else {
-          console.log('No data found in AsyncStorage');
-        }
-      } catch (error) {
-        console.error('Error retrieving data from AsyncStorage:', error);
-      }
-    }
-
-    checkAsyncStorageData();
-  }, []);
-
-  const id = userData.masterCustomerId
-  // console.log('id', id)
-
-  //get info user berdasarkan id yang login
-  useEffect(() => {
-    if (userData.masterCustomerId) {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
-          setData(response);
-        } catch (error) {
-          console.error(error.message);
-        }
-        setLoading(false);
-      }
-
-      fetchData();
-    }
-  }, [userData]);
-
-  const handleLogout = () => {
-    navigation.navigate('Login')
-  }
-
-  const handleOrderHistory = () => {
-    navigation.navigate('OrderHistory')
-  }
-
+  
   return (
     <Block flex={1} style={{ backgroundColor: "#fff" }}>
       <View style={{ margin: 30, marginTop: 50 }}>
@@ -83,19 +25,19 @@ export default function ProfileScreen() {
           source={require('../assets/images/profil.png')}
         />
         <View style={{ flexDirection: 'column' }}>
-          <TextRn style={{ color: '#819994', lexDirection: 'row', fontSize: 26, fontWeight: 'bold', marginLeft: -40 }}>
-            {data.nama}
+          <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', marginLeft: -40 }}>
+            Michael Cactus
           </TextRn>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>{data.email}</TextRn>
+            <TextRn style={{ flexDirection: 'column' }}>testUser@kaktus.com</TextRn>
           </View>
           <View style={{ flexDirection: 'row', marginLeft: -40 }}>
-            <TextRn style={{ color: '#819994', flexDirection: 'column', fontWeight: 'bold' }}>{data.telp}</TextRn>
+            <TextRn style={{ flexDirection: 'column' }}>+62-816-7291-0982</TextRn>
           </View>
         </View>
         <View style={{ flexDirection: 'column' }}>
           <TouchableOpacity>
-            <Ionicons name="pencil" size={26} color="#819994" />
+            <Ionicons name="pencil" size={24} color="#819994" />
           </TouchableOpacity>
 
         </View>
@@ -115,7 +57,7 @@ export default function ProfileScreen() {
                 source={require('../assets/images/point.png')}
                 style={{ marginRight: 10 }}
               />
-              <TextRn style={{ fontSize: 16, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
+              <TextRn style={{ fontSize: 18, fontWeight: 'bold', color: '#819994' }}>4,483 Points</TextRn>
             </View>
           </TouchableOpacity>
         </View>
@@ -127,7 +69,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity onPress={handleOrderHistory} style={{ flexDirection: 'row' }}>
+          <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialCommunityIcons name="clipboard-text" size={35} color="#819994" />
             <TextRn style={styles.text}>Order History</TextRn>
           </TouchableOpacity>
@@ -163,7 +105,7 @@ export default function ProfileScreen() {
             <TextRn style={styles.text}>Change Security Code</TextRn>
           </TouchableOpacity>
         </View>
-        <View style={styles.field}>
+        <View style={[styles.field, { marginBottom: 20 }]}>
           <TouchableOpacity style={{ flexDirection: 'row' }}>
             <MaterialIcons name="language" size={35} color="#819994" />
             <TextRn style={styles.text}>Face ID</TextRn>
@@ -178,25 +120,7 @@ export default function ProfileScreen() {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.field}>
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <Ionicons name="settings" size={35} color="#819994" />
-            <TextRn style={styles.text}>Setting</TextRn>
-          </TouchableOpacity>
-        </View>
-        <View style={[styles.field, { marginBottom: 20 }]}>
-          <TouchableOpacity style={{ flexDirection: 'row' }}>
-            <FontAwesome5 name="hands-helping" size={35} color="#819994" />
-            <TextRn style={styles.text}>Help Center</TextRn>
-          </TouchableOpacity>
-        </View>
-        <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity
-            onPress={handleLogout}
-            style={styles.logoutBtn}>
-            <TextRn style={styles.logoutText}>LOGOUT </TextRn>
-          </TouchableOpacity>
-        </View>
+
       </ScrollView>
     </Block>
 
@@ -204,21 +128,6 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  logoutBtn: {
-    width: "80%",
-    backgroundColor: "#E26363",
-    borderRadius: 10,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 40
-  },
-  logoutText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold'
-  },
   field: {
     marginHorizontal: 30,
     marginTop: 10,
@@ -227,15 +136,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#819994',
     paddingTop: 10,
     marginLeft: 20,
   },
   box: {
-    width: '90%',
-    height: '12%',
+    width: 315,
+    height: 80,
     backgroundColor: '#ffffff',
     alignItems: 'center',
     borderRadius: 10,

@@ -21,8 +21,6 @@ import QRCode from 'react-native-qrcode-svg';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import RNFetchBlob from 'rn-fetch-blob';
-// import Share from 'react-native-share';
 
 export default function DownloadBarcode() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -30,8 +28,6 @@ export default function DownloadBarcode() {
     const [allData, setAllData] = useState([]);
     const [barcodeData, setBarcodeData] = useState([]);
     const [userData, setUserData] = useState([]);
-    const [historyData, setHistoryData] = useState([])
-    const [loading, setLoading] = useState(true);
 
      //cek data yang sudah disimpan di async storage
      useEffect(() => {
@@ -61,51 +57,36 @@ export default function DownloadBarcode() {
         navigation.navigate('PickUp');
     };
 
-    //get order history
     useEffect(() => {
         if (userData.masterCustomerId) {
-            const fetchData = async () => {
-                setLoading(true);
-                try {
-                    const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/requests/orderHistory/${userData.masterCustomerId}`);
-                    setHistoryData(response);
-                    // console.log('DATA', historyData)
-                } catch (error) {
-                    console.error(error.message);
-                }
-                setLoading(false);
-            }
-
-            fetchData();
+            getQrValue();
         }
-    }, [userData]);
+    }, [userData]);    
 
-    // const handleDownload = async () => {
-    //     if (Platform.OS === 'android') {
-    //     var isReadGranted = await PermissionsAndroid.request(
-    //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-    //       );
-    //     }
-    //     if (isReadGranted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       const dirs = RNFetchBlob.fs.dirs
-    //       var qrcode_data = QRImage.split('data:image/png;base64,');
-    //       const filePath = dirs.DownloadDir+"/"+'QRCode'+new Date().getSeconds()+'.png'
-    //       RNFetchBlob.fs.writeFile(filePath, qrcode_data[1], 'base64')
-    //       .then(() =>  console.log("Saved successfully"))
-    //       .catch((errorMessage) =>console.log(errorMessage))      
-    //       }
-    //       if (Platform.OS ==='ios') {
-    //       const options={
-    //         title: 'Share is your QRcode',
-    //         url: QRImage,
-    //       }
-    //     try {
-    //       await Share.open(options);
-    //     } catch (err) {
-    //       console.log(err)
-    //     }
-    //     }
-    //   }
+    const getQrValue = async () => {
+        try {
+            const response = await axios.get(
+                `http://192.168.182.111:8000/api/v1/customers/listSampah/${id}`
+            );
+            // console.log('respon', response)
+
+            if (response.status === 200) {
+                setAllData(response.data);
+                setBarcodeData(
+                    response.data.map((item) => ({
+                        barcode: item.barcode,
+                        jenisSampah: item.jenisSampah,
+                    }))
+                );
+                console.log('barcode', barcodeData)
+            } else {
+                Alert.alert('Error', 'Failed to login. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Alert.alert('Error', `${error.response}`);
+        }
+    };
 
     const handleDownload = async (barcode) => {
         const downloadUrl = `http://192.168.182.111:8000/download/pdfQR/${barcode}`;
@@ -189,22 +170,22 @@ export default function DownloadBarcode() {
                 <TextRn style={styles.title}>QRCODE</TextRn>
             </View>
             <ScrollView>
-                {historyData.map((value, index) => (
+                {barcodeData.map((value, index) => (
                     <View
                         key={index}
                         style={styles.box}
                     >
-                        <TextRn style={styles.subTitle}>{value.trashType}</TextRn>
+                        <TextRn style={styles.subTitle}>{value.jenisSampah}</TextRn>
                         <View style={styles.boxQr}>
                             <QRCode
-                                value={value.trashCode}
+                                value={value.barcode}
                                 logo={{ uri: base64Logo }}
                                 size={150}
                                 logoSize={30}
                                 logoBackgroundColor='transparent'
                             />
                             <TouchableOpacity
-                                onPress={() => handleDownload(value.trashCode)}
+                                onPress={() => handleDownload(value.barcode)}
                                 style={styles.button}
                             >
                                 <Feather

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState } from 'react';
 import {
     TouchableOpacity,
     Text as TextRn,
@@ -9,12 +9,10 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Block, Image } from '../components';
-import { useTheme } from '../hooks';
+import { Block, Image} from '../components';
+import { useTheme} from '../hooks';
 import { Searchbar } from 'react-native-paper';
 import Modal from "react-native-modal";
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Vouchers() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -22,51 +20,6 @@ export default function Vouchers() {
     const [search, setSearch] = React.useState('');
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalSuccess, setModalSuccess] = useState(false);
-    const [data, setData] = useState([])
-    const [userData, setUserData] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    //cek data yang sudah disimpan di async storage
-    useEffect(() => {
-        const checkAsyncStorageData = async () => {
-            try {
-                const userData = await AsyncStorage.getItem('userData');
-                if (userData) {
-                    const userDataObj = JSON.parse(userData);
-                    // console.log('Data from AsyncStorage:', userDataObj);
-                    setUserData(userDataObj)
-                    // console.log(userDataObj, 'USERDATA')
-                } else {
-                    console.log('No data found in AsyncStorage');
-                }
-            } catch (error) {
-                console.error('Error retrieving data from AsyncStorage:', error);
-            }
-        }
-
-        checkAsyncStorageData();
-    }, []);
-
-    const id = userData.masterCustomerId
-    console.log('id', id)
-
-    //get info user berdasarkan id yang login
-    useEffect(() => {
-        if (userData.masterCustomerId) {
-            const fetchData = async () => {
-                setLoading(true);
-                try {
-                    const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
-                    setData(response);
-                } catch (error) {
-                    console.error(error.message);
-                }
-                setLoading(false);
-            }
-
-            fetchData();
-        }
-    }, [userData]);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -136,15 +89,15 @@ export default function Vouchers() {
                     source={require('../assets/images/profil.png')}
                 />
                 <View style={{ flexDirection: 'column' }}>
-                    <TextRn style={{ flexDirection: 'row', fontSize: 24, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
-                        {data.nama}
+                    <TextRn style={{ flexDirection: 'row', fontSize: 30, fontWeight: 'bold', margin: 10, color: '#3B4341' }}>
+                        Michael Cactus
                     </TextRn>
-                    <View style={{ flexDirection: 'row', marginLeft: 10, alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', marginLeft: 10 }}>
                         <Image
                             style={{ flexDirection: 'column' }}
                             source={require('../assets/images/point.png')}
                         />
-                        <TextRn style={{ flexDirection: 'column', color: '#3B4341', marginLeft: 5 }}>4,483 Points</TextRn>
+                        <TextRn style={{ flexDirection: 'column', color: '#3B4341' }}>4,483 Points</TextRn>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'column' }}>
@@ -314,8 +267,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     box: {
-        width: '85%',
-        height: '12%',
+        width: 300,
+        height: 80,
         backgroundColor: '#ffffff',
         alignItems: 'center',
         borderRadius: 10,

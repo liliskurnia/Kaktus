@@ -26,10 +26,6 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
-    // const handleLogin = () => {
-    //     navigation.navigate('Home')
-    // }
-
     const handleLogin = async () => {
 
         //field required
@@ -103,6 +99,7 @@ const Login = () => {
             <Image
                 source={require('../assets/images/logoKaktus.jpeg')}
             />
+            <Text style={{color:'#1C7360', fontSize:20, fontWeight:'bold'}}>DRIVER</Text>
             <View style={{ width: '90%' }}>
                 <Text style={styles.title}> Hello,</Text>
                 <Text style={styles.title1}> Welcome Back!</Text>

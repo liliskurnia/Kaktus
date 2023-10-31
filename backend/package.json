@@ -2,7 +2,7 @@
   "name": "kaktus-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "tsc": "del /s/q \"build/\" && tsc",
     "ts": "del /s/q \"build/\" && tsc -w",
