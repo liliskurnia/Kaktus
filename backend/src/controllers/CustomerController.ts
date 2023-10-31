@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import Authentication from '../utils/Authentication';
 import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
-import mailSender from '../utils/mailSender';
+import mailSender from '../utils/EMailSender';
 
 const fs = require('fs');
 const otpGenerator = require('otp-generator');
@@ -131,7 +131,7 @@ class CustomerController implements IController {
       const userExist = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
       if (userExist) {
         const expiryDate = new Date(userExist.expiredAt);
-        if (expiryDate.valueOf() < now.valueOf()) {
+        if (expiryDate.valueOf() <= now.valueOf()) {
           console.log('token has expired, generating new otp code');
           const currentTime = new Date();
           let otp = otpGenerator.generate(6, {
@@ -173,7 +173,7 @@ class CustomerController implements IController {
             'Email Verification',
             `Please verify your email using this OTP code: ${newOTP.otp}`,
             `<h1>Please verify your email using OTP</h1>
-             <p>Your OTP Code: ${newOTP.otp}</p>`
+             <p>Your OTP Code: <b>${newOTP.otp}</b></p>`
           );
           return res.status(400).send('OTP expired, sending a new OTP (valid for 5 minutes)');
         } else if (expiryDate.valueOf() > now.valueOf()) {
@@ -219,7 +219,7 @@ class CustomerController implements IController {
         'Email Verification',
         `Please verify your email using this OTP code: ${otp}`,
         `<h1>Please verify your email using OTP</h1>
-        <p>Your OTP Code: ${otp}</p>`
+        <p>Your OTP Code: <b>${otp}</b></p>`
       );
       return res.status(200).send('registrasi user-customer sukses, menunggu verifikasi user');
     } catch (error) {
@@ -311,7 +311,9 @@ class CustomerController implements IController {
       const data = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
       if (!data) {
         return res.status(404).send('data user tidak ditemukan');
-      } else if (data && data.expiredAt < now.valueOf()) {
+      }
+      const expiryDate = new Date(data.expiredAt);
+      if (expiryDate.valueOf() < now.valueOf()) {
         //if otp has expired, create new otp and delete the old otp
         let otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,
