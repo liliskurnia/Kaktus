@@ -2,12 +2,12 @@ const NodeMailer = require('nodemailer');
 const { google } = require('googleapis');
 
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const oauth2client = new google.auth.OAuth2(process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, REDIRECT_URI);
-oauth2client.setCredentials({ refresh_token: process.env.API_REFRESH_TOKEN });
+const oAuth2Client = new google.auth.OAuth2(process.env.API_CLIENT_ID, process.env.API_CLIENT_SECRET, REDIRECT_URI);
+oAuth2Client.setCredentials({ refresh_token: process.env.API_REFRESH_TOKEN });
 
 const mailSender = async (email: string, title: string, textBody: string, htmlBody: string) => {
   try {
-    const ACCESS_TOKEN = await oauth2client.getAccessToken();
+    const ACCESS_TOKEN = await oAuth2Client.getAccessToken();
     const transporter = NodeMailer.createTransport({
       service: 'gmail',
       auth: {

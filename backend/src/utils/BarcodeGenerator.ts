@@ -89,10 +89,10 @@ function QRPDFFormatter(barcode: string, outPath: string, title?: string): void 
   doc.addSVG(svg, 0, 0);
   if (title) {
     doc.fontSize(11);
-    doc.font('Helvetica-Bold').text(`${title}`, 0, 35, { width: 170, align: 'center' });
+    doc.font('Helvetica-Bold').text(`${title}`, 0, 15, { width: 160, height: 25, align: 'center' });
   }
   doc.fontSize(9);
-  doc.font('Helvetica-Bold').text(`${barcode}`, 0, 210, { width: 170, align: 'center' });
+  doc.font('Helvetica-Bold').text(`${barcode}`, 0, 210, { width: 160, align: 'center' });
 
   doc.end();
   console.log('document generated');

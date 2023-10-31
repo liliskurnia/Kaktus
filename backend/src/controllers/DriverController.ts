@@ -592,7 +592,9 @@ class DriverController implements IController {
       await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
         if (error) throw error;
       });
-      await historyData.destroy();
+      for (const record of historyData) {
+        await record.destroy();
+      }
       await data.destroy();
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);
     } catch (err) {

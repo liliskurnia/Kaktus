@@ -127,7 +127,7 @@ class RequestController {
         status: 'Active',
       });
       //generate barcode image for sampah
-      BarcodeGenerator.generateImage(trashCode, qrFolderPath, jenisSampah);
+      BarcodeGenerator.generateImage(trashCode, qrFolderPath, jenis.nama);
 
       //creates request at the request db collections
       await RequestDB.create({

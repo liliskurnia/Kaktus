@@ -131,7 +131,7 @@ class TPSController implements IController {
         barcode,
         status: 'Inactive',
       });
-      BarcodeGenerator.generateImage(barcode, './public/qrcodes', `${tps.nama}-${jenisSampah}`);
+      BarcodeGenerator.generateImage(barcode, './public/qrcodes', `${tps.nama}-${jenis.nama}`);
       return res.status(200).send('tempat sampah telah berhasil diregistrasi');
     } catch (error) {
       console.error(error);
