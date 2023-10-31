@@ -13,6 +13,7 @@ import { Block, Image } from "../components";
 import { useTheme } from "../hooks";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import QRCode from 'react-native-qrcode-svg';
 
 export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -65,6 +66,8 @@ export default function OrderHistory() {
         }
     }, [userData]);
 
+    let base64Logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAA..';
+
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
             <View
@@ -113,7 +116,7 @@ export default function OrderHistory() {
             </View>
             <ScrollView>
                 <View style={styles.subTitleBox}>
-                    <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>TODAY</TextRn>
+                    {/* <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>TODAY</TextRn> */}
                     <TouchableOpacity onPress={handleAdd} style={styles.add}>
                         <MaterialCommunityIcons name="plus" size={18} color="#9EBCB6" />
                         <TextRn style={{ color: '#9EBCB6' }}>NEW ORDER</TextRn>
@@ -121,12 +124,19 @@ export default function OrderHistory() {
                 </View>
                 {historyData.map((value, index) => (
                     <View key={index} style={{ flexDirection: 'row' }}>
-                        <View style={[styles.boxKiri, { backgroundColor: '#FFE5E5' }]}>
+                        <View style={[styles.boxKiri, { backgroundColor: '#DDF7E3' }]}>
                             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                                <TouchableOpacity style={{ borderRadius: 10, backgroundColor: '#ffffff', padding: 5, marginBottom: 10 }}>
+                                <QRCode
+                                    value={value.trashCode}
+                                    logo={{ uri: base64Logo }}
+                                    size={70}
+                                    logoSize={30}
+                                    logoBackgroundColor='transparent'
+                                />
+                                <TouchableOpacity style={{ borderRadius: 10,borderColor: '#1C7360', backgroundColor: '#ffffff', padding: 5, marginTop: 10 }}>
                                     <TextRn style={{ color: '#A2A2A2' }}>{value.status}</TextRn>
                                 </TouchableOpacity>
-                                <TextRn style={{ fontWeight: 'bold' }}>Earnings</TextRn>
+                                {/* <TextRn style={{ fontWeight: 'bold' }}>Earnings</TextRn> */}
                             </View>
                             {/* <View style={{ flexDirection: 'column' }}>
                                 <Image
@@ -136,9 +146,9 @@ export default function OrderHistory() {
                                 <TextRn style={{ fontWeight: 'bold' }}>Organic</TextRn>
                             </View> */}
                         </View>
-                        <View style={[styles.boxKanan, { backgroundColor: '#FFB2B2', }]}>
+                        <View style={[styles.boxKanan, { backgroundColor: '#A1EDCD', }]}>
                             <View style={{ flexDirection: 'column' }}>
-                                <TextRn style={{ marginBottom: 5, fontSize: 10 }}>{value.createdAt}</TextRn>
+                                <TextRn style={{ marginBottom: 5, fontSize: 12 }}>{value.createdAt}</TextRn>
                                 <TextRn style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bold' }}>ID: {value.requestCode}</TextRn>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <MaterialCommunityIcons name="trash-can" size={24} color="black" />
@@ -163,11 +173,11 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     subTitleBox: {
-        flexDirection: 'row',
+        // flexDirection: 'row',
         marginHorizontal: 30,
         marginTop: 30,
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        // justifyContent: 'space-between',
+        alignItems: 'flex-end'
     },
     title: {
         fontSize: 30,
