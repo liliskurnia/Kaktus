@@ -2,4 +2,6 @@ node_modules/
 backup/
 build/
 test/
+documentation/kaktus-db.vuerd.json
+src/utils/EmailVerification.ts
 .env
