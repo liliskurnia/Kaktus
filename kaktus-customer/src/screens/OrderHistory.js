@@ -7,7 +7,7 @@ import {
     StyleSheet,
     ScrollView,
 } from "react-native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Image } from "../components";
 import { useTheme } from "../hooks";
@@ -15,6 +15,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment';
+import 'moment-timezone';
+import Modal from "react-native-modal";
 
 export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -22,10 +24,17 @@ export default function OrderHistory() {
     const [userData, setUserData] = useState([]);
     const [historyData, setHistoryData] = useState([])
     const [loading, setLoading] = useState(true);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedItemIndex, setSelectedItemIndex] = useState(null);
 
     const handleAdd = () => {
         navigation.navigate('PickUp')
     }
+
+    const toggleModal = (index) => {
+        setSelectedItemIndex(index);
+        setModalVisible(!isModalVisible);
+    };
 
     //cek data yang sudah disimpan di async storage
     useEffect(() => {
@@ -48,6 +57,11 @@ export default function OrderHistory() {
         checkAsyncStorageData();
     }, []);
 
+    const convertToLocalTime = (timestamp) => {
+        const localTime = moment(timestamp);
+        return localTime.format('YYYY-MM-DD HH:mm:ss');
+    };
+
     //get order history
     useEffect(() => {
         if (userData.masterCustomerId) {
@@ -55,13 +69,19 @@ export default function OrderHistory() {
                 setLoading(true);
                 try {
                     const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/requests/orderHistory/${userData.masterCustomerId}`);
-                    setHistoryData(response);
-                    console.log('DATA', historyData)
+                    // Convert timestamps in the response to local time
+                    const localizedData = response.map(item => ({
+                        ...item,
+                        createdAt: convertToLocalTime(item.createdAt),
+                        updatedAt: convertToLocalTime(item.updatedAt),
+                    }));
+                    setHistoryData(localizedData);
+                    console.log('DATA', historyData);
                 } catch (error) {
                     console.error(error.message);
                 }
                 setLoading(false);
-            }
+            };
 
             fetchData();
         }
@@ -70,6 +90,18 @@ export default function OrderHistory() {
     let base64Logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAA..';
 
     historyData.sort((a, b) => moment(b.createdAt).diff(moment(a.createdAt)));
+
+    const groupedData = {};
+
+    historyData.forEach(item => {
+        const itemDate = moment(item.createdAt).format("YYYY-MM-DD");
+        if (!groupedData[itemDate]) {
+            groupedData[itemDate] = [item];
+        } else {
+            groupedData[itemDate].push(item);
+        }
+    });
+
 
     return (
         <Block flex={1} style={{ backgroundColor: "#fff" }}>
@@ -118,60 +150,116 @@ export default function OrderHistory() {
                 </TextRn>
             </View>
             <ScrollView>
-                <View style={styles.subTitleBox}>
-                    <TouchableOpacity onPress={handleAdd} style={styles.add}>
-                        <MaterialCommunityIcons name="plus" size={18} color="#9EBCB6" />
-                        <TextRn style={{ color: '#9EBCB6' }}>NEW ORDER</TextRn>
-                    </TouchableOpacity>
-                </View>
-                {historyData.map((value, index) => {
-                    const currentDate = moment(value.createdAt).format('YYYY-MM-DD');
-                    const prevItem = index > 0 ? moment(historyData[index - 1].createdAt).format('YYYY-MM-DD') : null;
-
-                    if (currentDate !== prevItem) {
-                        // Tampilkan subjudul jika tanggal berbeda
-                        return (
-                            <View key={currentDate} style={{marginHorizontal: 30, marginTop: 30, alignItems:'flex-start'}}>
-                                <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360' }}>{moment(value.createdAt).format('D MMMM YYYY')}</TextRn>
-                            </View>
-                        );
-                    }
-
-                    return (
-                        <View key={index} style={{ flexDirection: 'row' }}>
-                            <View style={[styles.boxKiri, { backgroundColor: '#DDF7E3' }]}>
-                                <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-                                    <QRCode
-                                        value={value.trashCode}
-                                        logo={{ uri: base64Logo }}
-                                        size={70}
-                                        logoSize={30}
-                                        logoBackgroundColor='transparent'
-                                    />
-                                    <TouchableOpacity style={{ borderRadius: 10, borderColor: '#1C7360', backgroundColor: '#ffffff', padding: 5, marginTop: 10 }}>
-                                        <TextRn style={{ color: '#A2A2A2' }}>{value.status}</TextRn>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            <View style={[styles.boxKanan, { backgroundColor: '#A1EDCD', }]}>
-                                <View style={{ flexDirection: 'column' }}>
-                                    <TextRn style={{ marginBottom: 5, fontSize: 12 }}>{value.createdAt}</TextRn>
-                                    <TextRn style={{ marginBottom: 10, fontSize: 12, fontWeight: 'bold' }}>ID: {value.requestCode}</TextRn>
+                {Object.keys(groupedData).map(date => (
+                    <View key={date}>
+                        <TextRn style={{ fontSize: 20, fontWeight: 'bold', color: '#1C7360', marginHorizontal: 30, marginTop: 20 }}>
+                            {moment(date).format('D MMMM YYYY')}
+                        </TextRn>
+                        {groupedData[date].map((value, index) => (
+                            <View key={value.id} style={{ marginBottom: 10 }}>
+                                <View style={styles.box}>
+                                    <TextRn style={{ color: '#00000066' }}>{value.createdAt}</TextRn>
+                                    <TextRn style={{ fontWeight: 'bold' }}>R.ID: {value.requestCode}</TextRn>
+                                    <TextRn>Kode Sampah: {value.trashCode}</TextRn>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <MaterialCommunityIcons name="trash-can" size={24} color="black" />
                                         <TextRn style={{ fontSize: 16, fontWeight: 'bold' }}>{value.trashType}</TextRn>
                                     </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
+                                        <TouchableOpacity onPress={() => toggleModal(index)} style={[styles.buttonReward, { width: '40%' }]}>
+                                            <MaterialCommunityIcons name="line-scan" size={20} color="white" />
+                                            <TextRn style={styles.textbtn}>View QR</TextRn>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.buttonReward, { width: '40%' }]}>
+                                            <AntDesign name="clouddownloado" size={20} color="white" />
+                                            <TextRn style={styles.textbtn}>Download QR</TextRn>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.buttonReward, { width: '10%' }]}>
+                                            <MaterialCommunityIcons name="dots-horizontal" size={20} color="white" />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
+                                <View style={styles.boxBottom}>
+                                    <TextRn style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 12 }}>{value.status}</TextRn>
+                                    <TextRn style={{ color: '#ffffff', fontSize: 12 }}>{value.updatedAt}</TextRn>
+                                    <TextRn style={{ color: '#ffffff', fontSize: 12 }}>2000 point</TextRn>
+                                </View>
+                                {selectedItemIndex !== null && (
+                                    <Modal isVisible={isModalVisible}>
+                                        <View style={{ backgroundColor: '#ffffff', padding: 20, borderRadius: 10, flexDirection: 'column', alignItems: 'center' }}>
+                                            <TextRn style={{ color: '#819994', textAlign: 'center', fontSize: 18, marginBottom: 20 }}>QR CODE</TextRn>
+                                            <QRCode
+                                                value={historyData[selectedItemIndex].trashCode}
+                                                logo={{ uri: base64Logo }}
+                                                size={250}
+                                                logoSize={30}
+                                                logoBackgroundColor='transparent'
+                                            />
+                                            <TouchableOpacity onPress={() => toggleModal(null)} style={[styles.buttonModal, { backgroundColor: '#9EBCB6' }]}>
+                                                <TextRn style={styles.textbtn}>OK</TextRn>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Modal>
+                                )}
                             </View>
-                        </View>
-                    );
-                })}
+                        ))}
+                    </View>
+                ))}
             </ScrollView>
         </Block>
     );
 }
 
 const styles = StyleSheet.create({
+    textbtn: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 14,
+        marginLeft:5
+    },
+    buttonModal: {
+        padding: 10,
+        borderRadius: 5,
+        width: '15%',
+        marginVertical: 20,
+    },
+    buttonReward: {
+        backgroundColor: '#3CB9E0',
+        borderRadius: 10,
+        padding: 5,
+        marginRight: 10,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    box: {
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ffffff',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        elevation: 5,
+        marginHorizontal: 30,
+        marginTop: 10,
+        padding: 10,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0
+    },
+    boxBottom: {
+        flexDirection: 'row',
+        marginHorizontal: 30,
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: '#A8A8A8',
+        justifyContent: 'space-between',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0
+    },
     add: {
         flexDirection: 'row',
         borderWidth: 1,

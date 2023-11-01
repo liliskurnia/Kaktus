@@ -209,6 +209,7 @@ export default function PickUp() {
                 <TextRn style={styles.formTitle}>Date & Time :</TextRn>
                 <View style={styles.inputTextView}>
                     <DatePicker
+                        mode= "calendar"
                         onSelectedChange={date => setSelectedDate(date)}
                     />
                 </View>
