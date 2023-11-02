@@ -10,7 +10,7 @@ class UserController implements IController {
   index = async (req: Request, res: Response): Promise<Response> => {
     try {
       const userList = await dm.findAll({
-        exclude: ['password'],
+        exclude: ['password', 'verified'],
         order: ['id'],
       });
 
@@ -27,7 +27,7 @@ class UserController implements IController {
 
   create = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
+      const { username, password, nik, nama, email, telp, alamat, kota, gender, verified, programName, createdBy } = req.body;
       if (!nik) {
         return res.status(400).send('nik belum diisi');
       }
@@ -50,6 +50,7 @@ class UserController implements IController {
         alamat,
         kota,
         gender,
+        verified,
         programName,
         createdBy,
       });
@@ -70,7 +71,7 @@ class UserController implements IController {
 
     try {
       const data = await dm.findByPk(id, {
-        exclude: ['password'],
+        exclude: ['password', 'verified'],
         order: ['id'],
       });
 
@@ -86,15 +87,11 @@ class UserController implements IController {
 
   update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { nama, alamat, email, telp, programName, updatedBy } = req.body;
+    const { nama, alamat, programName, updatedBy } = req.body;
 
     try {
       if (!nama) {
         return res.status(400).send('nama belum diisi');
-      } else if (!email) {
-        return res.status(400).send('email belum diisi');
-      } else if (!telp) {
-        return res.status(400).send('nomor telepon belum diisi');
       } else {
         const data = await dm.findByPk(id);
         if (!data) {
@@ -105,8 +102,6 @@ class UserController implements IController {
         await data.update({
           nama,
           alamat,
-          email: email.toLowerCase(),
-          telp,
           programName,
           updatedBy,
         });
@@ -133,32 +128,37 @@ class UserController implements IController {
           userId: data.id,
         },
       });
-      const sampahCollections = await db.sampah_master.findAll({
-        where: {
-          ownerCode: masterCustomer.uniqueCode,
-        },
-      });
-      for (const sampah of sampahCollections) {
-        await fs.rm(`./public/qrcodes/images/${sampah.barcode}.png`, function (error: any) {
+      if (masterCustomer) {
+        const sampahCollections = await db.sampah_master.findAll({
+          where: {
+            ownerCode: masterCustomer.uniqueCode,
+          },
+        });
+        if (sampahCollections) {
+          for (const sampah of sampahCollections) {
+            await fs.rm(`./public/qrcodes/images/${sampah.barcode}.png`, function (error: any) {
+              if (error) throw error;
+            });
+            await fs.rm(`./public/qrcodes/svgs/${sampah.barcode}.svg`, function (error: any) {
+              if (error) throw error;
+            });
+            await fs.rm(`./public/qrcodes/pdfs/${sampah.barcode}.pdf`, function (error: any) {
+              if (error) throw error;
+            });
+            await sampah.destroy();
+          }
+        }
+        await fs.rm(`./public/qrcodes/images/${masterCustomer.uniqueCode}.png`, function (error: any) {
           if (error) throw error;
         });
-        await fs.rm(`./public/qrcodes/svgs/${sampah.barcode}.svg`, function (error: any) {
+        await fs.rm(`./public/qrcodes/svgs/${masterCustomer.uniqueCode}.svg`, function (error: any) {
           if (error) throw error;
         });
-        await fs.rm(`./public/qrcodes/pdfs/${sampah.barcode}.pdf`, function (error: any) {
+        await fs.rm(`./public/qrcodes/pdfs/${masterCustomer.uniqueCode}.pdf`, function (error: any) {
           if (error) throw error;
         });
-        await sampah.destroy();
       }
-      await fs.rm(`./public/qrcodes/images/${masterCustomer.uniqueCode}.png`, function (error: any) {
-        if (error) throw error;
-      });
-      await fs.rm(`./public/qrcodes/svgs/${masterCustomer.uniqueCode}.svg`, function (error: any) {
-        if (error) throw error;
-      });
-      await fs.rm(`./public/qrcodes/pdfs/${masterCustomer.uniqueCode}.pdf`, function (error: any) {
-        if (error) throw error;
-      });
+
       await db.hak_akses.destroy({ where: { userId: id } });
       await db.master_customer.destroy({ where: { userId: id } });
       await db.master_driver.destroy({ where: { userId: id } });

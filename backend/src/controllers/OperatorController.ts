@@ -68,10 +68,18 @@ class OperatorController implements IController {
         }
       }
       //create unique customer code
-      let uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        initialString: 'OP',
+        length: 16,
+        uppercaseAlphabet: true,
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          initialString: 'OP',
+          length: 16,
+          uppercaseAlphabet: true,
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as operator at db
@@ -89,7 +97,7 @@ class OperatorController implements IController {
         programName,
         createdBy,
       });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, { title: user.nama, svgOut: true, pdfOut: true, pngOut: true });
       return res.status(201).send(`registrasi operator ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -136,6 +144,7 @@ class OperatorController implements IController {
         alamat,
         kota,
         gender,
+        verified: true,
         programName,
         createdBy,
       });
@@ -145,10 +154,18 @@ class OperatorController implements IController {
         userId: newUser,
         roleId: operatorRole.id,
       });
-      let uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        initialString: 'OP',
+        length: 16,
+        uppercaseAlphabet: true,
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('OP', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          initialString: 'OP',
+          length: 16,
+          uppercaseAlphabet: true,
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const operator = await dm.create({
@@ -165,7 +182,7 @@ class OperatorController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, { title: nama, svgOut: true, pdfOut: true, pngOut: true });
       return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);
@@ -180,7 +197,7 @@ class OperatorController implements IController {
       if (!data) {
         return res.status(400).send('data operator tidak ditemukan');
       }
-      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, { title: data.nama, pngOut: true, pdfOut: true });
       return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);

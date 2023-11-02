@@ -44,14 +44,7 @@ class TPSController implements IController {
 
     try {
       if (nama === 'Unassigned') {
-        let barcode = BarcodeGenerator.generateCode('TPS', 12, true);
-        let exist = await dm.findOne({
-          where: { barcode },
-        });
-        while (exist) {
-          barcode = BarcodeGenerator.generateCode('TPS', 12, true);
-          exist = await dm.findOne({ where: { barcode } });
-        }
+        const barcode = 'TPS-000000000000';
         const newTps = await dm.create({
           nama,
           barcode,
@@ -62,12 +55,20 @@ class TPSController implements IController {
         });
         return res.status(200).send('tps telah berhasil dibuat');
       }
-      let barcode = BarcodeGenerator.generateCode('TPS', 12, true);
+      let barcode = BarcodeGenerator.generateCode({
+        initialString: 'TPS',
+        length: 12,
+        uppercaseAlphabet: true,
+      });
       let exist = await dm.findOne({
         where: { barcode },
       });
       while (exist) {
-        barcode = BarcodeGenerator.generateCode('TPS', 12, true);
+        barcode = BarcodeGenerator.generateCode({
+          initialString: 'TPS',
+          length: 12,
+          uppercaseAlphabet: true,
+        });
         exist = await dm.findOne({ where: { barcode } });
       }
       const newTps = await dm.create({
@@ -78,7 +79,7 @@ class TPSController implements IController {
         programName,
         createdBy,
       });
-      BarcodeGenerator.generateImage(barcode, qrFolderPath, nama);
+      BarcodeGenerator.generateImage(barcode, qrFolderPath, { title: nama, pngOut: true, pdfOut: true, svgOut: true });
 
       return res.status(200).send('tps telah berhasil dibuat');
     } catch (error) {
@@ -94,7 +95,7 @@ class TPSController implements IController {
       if (!data) {
         return res.status(400).send('data tps tidak dapat ditemukan');
       }
-      BarcodeGenerator.generateImage(data.barcode, qrFolderPath, data.nama);
+      BarcodeGenerator.generateImage(data.barcode, qrFolderPath, { title: data.nama, pngOut: true, pdfOut: true });
       return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
@@ -123,7 +124,11 @@ class TPSController implements IController {
         return res.status(404).send('jenis sampah tidak ditemukan/terdaftar');
       }
       const jenisSampah = `${jenis.kode}-${jenis.nama}`;
-      const barcode = `${BarcodeGenerator.generateCode(`TPS${tpsId - 1}-`, 16, true)}-${jenis.kode}`;
+      const barcode = `${BarcodeGenerator.generateCode({
+        initialSting: `TPS${tps.id - 1}`,
+        length: 12,
+        uppercaseAlphabet: true,
+      })}-${jenis.kode}`;
       await db.sampah_master.create({
         ownerCode: tps.barcode,
         jenisSampahId,
@@ -131,7 +136,11 @@ class TPSController implements IController {
         barcode,
         status: 'Inactive',
       });
-      BarcodeGenerator.generateImage(barcode, './public/qrcodes', `${tps.nama}-${jenis.nama}`);
+      BarcodeGenerator.generateImage(barcode, './public/qrcodes', {
+        title: `${tps.nama}-${jenis.nama}`,
+        pdfOut: true,
+        pngOut: true,
+      });
       return res.status(200).send('tempat sampah telah berhasil diregistrasi');
     } catch (error) {
       console.error(error);
@@ -200,15 +209,9 @@ class TPSController implements IController {
       }
 
       const current = data.nama;
-      await fs.rm(`${qrFolderPath}/images/${data.barcode}.png`, function (error: any) {
-        if (error) throw error;
-      });
-      await fs.rm(`${qrFolderPath}/svgs/${data.barcode}.svg`, function (error: any) {
-        if (error) throw error;
-      });
-      await fs.rm(`${qrFolderPath}/pdfs/${data.barcode}.pdf`, function (error: any) {
-        if (error) throw error;
-      });
+      await fs.rm(`${qrFolderPath}/images/${data.barcode}.png`);
+      await fs.rm(`${qrFolderPath}/svgs/${data.barcode}.svg`);
+      await fs.rm(`${qrFolderPath}/pdfs/${data.barcode}.pdf`);
       await data.destroy();
       return res.status(200).send(`data tps: ${current} telah berhasil dihapus`);
     } catch (error) {

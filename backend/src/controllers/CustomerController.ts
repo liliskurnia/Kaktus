@@ -5,7 +5,7 @@ import IController from './IController';
 import BarcodeGenerator from '../utils/BarcodeGenerator';
 import mailSender from '../utils/EMailSender';
 
-const fs = require('fs');
+import fs from 'fs';
 const otpGenerator = require('otp-generator');
 
 const db = require('../db/models');
@@ -72,10 +72,18 @@ class CustomerController implements IController {
       }
 
       //create unique customer code
-      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        length: 16,
+        uppercaseAlphabet: true,
+        initialString: 'CU',
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          length: 16,
+          uppercaseAlphabet: true,
+          initialString: 'CU',
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as customer at db
@@ -92,8 +100,6 @@ class CustomerController implements IController {
         programName,
         createdBy,
       });
-      //generate customer's QR Code Assets
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
 
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
@@ -128,62 +134,11 @@ class CustomerController implements IController {
       if (!gender) {
         return res.status(400).send('gender tidak boleh kosong');
       }
-      const userExist = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
-      if (userExist) {
-        const expiryDate = new Date(userExist.expiredAt);
-        if (expiryDate.valueOf() <= now.valueOf()) {
-          console.log('token has expired, generating new otp code');
-          const currentTime = new Date();
-          let otp = otpGenerator.generate(6, {
-            upperCaseAlphabets: false,
-            lowerCaseAlphabets: false,
-            specialChars: false,
-          });
-          let otpExists = await OTPHolder.findOne({ where: { otp } });
-          while (otpExists) {
-            otp = otpGenerator.generate(6, {
-              upperCaseAlphabets: false,
-              lowerCaseAlphabets: false,
-              specialChars: false,
-            });
-            otpExists = await OTPHolder.findOne({ where: { otp } });
-          }
-          const expiredAt = currentTime.valueOf() + 60 * 5 * 1000;
-          const oldDatas = await OTPHolder.findAll({ where: { email: userExist.email } });
-          for (const oldData of oldDatas) {
-            await oldData.destroy();
-          }
-
-          const newOTP = await OTPHolder.create({
-            username: userExist.username,
-            password: userExist.password,
-            nik: userExist.nik,
-            nama: userExist.nama,
-            email: userExist.email,
-            telp: userExist.telp,
-            alamat: userExist.alamat,
-            kota: userExist.kota,
-            gender: userExist.gender,
-            otp,
-            expiredAt,
-          });
-          const email = newOTP.email;
-          mailSender(
-            email,
-            'Email Verification',
-            `Please verify your email using this OTP code: ${newOTP.otp}`,
-            `<h1>Please verify your email using OTP</h1>
-             <p>Your OTP Code: <b>${newOTP.otp}</b></p>`
-          );
-          return res.status(400).send('OTP expired, sending a new OTP (valid for 5 minutes)');
-        } else if (expiryDate.valueOf() > now.valueOf()) {
-          return res.status(400).send('user sudah terdaftar, tapi belum melakukan verifikasi');
-        }
-      }
-
-      const verified = await User.findOne({ where: { nik } });
-      if (verified) {
-        return res.status(400).send('user sudah terdaftar dan terverifikasi');
+      const exist = await User.findOne({ where: { nik } });
+      if (exist && exist.verified) {
+        return res.status(400).send('user sudah terdaftar');
+      } else if (exist && !exist.verified) {
+        return res.status(400).send('user sudah terdaftar (belum verifikasi)');
       }
       const hashedPassword: string = await Authentication.passwordHash(password);
       let otp = otpGenerator.generate(6, {
@@ -191,17 +146,24 @@ class CustomerController implements IController {
         lowerCaseAlphabets: false,
         specialChars: false,
       });
-      let otpExists = await OTPHolder.findOne({ where: { otp } });
-      while (otpExists) {
+      let otpExist = await User.findOne({ where: { otp } });
+      while (otpExist) {
         otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,
           lowerCaseAlphabets: false,
           specialChars: false,
         });
-        otpExists = await OTPHolder.findOne({ where: { otp } });
+        otpExist = await User.findOne({ where: { otp } });
       }
-      const expiredAt = now.valueOf() + 60 * 5 * 1000;
-      await OTPHolder.create({
+      const otpExpiry = now.valueOf() + 1000 * 60 * 5;
+      mailSender(
+        email,
+        'Email Verification',
+        `Please verify your email using this OTP code: ${otp}`,
+        `<h1>Please verify your email using OTP</h1>
+       <p>Your OTP Code: ${otp}</p>`
+      );
+      await User.create({
         username,
         password: hashedPassword,
         nik,
@@ -212,15 +174,11 @@ class CustomerController implements IController {
         kota,
         gender,
         otp,
-        expiredAt,
+        otpExpiry,
+        programName: 'Registration System',
+        createdBy: 'Registration System',
       });
-      mailSender(
-        email,
-        'Email Verification',
-        `Please verify your email using this OTP code: ${otp}`,
-        `<h1>Please verify your email using OTP</h1>
-        <p>Your OTP Code: <b>${otp}</b></p>`
-      );
+
       return res.status(200).send('registrasi user-customer sukses, menunggu verifikasi user');
     } catch (error) {
       console.error(error);
@@ -266,6 +224,7 @@ class CustomerController implements IController {
         alamat,
         kota,
         gender,
+        verified: true,
         programName,
         createdBy,
       });
@@ -275,10 +234,18 @@ class CustomerController implements IController {
         userId: newUser,
         roleId: customerRole.id,
       });
-      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        length: 16,
+        uppercaseAlphabet: true,
+        initialString: 'CU',
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          length: 16,
+          uppercaseAlphabet: true,
+          initialString: 'CU',
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const customer = await dm.create({
@@ -294,7 +261,6 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
 
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
@@ -304,63 +270,80 @@ class CustomerController implements IController {
   };
 
   verifyEmail = async (req: Request, res: Response): Promise<Response> => {
-    const { email, otp, programName } = req.body;
+    const { email, otp } = req.body;
     const now = new Date();
     try {
-      //find data in temporary OTP table
-      const data = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
+      const data = await User.findOne({ where: { email } });
       if (!data) {
         return res.status(404).send('data user tidak ditemukan');
       }
-      const expiryDate = new Date(data.expiredAt);
-      if (expiryDate.valueOf() < now.valueOf()) {
-        //if otp has expired, create new otp and delete the old otp
+      if (data.verified === true) {
+        return res.status(400).send('user has been verified');
+      }
+      const otpExpiry = new Date(data.otpExpiry);
+      if (otpExpiry.valueOf() <= now.valueOf()) {
         let otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,
           lowerCaseAlphabets: false,
           specialChars: false,
         });
-        let otpExists = await OTPHolder.findOne({ otp });
-        while (otpExists) {
+        let otpExist = await User.findOne({ where: { otp } });
+        while (otpExist) {
           otp = otpGenerator.generate(6, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
             specialChars: false,
           });
-          otpExists = await OTPHolder.findOne({ otp });
+          otpExist = await User.findOne({ where: { otp } });
         }
-        const expiredAt = now.valueOf() + 60 * 5;
-        const newOTP = await OTPHolder.create({
-          username: data.username,
-          password: data.password,
-          nik: data.nik,
-          nama: data.nama,
-          email: data.email,
-          telp: data.telp,
-          alamat: data.alamat,
-          kota: data.kota,
-          gender: data.gender,
-          otp,
-          expiredAt,
-        });
-        await data.destroy();
-        const email = newOTP.email;
-        mailSender(
-          email,
-          'Email Verification',
-          `Please verify your email using this OTP code: ${newOTP.otp}`,
-          `<h1>Please verify your email using OTP</h1>
-         <p>Your OTP Code: ${newOTP.otp}</p>`
-        );
-        return res.status(400).send('OTP has expired, sending a new OTP (valid for 5 minutes)');
+        const newExpiry = new Date().valueOf() + 1000 * 60 * 5;
+        // mailSender(
+        //   email,
+        //   'Email Verification',
+        //   `Please verify your email using this OTP code: ${otp}`,
+        //   `<h1>Please verify your email using OTP</h1>
+        //  <p>Your OTP Code: ${otp}</p>`
+        // );
+        await data.update({ otp, otpExpiry: newExpiry });
+        return res.status(400).send('OTP has expired, sending new verification OTP (valid for 5 minutes)');
       }
-      console.log(data);
       if (data.otp !== otp) {
-        return res.status(400).send('OTP tidak sesuai, gagal memverifikasi user');
+        let TimeRemaining = Math.floor((otpExpiry.valueOf() - now.valueOf()) / 1000);
+        let minutes = 0;
+        let seconds = 0;
+        while (TimeRemaining > 0) {
+          if (TimeRemaining - 60 >= 0) {
+            minutes++;
+            TimeRemaining -= 60;
+          } else {
+            seconds += TimeRemaining;
+          }
+        }
+        return res.status(400).send(`kode verifikasi OTP tidak sesuai, silakan coba lagi (waktu sebelum kode expired: ${minutes}:${seconds})`);
       }
-      const user = await User.create({
-        username: data.username,
-        password: data.password,
+      await data.update({ verified: true, otp: null, otpExpiry: null, updatedBy: 'Verification System' });
+      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
+      await HakAkses.create({
+        userId: data.id,
+        roleId: customerRole.id,
+      });
+      let uniqueCode = BarcodeGenerator.generateCode({
+        length: 16,
+        uppercaseAlphabet: true,
+        initialString: 'CU',
+      });
+      let exist = await dm.findOne({ where: { uniqueCode } });
+      while (exist) {
+        uniqueCode = BarcodeGenerator.generateCode({
+          length: 16,
+          uppercaseAlphabet: true,
+          initialString: 'CU',
+        });
+        exist = await dm.findOne({ where: { uniqueCode } });
+      }
+      await dm.create({
+        userId: data.id,
+        uniqueCode,
         nik: data.nik,
         nama: data.nama,
         email: data.email,
@@ -368,37 +351,10 @@ class CustomerController implements IController {
         alamat: data.alamat,
         kota: data.kota,
         gender: data.gender,
-        programName,
-        createdBy: 'Registration System',
+        programName: 'Verification System',
+        createdBy: 'Verification System',
       });
-      await data.destroy();
-      const newUser = await User.max('id');
-      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
-      await HakAkses.create({
-        userId: newUser,
-        roleId: customerRole.id,
-      });
-      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
-      let exist = await dm.findOne({ where: { uniqueCode } });
-      while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
-        exist = await dm.findOne({ where: { uniqueCode } });
-      }
-      const customer = await dm.create({
-        userId: newUser,
-        uniqueCode,
-        nik: user.nik,
-        nama: user.nama,
-        email: user.email,
-        telp: user.telp,
-        alamat: user.alamat,
-        kota: user.kota,
-        gender: user.gender,
-        programName,
-        createdBy: 'Registration System',
-      });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
-      return res.status(200).send('user berhasil diverifikasi dan terdaftar di db');
+      return res.status(200).send('user berhasil diverifikasi dan terdaftar sebagai customer');
     } catch (error) {
       console.error(error);
       return res.status(500).send('failed to verify user');
@@ -448,7 +404,7 @@ class CustomerController implements IController {
       if (!data) {
         return res.status(400).send('data customer tidak ditemukan');
       }
-      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, { title: data.nama });
       return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
@@ -524,29 +480,34 @@ class CustomerController implements IController {
       const nama = data.nama;
       const historyData = await History.findAll({ where: { masterCustomerId: data.id } });
       const sampahs = await Sampah.findAll({ where: { ownerCode: data.uniqueCode } });
-      for (const sampah of sampahs) {
-        await fs.rm(`${qrFolderPath}/images/${sampah.barcode}.png`, function (error: any) {
-          if (error) throw error;
-        });
-        await fs.rm(`${qrFolderPath}/svgs/${sampah.barcode}.svg`, function (error: any) {
-          if (error) throw error;
-        });
-        await fs.rm(`${qrFolderPath}/pdfs/${sampah.barcode}.pdf`, function (error: any) {
-          if (error) throw error;
-        });
-        sampah.destroy();
+      if (sampahs) {
+        for (const sampah of sampahs) {
+          fs.rm(`${qrFolderPath}/images/${sampah.barcode}.png`, function (error: any) {
+            if (error) throw error;
+          });
+          fs.rm(`${qrFolderPath}/svgs/${sampah.barcode}.svg`, function (error: any) {
+            if (error) throw error;
+          });
+          fs.rm(`${qrFolderPath}/pdfs/${sampah.barcode}.pdf`, function (error: any) {
+            if (error) throw error;
+          });
+          sampah.destroy();
+        }
       }
-      await fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
+
+      fs.rm(`${qrFolderPath}/images/${data.uniqueCode}.png`, function (error: any) {
         if (error) throw error;
       });
-      await fs.rm(`${qrFolderPath}/svgs/${data.uniqueCode}.svg`, function (error: any) {
+      fs.rm(`${qrFolderPath}/svgs/${data.uniqueCode}.svg`, function (error: any) {
         if (error) throw error;
       });
-      await fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
+      fs.rm(`${qrFolderPath}/pdfs/${data.uniqueCode}.pdf`, function (error: any) {
         if (error) throw error;
       });
-      for (const record of historyData) {
-        await record.destroy();
+      if (historyData) {
+        for (const record of historyData) {
+          await record.destroy();
+        }
       }
       await data.destroy();
       return res.status(200).send(`data user "${nama}" telah berhasil dihapus.`);

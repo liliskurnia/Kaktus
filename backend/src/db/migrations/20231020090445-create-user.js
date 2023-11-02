@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       kota: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(100),
       },
       gender: {
         type: Sequelize.STRING(1),
@@ -46,19 +46,27 @@ module.exports = {
       },
       points: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
+      },
+      verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      otp: {
+        type: Sequelize.STRING(6),
+      },
+      otpExpiry: {
+        type: Sequelize.DATE,
       },
       programName: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         defaultValue: 'Postman',
       },
       createdBy: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         defaultValue: 'Admin',
       },
       updatedBy: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
       },
       createdAt: {
         allowNull: false,

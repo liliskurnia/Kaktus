@@ -1,73 +1,67 @@
-const qr = require('qrcode');
-// const imgToPDF = require('image-to-pdf');
-const fs = require('fs');
+import qr from 'qrcode';
+import fs from 'fs';
+
 const PDFDocument = require('pdfkit');
 const SVGtoPDF = require('svg-to-pdfkit');
 
 class BarcodeGenerator {
-  public static generateCode = (code?: string, digits?: number, alphaNumeric?: boolean): string => {
-    const length: number = digits || 16;
-    const alphanumeric: boolean = alphaNumeric || false;
-    const initial: string = code || '';
+  public static generateCode = (options?: any): string => {
+    const { length, uppercaseAlphabet, lowercaseAlphabet, initialString, endingString, requestCode, trashType, requestType } = options;
+    let RequestType = '';
+    let characters = '0123456789';
+    if (uppercaseAlphabet === true) {
+      characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    }
+    if (lowercaseAlphabet === true) {
+      characters += 'abcdefghijklmnopqrstuvwxyz';
+    }
 
-    if (alphanumeric === false) {
-      let maxString = '';
-      for (let i = 0; i < length; i++) {
-        maxString += '9';
+    if (requestCode === true) {
+      switch (requestType) {
+        case 'SCHEDULED':
+          RequestType = 'SP';
+          break;
+        case 'REQUEST':
+          RequestType = 'CR';
+          break;
+        default:
+          RequestType = '';
       }
-      const maxValue = parseInt(maxString);
-      const id = Math.floor(Math.random() * maxValue);
-      const output: string = `${initial}${id}`;
-      return output;
-    } else {
-      let output: string = initial;
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      for (let i = 0; i < length; i++) {
+      const date = new Date();
+      let output: string = `${RequestType}-` || '';
+      output += date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString() + '-';
+      for (let i = 0; i < (length || 12); i++) {
         output += characters.charAt(Math.floor(Math.random() * characters.length));
       }
+      output += `-${trashType}` || '';
       return output;
     }
-  };
-
-  public static generateRequestCode = (requestType: string, trashTypeCode: string, digits?: number, alphaNumeric?: boolean): string => {
-    const length: number = digits || 16;
-    const alphanumeric: boolean = alphaNumeric || false;
-    const trashType: string = `-${trashTypeCode}` || '';
-    const d = new Date();
-    const year: string = d.getFullYear().toString();
-    const month: string = d.getMonth().toString();
-    const day: string = d.getDate().toString();
-    if (alphanumeric === false) {
-      let maxString = '';
-      for (let i = 0; i < length; i++) {
-        maxString += '9';
-      }
-      const maxValue = parseInt(maxString);
-      const id = Math.floor(Math.random() * maxValue);
-      const output: string = `${requestType}-${year}${month}${day}-${id}${trashType}`;
-      return output;
-    } else {
-      let output: string = `${requestType}-${year}${month}${day}-`;
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      for (let i = 0; i < length; i++) {
-        output += characters.charAt(Math.floor(Math.random() * characters.length));
-      }
-      output += trashType;
-      return output;
+    //default: 12 digit random number
+    let output: string = initialString || '';
+    for (let i = 0; i < (length || 12); i++) {
+      output += characters.charAt(Math.floor(Math.random() * characters.length));
     }
+    output += endingString || '';
+    return output;
   };
 
-  public static generateImage = (barcode: string, path: string, title?: string) => {
-    qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
-      if (error) throw error;
-      console.log('qr code svg generated succesfully');
-    });
-    qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
-      if (error) throw error;
-      console.log('qr code image generated succesfully');
-    });
-
-    QRPDFFormatter(barcode, `${path}/pdfs/${barcode}.pdf`, title);
+  public static generateImage = (barcode: string, path: string, options?: any) => {
+    const { svgOut: svg, pngOut: png, pdfOut: pdf, title } = options;
+    if (svg === true) {
+      qr.toFile(`${path}/svgs/${barcode}.svg`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'svg' }, function (error: any) {
+        if (error) throw error;
+        console.log('qr code svg generated succesfully');
+      });
+    }
+    if (png === true) {
+      qr.toFile(`${path}/images/${barcode}.png`, barcode, { errorCorrectionLevel: 'H', version: 3, type: 'png' }, function (error: any) {
+        if (error) throw error;
+        console.log('qr code image generated succesfully');
+      });
+    }
+    if (pdf === true || (pdf === null && svg === null && png === null)) {
+      QRPDFFormatter(barcode, `${path}/pdfs/${barcode}.pdf`, title);
+    }
   };
 }
 
@@ -96,10 +90,5 @@ function QRPDFFormatter(barcode: string, outPath: string, title?: string): void 
 
   doc.end();
   console.log('document generated');
-}
-
-function cmToPt(x: number): number {
-  const conversionRate = 28.3464549073;
-  return x * conversionRate;
 }
 export default BarcodeGenerator;

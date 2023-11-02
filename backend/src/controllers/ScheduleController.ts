@@ -85,10 +85,10 @@ class ScheduleController implements IController {
       if (!sampah) {
         return res.status(404).send('tempat sampah tidak terdaftar');
       }
-      let requestCode = BarcodeGenerator.generateRequestCode('SP', jenis.kode, 16, true);
+      let requestCode = BarcodeGenerator.generateCode({ length: 16, requestCode: true, requestType, trashType: jenis.kode, uppercaseAlphabet: true });
       let exist = await RequestDB.findOne({ where: { requestCode } });
       while (exist) {
-        requestCode = BarcodeGenerator.generateRequestCode('SP', jenis.kode, 16, true);
+        requestCode = BarcodeGenerator.generateCode({ length: 16, requestCode: true, requestType, trashType: jenis.kode, uppercaseAlphabet: true });
         exist = await RequestDB.findOne({ where: { requestCode } });
       }
       const assignedBy = createdBy || operatorCode;

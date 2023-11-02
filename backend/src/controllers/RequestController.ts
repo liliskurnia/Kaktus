@@ -104,17 +104,17 @@ class RequestController {
         return res.status(404).send('data customer tidak ditemukan');
       }
       const jenis = await db.jenis_sampah.findByPk(trashTypeId);
-      let requestCode = BarcodeGenerator.generateRequestCode('CR', jenis.kode, 16, true);
+      let requestCode = BarcodeGenerator.generateCode({ length: 16, requestCode: true, requestType, trashType: jenis.kode, uppercaseAlphabet: true });
       let exist = await RequestDB.findOne({ where: { requestCode } });
       while (exist) {
-        requestCode = BarcodeGenerator.generateRequestCode('CR', jenis.kode, 16, true);
+        requestCode = BarcodeGenerator.generateCode({ length: 16, requestCode: true, requestType, trashType: jenis.kode, uppercaseAlphabet: true });
         exist = await RequestDB.findOne({ where: { requestCode } });
       }
 
-      let trashCode = `${BarcodeGenerator.generateCode('', 16, true)}-${jenis.kode}`;
+      let trashCode = `${BarcodeGenerator.generateCode({ length: 16, uppercaseAlphabet: true })}-${jenis.kode}`;
       exist = await db.sampah_master.findOne({ where: { barcode: trashCode } });
       while (exist) {
-        trashCode = `${BarcodeGenerator.generateCode('', 16, true)}-${jenis.kode}`;
+        trashCode = `${BarcodeGenerator.generateCode({ length: 16, uppercaseAlphabet: true })}-${jenis.kode}`;
         exist = await db.sampah_master.findOne({ where: { barcode: trashCode } });
       }
       const jenisSampah = `${jenis.kode}-${jenis.nama}`;
@@ -127,7 +127,7 @@ class RequestController {
         status: 'Active',
       });
       //generate barcode image for sampah
-      BarcodeGenerator.generateImage(trashCode, qrFolderPath, jenis.nama);
+      BarcodeGenerator.generateImage(trashCode, qrFolderPath, { title: jenis.nama, pngOut: true, pdfOut: true });
 
       //creates request at the request db collections
       await RequestDB.create({

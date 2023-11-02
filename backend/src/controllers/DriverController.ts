@@ -73,10 +73,18 @@ class DriverController implements IController {
         }
       }
       //create unique driver code
-      let uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        initialString: 'DR',
+        length: 16,
+        uppercaseAlphabet: true,
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          initialString: 'DR',
+          length: 16,
+          uppercaseAlphabet: true,
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       //register user as driver at db
@@ -93,7 +101,8 @@ class DriverController implements IController {
         programName,
         createdBy,
       });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, { title: user.nama, pngOut: true, pdfOut: true, svgOut: true });
+
       return res.status(201).send(`registrasi driver ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -137,6 +146,7 @@ class DriverController implements IController {
         alamat,
         kota,
         gender,
+        verified: true,
         programName,
         createdBy,
       });
@@ -146,10 +156,18 @@ class DriverController implements IController {
         userId: newUser,
         roleId: driverRole.id,
       });
-      let uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
+      let uniqueCode = BarcodeGenerator.generateCode({
+        initialString: 'DR',
+        length: 16,
+        uppercaseAlphabet: true,
+      });
       let exist = await dm.findOne({ where: { uniqueCode } });
       while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('DR', 16, true);
+        uniqueCode = BarcodeGenerator.generateCode({
+          initialString: 'DR',
+          length: 16,
+          uppercaseAlphabet: true,
+        });
         exist = await dm.findOne({ where: { uniqueCode } });
       }
       const driver = await dm.create({
@@ -165,7 +183,8 @@ class DriverController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
+      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, { title: nama, pngOut: true, pdfOut: true, svgOut: true });
+
       return res.status(200).send('registrasi user(driver) sukses');
     } catch (error) {
       console.error(error);
@@ -174,14 +193,12 @@ class DriverController implements IController {
   };
 
   registerWithVerification = async (req: Request, res: Response): Promise<Response> => {
-    const { username, password, nik, nama, email, telp, alamat, kota, gender, programName, createdBy } = req.body;
+    const { username, password, nik, nama, email, telp, alamat, kota, gender } = req.body;
     const now = new Date();
+
     try {
       if (!nik) {
         return res.status(400).send('nik belum diisi');
-      }
-      if (!telp) {
-        return res.status(400).send('nomor telepon tidak boleh kosong');
       }
       if (!password) {
         return res.status(400).send('password belum diisi');
@@ -190,7 +207,7 @@ class DriverController implements IController {
         return res.status(400).send('nama belum diisi');
       }
       if (!email) {
-        return res.status(400).send('email belum di isi');
+        return res.status(400).send('email belum diisi');
       }
       if (!alamat) {
         return res.status(400).send('alamat belum diisi');
@@ -201,63 +218,11 @@ class DriverController implements IController {
       if (!gender) {
         return res.status(400).send('gender tidak boleh kosong');
       }
-
-      const existingApplicant = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
-      if (existingApplicant) {
-        const expiryDate = new Date(existingApplicant.expiredAt);
-        if (expiryDate.valueOf() <= now.valueOf()) {
-          console.log('token has expired, generating a new token (valid for 5 minutes)');
-          const currentTime = new Date();
-          let otp = otpGenerator.generate(6, {
-            upperCaseAlphabets: false,
-            lowerCaseAlphabets: false,
-            specialChars: false,
-          });
-          let otpExists = await OTPHolder.findOne({ where: { otp } });
-          while (otpExists) {
-            otp = otpGenerator.generate(6, {
-              upperCaseAlphabets: false,
-              lowerCaseAlphabets: false,
-              specialChars: false,
-            });
-            otpExists = await OTPHolder.findOne({ where: { otp } });
-          }
-          const expiredAt = currentTime.valueOf() + 60 * 5 * 1000;
-          const oldData = await OTPHolder.findAll({ where: { email: existingApplicant.email } });
-          for (const data of oldData) {
-            await data.destroy();
-          }
-
-          const newOTP = await OTPHolder.create({
-            username: existingApplicant.username,
-            password: existingApplicant.password,
-            nik: existingApplicant.nik,
-            nama: existingApplicant.nama,
-            email: existingApplicant.email,
-            telp: existingApplicant.telp,
-            alamat: existingApplicant.alamat,
-            kota: existingApplicant.kota,
-            gender: existingApplicant.gender,
-            otp,
-            expiredAt,
-          });
-          const email = newOTP.email;
-          mailSender(
-            email,
-            'Email Verification',
-            `Please verify your email using this OTP code: ${newOTP.otp}`,
-            `<h1>Please verify your email using OTP</h1>
-             <p>Your OTP Code: <b>${newOTP.otp}</b></p>`
-          );
-          return res.status(400).send('OTP Expired, sending a new OTP (valid for 5 minutes)');
-        } else if (expiryDate.valueOf() > now.valueOf()) {
-          return res.status(400).send('user sudah terdaftar, tapi belum melakukan verifikasi');
-        }
-      }
-
-      const verified = await User.findOne({ where: { nik } });
-      if (verified) {
-        return res.status(400).send('user sudah terdafatar dan terverifikasi');
+      const exist = await User.findOne({ where: { nik } });
+      if (exist && exist.verified) {
+        return res.status(400).send('user sudah terdaftar');
+      } else if (exist && !exist.verified) {
+        return res.status(400).send('user sudah terdaftar (belum verifikasi)');
       }
       const hashedPassword: string = await Authentication.passwordHash(password);
       let otp = otpGenerator.generate(6, {
@@ -265,17 +230,24 @@ class DriverController implements IController {
         lowerCaseAlphabets: false,
         specialChars: false,
       });
-      let otpExists = await OTPHolder.findOne({ where: { otp } });
-      while (otpExists) {
+      let otpExist = await User.findOne({ where: { otp } });
+      while (otpExist) {
         otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,
           lowerCaseAlphabets: false,
           specialChars: false,
         });
-        otpExists = await OTPHolder.findOne({ where: { otp } });
+        otpExist = await User.findOne({ where: { otp } });
       }
-      const expiredAt = now.valueOf() + 60 * 5 * 1000;
-      await OTPHolder.create({
+      const otpExpiry = now.valueOf() + 1000 * 60 * 5;
+      mailSender(
+        email,
+        'Email Verification',
+        `Please verify your email using this OTP code: ${otp}`,
+        `<h1>Please verify your email using OTP</h1>
+       <p>Your OTP Code: ${otp}</p>`
+      );
+      await User.create({
         username,
         password: hashedPassword,
         nik,
@@ -286,80 +258,93 @@ class DriverController implements IController {
         kota,
         gender,
         otp,
-        expiredAt,
+        otpExpiry,
+        programName: 'Registration System',
+        createdBy: 'Registration System',
       });
-      mailSender(
-        email,
-        'Email Verification',
-        `Please verify your email using this OTP code: ${otp}`,
-        `<h1>Please verify your email using OTP</h1>
-        <p>Your OTP Code: <b>${otp}</b></p>`
-      );
-      return res.status(200).send('registrasi driver sukses, menunggu verifikasi user');
+
+      return res.status(200).send('registrasi user-customer sukses, menunggu verifikasi user');
     } catch (error) {
       console.error(error);
-      return res.status(500).send('registrasi driver gagal');
+      return res.status(500).send('registrasi user error');
     }
   };
 
   verifyEmail = async (req: Request, res: Response): Promise<Response> => {
-    const { email, otp, programName } = req.body;
+    const { email, otp } = req.body;
     const now = new Date();
     try {
-      //find data in temporary OTP table
-      const data = await OTPHolder.findOne({ where: { email }, order: [['createdAt', 'DESC']] });
+      const data = await User.findOne({ where: { email } });
       if (!data) {
         return res.status(404).send('data user tidak ditemukan');
       }
-      const expiryDate = new Date(data.expiredAt);
-      if (expiryDate.valueOf() < now.valueOf()) {
-        //if otp has expired, create new otp and delete the old otp
+      if (data.verified === true) {
+        return res.status(400).send('user has been verified');
+      }
+      const otpExpiry = new Date(data.otpExpiry);
+      if (otpExpiry.valueOf() <= now.valueOf()) {
         let otp = otpGenerator.generate(6, {
           upperCaseAlphabets: false,
           lowerCaseAlphabets: false,
           specialChars: false,
         });
-        let otpExists = await OTPHolder.findOne({ otp });
-        while (otpExists) {
+        let otpExist = await User.findOne({ where: { otp } });
+        while (otpExist) {
           otp = otpGenerator.generate(6, {
             upperCaseAlphabets: false,
             lowerCaseAlphabets: false,
             specialChars: false,
           });
-          otpExists = await OTPHolder.findOne({ otp });
+          otpExist = await User.findOne({ where: { otp } });
         }
-        const expiredAt = now.valueOf() + 60 * 5;
-        const newOTP = await OTPHolder.create({
-          username: data.username,
-          password: data.password,
-          nik: data.nik,
-          nama: data.nama,
-          email: data.email,
-          telp: data.telp,
-          alamat: data.alamat,
-          kota: data.kota,
-          gender: data.gender,
-          otp,
-          expiredAt,
-        });
-        await data.destroy();
-        const email = newOTP.email;
+        const otpExpiry = new Date().valueOf() + 1000 * 60 * 5;
         mailSender(
           email,
           'Email Verification',
-          `Please verify your email using this OTP code: ${newOTP.otp}`,
+          `Please verify your email using this OTP code: ${otp}`,
           `<h1>Please verify your email using OTP</h1>
-         <p>Your OTP Code: <b>${newOTP.otp}<b></p>`
+         <p>Your OTP Code: ${otp}</p>`
         );
-        return res.status(400).send('OTP has expired, sending a new OTP (valid for 5 minutes)');
+        await data.update({ otp, otpExpiry });
+        return res.status(400).send('OTP has expired, sending new verification OTP (valid for 5 minutes)');
       }
-      console.log(data);
       if (data.otp !== otp) {
-        return res.status(400).send('OTP tidak sesuai, gagal memverifikasi user');
+        let TimeRemaining = Math.floor((otpExpiry.valueOf() - now.valueOf()) / 1000);
+        let minutes = 0;
+        let seconds = 0;
+        while (TimeRemaining > 0) {
+          if (TimeRemaining - 60 >= 0) {
+            minutes++;
+            TimeRemaining -= 60;
+          } else {
+            seconds += TimeRemaining;
+          }
+        }
+        return res.status(400).send(`kode verifikasi OTP tidak sesuai, silakan coba lagi (waktu sebelum kode expired: ${minutes}:${seconds})`);
       }
-      const user = await User.create({
-        username: data.username,
-        password: data.password,
+      await data.update({ verified: true, otp: null, otpExpiry: null, updatedBy: 'Verification System' });
+      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
+      await HakAkses.create({
+        userId: data.id,
+        roleId: customerRole.id,
+      });
+      let uniqueCode = BarcodeGenerator.generateCode({
+        length: 16,
+        uppercaseAlphabet: true,
+        initialString: 'DR',
+      });
+      let exist = await dm.findOne({ where: { uniqueCode } });
+      while (exist) {
+        uniqueCode = BarcodeGenerator.generateCode({
+          length: 16,
+          uppercaseAlphabet: true,
+          initialString: 'DR',
+        });
+        exist = await dm.findOne({ where: { uniqueCode } });
+      }
+      await dm.create({
+        userId: data.id,
+        uniqueCode,
         nik: data.nik,
         nama: data.nama,
         email: data.email,
@@ -367,37 +352,10 @@ class DriverController implements IController {
         alamat: data.alamat,
         kota: data.kota,
         gender: data.gender,
-        programName,
-        createdBy: 'Registration System',
+        programName: 'Verification System',
+        createdBy: 'Verification System',
       });
-      await data.destroy();
-      const newUser = await User.max('id');
-      const customerRole = await Role.findOne({ where: { nama: 'Customer' } });
-      await HakAkses.create({
-        userId: newUser,
-        roleId: customerRole.id,
-      });
-      let uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
-      let exist = await dm.findOne({ where: { uniqueCode } });
-      while (exist) {
-        uniqueCode = BarcodeGenerator.generateCode('CU', 16, true);
-        exist = await dm.findOne({ where: { uniqueCode } });
-      }
-      const customer = await dm.create({
-        userId: newUser,
-        uniqueCode,
-        nik: user.nik,
-        nama: user.nama,
-        email: user.email,
-        telp: user.telp,
-        alamat: user.alamat,
-        kota: user.kota,
-        gender: user.gender,
-        programName,
-        createdBy: 'Registration System',
-      });
-      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
-      return res.status(200).send('user berhasil diverifikasi dan terdaftar di db');
+      return res.status(200).send('user berhasil diverifikasi dan terdaftar sebagai customer');
     } catch (error) {
       console.error(error);
       return res.status(500).send('failed to verify user');
@@ -411,7 +369,7 @@ class DriverController implements IController {
       if (!data) {
         return res.status(400).send('data customer tidak ditemukan');
       }
-      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, data.nama);
+      BarcodeGenerator.generateImage(data.uniqueCode, qrFolderPath, { title: data.nama, pngOut: true, pdfOut: true, svgOut: true });
       return res.status(200).send('barcode berhasil dibuat');
     } catch (error) {
       console.error(error);
