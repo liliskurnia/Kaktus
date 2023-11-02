@@ -1,0 +1,63 @@
+$paper: #fff;
+
+$light-primary: #57b4a1;
+$light-primary-2: #4ca895;
+$light-primary-dark: #1c7360;
+
+$light-secondary: #dbcc96;
+
+$gray: #9ebcb6;
+$gray-2: #819994;
+
+//text
+$black: #000;
+$gray80: #ccc;
+$gray70: #b3b3b3;
+
+$danger: #e26363;
+$danger-dark: #dc3838;
+
+$success: #38caa7;
+
+$warning: #e9a465;
+
+$button-default: #3cb9e0;
+
+//request colors
+$req-accepted: #b760cd;
+$req-requested: #a8a8a8;
+$req-scheduled: #80c63a;
+$req-process: #3ba5e1;
+$req-pickedup: #08d6d6;
+$req-completed: #00ba6c;
+
+:export {
+  paper: $paper;
+
+  light-primary: $light-primary;
+  light-primary-2: $light-primary-2;
+  light-primary-dark: $light-primary-dark;
+
+  light-secondary: $light-secondary;
+
+  gray: $gray;
+  gray-2: $gray-2;
+
+  black: $black;
+  gray80: $gray80;
+  gray70: $gray70;
+
+  danger: $danger;
+  danger-dark: $danger-dark;
+  success: $success;
+  warning: $warning;
+
+  button-default: $button-default;
+
+  request-accepted: $req-accepted;
+  request-requested: $req-requested;
+  request-scheduled: $req-scheduled;
+  request-processing: $req-process;
+  request-pickedup: $req-pickedup;
+  request-completed: $req-completed;
+}
