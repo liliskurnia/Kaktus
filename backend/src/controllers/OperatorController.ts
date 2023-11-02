@@ -89,7 +89,7 @@ class OperatorController implements IController {
         programName,
         createdBy,
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(201).send(`registrasi operator ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -165,7 +165,7 @@ class OperatorController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
       return res.status(200).send('registrasi user(operator) sukses');
     } catch (error) {
       console.error(error);

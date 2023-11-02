@@ -93,7 +93,7 @@ class DriverController implements IController {
         programName,
         createdBy,
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(201).send(`registrasi driver ${user.nama} sukses`);
     } catch (err) {
       console.log(err);
@@ -165,7 +165,7 @@ class DriverController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
       return res.status(200).send('registrasi user(driver) sukses');
     } catch (error) {
       console.error(error);
@@ -396,7 +396,7 @@ class DriverController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(200).send('user berhasil diverifikasi dan terdaftar di db');
     } catch (error) {
       console.error(error);

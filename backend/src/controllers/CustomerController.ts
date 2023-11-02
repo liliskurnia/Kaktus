@@ -93,7 +93,7 @@ class CustomerController implements IController {
         createdBy,
       });
       //generate customer's QR Code Assets
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
 
       return res.status(201).send(`registrasi customer ${user.nama} sukses`);
     } catch (err) {
@@ -294,7 +294,7 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, nama);
 
       return res.status(200).send('registrasi user-customer sukses');
     } catch (error) {
@@ -397,7 +397,7 @@ class CustomerController implements IController {
         programName,
         createdBy: 'Registration System',
       });
-      BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
+      // BarcodeGenerator.generateImage(uniqueCode, qrFolderPath, user.nama);
       return res.status(200).send('user berhasil diverifikasi dan terdaftar di db');
     } catch (error) {
       console.error(error);

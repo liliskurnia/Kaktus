@@ -135,7 +135,7 @@ class UserController implements IController {
       });
       const sampahCollections = await db.sampah_master.findAll({
         where: {
-          masterCustomerId: masterCustomer.id,
+          ownerCode: masterCustomer.uniqueCode,
         },
       });
       for (const sampah of sampahCollections) {
