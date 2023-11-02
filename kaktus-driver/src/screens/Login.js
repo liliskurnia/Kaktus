@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BASE_URL from '../../config';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -51,7 +52,7 @@ const Login = () => {
         console.log('loginData', loginData)
 
         try {
-            const response = await axios.post('http://192.168.182.111:8000/api/v1/auth/login', loginData);
+            const response = await axios.post(`${BASE_URL}/api/v1/auth/login`, loginData);
             console.log('respon', response.data)
 
             if (response.status === 200) {

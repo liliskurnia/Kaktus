@@ -15,6 +15,7 @@ import { Searchbar } from 'react-native-paper';
 import Modal from "react-native-modal";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BASE_URL from '../../config';
 
 export default function Vouchers() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -56,7 +57,7 @@ export default function Vouchers() {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
+                    const { data: response } = await axios.get(`${BASE_URL}/api/v1/customers/${userData.masterCustomerId}`);
                     setData(response);
                 } catch (error) {
                     console.error(error.message);

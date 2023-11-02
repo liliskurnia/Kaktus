@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, TextInput, Alert } from 'reac
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import axios from 'axios';
+import BASE_URL from '../../../config';
 
 export default function Manual2() {
     const route = useRoute();
@@ -77,7 +78,7 @@ export default function Manual2() {
         console.log('registrationData', registrationData)
 
         try {
-            const response = await axios.post('http://192.168.182.111:8000/api/v1/customers/register', registrationData);
+            const response = await axios.post(`${BASE_URL}/api/v1/customers/register`, registrationData);
             console.log('respon', response.data)
 
             if (response.status === 201) {

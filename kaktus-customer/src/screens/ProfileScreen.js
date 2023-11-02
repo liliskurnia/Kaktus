@@ -12,6 +12,7 @@ import { Block, Image } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BASE_URL from '../../config';
 
 export default function ProfileScreen() {
 
@@ -52,7 +53,7 @@ export default function ProfileScreen() {
       const fetchData = async () => {
         setLoading(true);
         try {
-          const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
+          const { data: response } = await axios.get(`${BASE_URL}/api/v1/customers/${userData.masterCustomerId}`);
           setData(response);
         } catch (error) {
           console.error(error.message);

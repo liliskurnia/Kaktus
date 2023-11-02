@@ -16,6 +16,7 @@ import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DatePicker from 'react-native-modern-datepicker';
+import BASE_URL from "../../config";
 
 export default function PickUp() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -64,7 +65,7 @@ export default function PickUp() {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/customers/${userData.masterCustomerId}`);
+                    const { data: response } = await axios.get(`${BASE_URL}/api/v1/customers/${userData.masterCustomerId}`);
                     setData(response);
                     // console.log('DATA', data)
                     setState({
@@ -114,7 +115,7 @@ export default function PickUp() {
         };
 
         try {
-            const response = await axios.post('http://192.168.182.111:8000/api/v1/requests', pickUpData);
+            const response = await axios.post(`${BASE_URL}/api/v1/requests`, pickUpData);
             console.log('respon', response.data)
 
             if (response.status === 200) {

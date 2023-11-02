@@ -17,6 +17,7 @@ import QRCode from 'react-native-qrcode-svg';
 import moment from 'moment';
 import 'moment-timezone';
 import Modal from "react-native-modal";
+import BASE_URL from "../../config";
 
 export default function OrderHistory() {
     const { assets, colors, gradients, sizes } = useTheme();
@@ -68,7 +69,7 @@ export default function OrderHistory() {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const { data: response } = await axios.get(`http://192.168.182.111:8000/api/v1/requests/orderHistory/${userData.masterCustomerId}`);
+                    const { data: response } = await axios.get(`${BASE_URL}/api/v1/requests/orderHistory/${userData.masterCustomerId}`);
                     // Convert timestamps in the response to local time
                     const localizedData = response.map(item => ({
                         ...item,
