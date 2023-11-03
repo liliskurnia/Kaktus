@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, TextInput, Alert } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import BASE_URL from '../../../config';
 
 export default function Otp() {
     const navigation = useNavigation();
+    const route = useRoute();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [resendCountdown, setResendCountdown] = useState(60);
 
@@ -12,15 +15,16 @@ export default function Otp() {
         newOtp[index] = value;
         setOtp(newOtp);
         if (value && index < newOtp.length - 1) {
-            this.inputs[index + 1].focus();
+            inputs[index + 1].focus();
         }
     };
 
+
     const inputs = [];
 
-    const handleVerify = () => {
-        navigation.navigate('Success');
-    };
+    // const handleVerify = () => {
+    //     navigation.navigate('Success');
+    // };
 
     // Countdown timer
     useEffect(() => {
@@ -40,6 +44,34 @@ export default function Otp() {
     const handleResendCode = () => {
         //resend
         setResendCountdown(60);
+    };
+
+    const handleVerify = async () => {
+
+        const email = route.params.registrationData && route.params.registrationData.email;
+
+        const otpString = otp.join('');
+
+        const verifyData = {
+            otp: otpString,
+            email: email,
+        };
+
+        console.log('verifyData', verifyData)
+
+        try {
+            const response = await axios.post(`${BASE_URL}/api/v1/customers/verify/email`, verifyData);
+            console.log('respon', response.data)
+
+            if (response.status === 200) {
+                navigation.navigate('Success');
+            } else {
+                Alert.alert('Error', 'Failed to verify. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Alert.alert('Error', 'Failed to verify. Please try again.');
+        }
     };
 
     return (
@@ -66,10 +98,11 @@ export default function Otp() {
                         onChangeText={(value) => handleOtpChange(value, index)}
                         value={digit}
                         ref={(input) => {
-                            inputs[index] = input;
+                            inputs[index] = input; 
                         }}
                     />
                 ))}
+
             </View>
             <TouchableOpacity
                 onPress={handleVerify}

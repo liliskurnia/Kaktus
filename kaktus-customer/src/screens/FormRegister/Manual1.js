@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Manual1() {
@@ -63,67 +63,81 @@ export default function Manual1() {
         <View style={styles.container}>
             <Text style={{ fontSize: 30, fontWeight: 'bold', marginTop: 50, color: '#57B4A1' }}>SIGN-UP</Text>
             <Text style={{ marginTop: 20, marginBottom: 20, color: '#B3B3B3', fontSize: 20 }}>Sign-up to continue your journey with us!</Text>
-            <TextInput
-                style={styles.inputText}
-                placeholder="NIK"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, nik: text })} />
-            <View style={{ width: '80%' }}>
-                {errors.nik && <Text style={styles.errorText}>{errors.nik}</Text>}
-            </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="FULL NAME"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, nama: text })} />
-            <View style={{ width: '80%' }}>
-                {errors.nama && <Text style={styles.errorText}>{errors.nama}</Text>}
-            </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="ADDRESS"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, alamat: text })} />
-            <View style={{ width: '80%' }}>
-                {errors.alamat && <Text style={styles.errorText}>{errors.alamat}</Text>}
-            </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="CITY"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, kota: text })} />
-            <View style={{ width: '80%' }}>
-                {errors.kota && <Text style={styles.errorText}>{errors.kota}</Text>}
-            </View>
-            <TextInput
-                style={styles.inputText}
-                placeholder="GENDER"
-                placeholderTextColor="#B3B3B3"
-                onChangeText={text => setState({ ...state, gender: text })} />
-            <View style={{ width: '80%' }}>
-                {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
-            </View>
-            <View style={{ flexDirection: 'row', marginTop: 100 }}>
-                <View style={styles.cancel}>
-                    <TouchableOpacity onPress={handleCancle}>
-                        <Text style={styles.textbtn}>
-                            CANCEL
-                        </Text>
-                    </TouchableOpacity>
+            <ScrollView>
+                <Text style={styles.formTitle}>NIK :</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="NIK"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ ...state, nik: text })} />
+                <View style={{ width: '80%' }}>
+                    {errors.nik && <Text style={styles.errorText}>{errors.nik}</Text>}
                 </View>
-                <View style={styles.next}>
-                    <TouchableOpacity onPress={handleNext}>
-                        <Text style={styles.textbtn}>
-                            NEXT
-                        </Text>
-                    </TouchableOpacity>
+                <Text style={styles.formTitle}>Full Name :</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="FULL NAME"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ ...state, nama: text })} />
+                <View style={{ width: '80%' }}>
+                    {errors.nama && <Text style={styles.errorText}>{errors.nama}</Text>}
                 </View>
-            </View>
+                <Text style={styles.formTitle}>Address :</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="ADDRESS"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ ...state, alamat: text })} />
+                <View style={{ width: '80%' }}>
+                    {errors.alamat && <Text style={styles.errorText}>{errors.alamat}</Text>}
+                </View>
+                <Text style={styles.formTitle}>City :</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="CITY"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ ...state, kota: text })} />
+                <View style={{ width: '80%' }}>
+                    {errors.kota && <Text style={styles.errorText}>{errors.kota}</Text>}
+                </View>
+                <Text style={styles.formTitle}>Gender :</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="GENDER"
+                    placeholderTextColor="#B3B3B3"
+                    onChangeText={text => setState({ ...state, gender: text })} />
+                <View style={{ width: '80%' }}>
+                    {errors.gender && <Text style={styles.errorText}>{errors.gender}</Text>}
+                </View>
+                <View style={{ flexDirection: 'row', marginTop: 50 }}>
+                    <View style={styles.cancel}>
+                        <TouchableOpacity onPress={handleCancle}>
+                            <Text style={styles.textbtn}>
+                                CANCEL
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.next}>
+                        <TouchableOpacity onPress={handleNext}>
+                            <Text style={styles.textbtn}>
+                                NEXT
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ScrollView>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    formTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 10,
+        color: '#57B4A1',
+        alignSelf: 'flex-start'
+    },
     errorText: {
         textAlign: 'left',
         color: 'red',
@@ -154,14 +168,13 @@ const styles = StyleSheet.create({
         height: '40%'
     },
     inputText: {
-        height: 70,
-        width: '80%',
+        height: 60,
         borderRadius: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#CCCCCC',
         paddingLeft: 10,
         marginBottom: 10,
-        fontSize: 20
+        fontSize: 14
     },
     container: {
         flex: 1,
