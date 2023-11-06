@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -7,18 +7,18 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import Divider from '@mui/material/Divider';
+// import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import Grid from '@mui/material/Grid';
+// import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 
 // third party
 import * as Yup from 'yup';
@@ -32,20 +32,20 @@ import AnimateButton from 'components/UI/Extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import Google from 'assets/images/social-google.svg';
+// import Google from 'assets/images/social-google.svg';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
+  // const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+  // const customization = useSelector((state) => state.customization);
   const [checked, setChecked] = useState(true);
 
-  const googleHandler = async () => {
-    console.error('Login');
-  };
+  // const googleHandler = async () => {
+  //   console.error('Login');
+  // };
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -58,7 +58,7 @@ const AuthLogin = ({ ...others }) => {
 
   return (
     <>
-      <Grid container direction="column" justifyContent="center" spacing={2}>
+      {/* <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <AnimateButton>
             <Button
@@ -115,12 +115,12 @@ const AuthLogin = ({ ...others }) => {
             <Typography variant="subtitle1">Sign in with Email address</Typography>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
+          email: null,
+          password: null,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -214,8 +214,10 @@ const AuthLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign in
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Typography variant="h5" color={theme.palette.background.paper}>
+                    Sign in
+                  </Typography>
                 </Button>
               </AnimateButton>
             </Box>

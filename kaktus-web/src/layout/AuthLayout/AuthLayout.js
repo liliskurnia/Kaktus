@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-import Customization from '../Customization';
+// import Customization from '../Customization';
 
-const AuthLayout = () => {
+const AuthLayout = () => (
   <>
     <Outlet />
-    <Customization />
-  </>;
-};
+    {/* <Customization /> */}
+  </>
+);
 
 export default AuthLayout;

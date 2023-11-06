@@ -1,6 +1,6 @@
 const config = {
-  basename: '/',
-  defaultPath: '/',
+  basename: '/web',
+  defaultPath: '/dashboard/default',
   fontFamily: `'Montserrat', sans-serif`,
   borderRadius: 12
 };

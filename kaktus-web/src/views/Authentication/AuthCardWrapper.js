@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 
 import MainCard from 'components/UI/Cards/MainCard';
 
-const AuthCardWrapper = ({ children, ...other }) => {
+const AuthCardWrapper = ({ children, ...other }) => (
   <MainCard
     sx={{
       maxWidth: { xs: 400, lg: 475 },
@@ -18,8 +18,8 @@ const AuthCardWrapper = ({ children, ...other }) => {
     {...other}
   >
     <Box sx={{ p: { xs: 2, sm: 3, xl: 5 } }}>{children}</Box>
-  </MainCard>;
-};
+  </MainCard>
+);
 
 AuthCardWrapper.propTypes = {
   children: PropTypes.node

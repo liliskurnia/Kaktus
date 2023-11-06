@@ -8,13 +8,13 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import AuthWrapper from './wrapper/AuthWrapper';
-import AuthCardWrapper from './wrapper/AuthCardWrapper';
+import AuthWrapper from '../AuthWrapper';
+import AuthCardWrapper from '../AuthCardWrapper';
+import AuthLogin from '../forms/AuthLogin';
 import Logo from 'components/UI/Logo';
-import AuthRegister from './forms/AuthRegister';
 import AuthFooter from 'components/UI/Cards/AuthFooter';
 
-const Register = () => {
+const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -36,7 +36,7 @@ const Register = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Sign up
+                            Hi, Welcome Back
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
                             Enter your credentials to continue
@@ -46,15 +46,15 @@ const Register = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <AuthRegister />
+                    <AuthLogin />
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/auth/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Already have an account?
+                      <Typography component={Link} to="/auth/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                        Don&apos;t have an account?
                       </Typography>
                     </Grid>
                   </Grid>
@@ -71,4 +71,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
