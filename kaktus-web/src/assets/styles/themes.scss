@@ -1,63 +1,171 @@
 $paper: #fff;
 
-$light-primary: #57b4a1;
-$light-primary-2: #4ca895;
-$light-primary-dark: #1c7360;
+//primary
+$primaryLight: #daf0eb;
+$primaryMain: #4ca895;
+$primaryDark: #145f4f;
+$primary200: #c5e9e2;
+$primary800: #2c806f;
 
-$light-secondary: #dbcc96;
+//secondary
+$secondaryLight: #f5eed6;
+$secondaryMain: #d4c27f;
+$secondaryDark: #cead36;
+$secondary200: #e7e0c8;
+$secondary800: #ebc84b;
 
-$gray: #9ebcb6;
-$gray-2: #819994;
+//grey with slight primary color
+$accentGrayLight: #9ebcb6;
+$accentGrayMain: #819994;
+$accentGrayDark: #607773;
 
-//text
-$black: #000;
-$gray80: #ccc;
-$gray70: #b3b3b3;
+//grey
+$grey50: #f8fafc;
+$grey100: #eef2f6;
+$grey200: #e3e8ef;
+$grey300: #cdd5df;
+$grey500: #697586;
+$grey600: #4b5565;
+$grey700: #364152;
+$grey900: #121926;
 
-$danger: #e26363;
-$danger-dark: #dc3838;
+//danger/error
+$errorLight: #e26363;
+$errorMain: #dc3838;
+$errorDark: #dc3838;
 
-$success: #38caa7;
+//success
+$successLight: #82e0ca;
+$successMain: #38caa7;
+$successDark: #118066;
+$success200: #9cebd8;
 
-$warning: #e9a465;
+//warning
+$warningLight: #eecaa9;
+$warningMain: #e9a465;
+$warningDark: #aa6423;
 
 $button-default: #3cb9e0;
 
 //request colors
-$req-accepted: #b760cd;
-$req-requested: #a8a8a8;
-$req-scheduled: #80c63a;
-$req-process: #3ba5e1;
-$req-pickedup: #08d6d6;
-$req-completed: #00ba6c;
+$rAccepted: #b760cd;
+$rRequested: #a8a8a8;
+$rScheduled: #80c63a;
+$rPickingUp: #3ba5e1;
+$rPickedUp: #08d6d6;
+$rCompleted: #00ba6c;
+
+//=============================DARK MODE=//
+
+$darkBackground: #1a223f; // level 3
+$darkPaper: #111936; // level 4
+
+// dark 800 & 900
+$darkLevel1: #29314f; // level 1
+$darkLevel2: #212946; // level 2
+
+// primary dark
+$darkPrimaryLight: #eef2f6;
+$darkPrimaryMain: #2196f3;
+$darkPrimaryDark: #1e88e5;
+$darkPrimary200: #90caf9;
+$darkPrimary800: #1565c0;
+
+// secondary dark
+$darkSecondaryLight: #d1c4e9;
+$darkSecondaryMain: #7c4dff;
+$darkSecondaryDark: #651fff;
+$darkSecondary200: #b39ddb;
+$darkSecondary800: #6200ea;
+
+// text variants
+$darkTextTitle: #d7dcec;
+$darkTextPrimary: #bdc8f0;
+$darkTextSecondary: #8492c4;
 
 :export {
   paper: $paper;
 
-  light-primary: $light-primary;
-  light-primary-2: $light-primary-2;
-  light-primary-dark: $light-primary-dark;
+  //primary
+  primaryLight: $primaryLight;
+  primaryMain: $primaryMain;
+  primaryDark: $primaryDark;
+  primary200: $primary200;
+  primary800: $primary800;
 
-  light-secondary: $light-secondary;
+  //secondary
+  secondaryLight: $secondaryLight;
+  secondaryMain: $secondaryMain;
+  secondaryDark: $secondaryDark;
+  secondary200: $secondary200;
+  secondary800: $secondary800;
 
-  gray: $gray;
-  gray-2: $gray-2;
+  //grey with slight primary color
+  primaryGreyLight: $accentGrayLight;
+  primaryGreyMain: $accentGrayMain;
+  primaryGreyDark: $accentGrayDark;
 
-  black: $black;
-  gray80: $gray80;
-  gray70: $gray70;
+  //grey
+  grey50: $grey50;
+  grey100: $grey100;
+  grey200: $grey200;
+  grey300: $grey300;
+  grey500: $grey500;
+  grey600: $grey600;
+  grey700: $grey700;
+  grey900: $grey900;
 
-  danger: $danger;
-  danger-dark: $danger-dark;
-  success: $success;
-  warning: $warning;
+  //danger/error
+  errorLight: $errorLight;
+  errorMain: $errorMain;
+  errorDark: $errorDark;
 
-  button-default: $button-default;
+  //success
+  successLight: $successLight;
+  successMain: $successMain;
+  successDark: $successDark;
+  success200: $success200;
 
-  request-accepted: $req-accepted;
-  request-requested: $req-requested;
-  request-scheduled: $req-scheduled;
-  request-processing: $req-process;
-  request-pickedup: $req-pickedup;
-  request-completed: $req-completed;
+  //warning
+  warningLight: $warningLight;
+  warningMain: $warningMain;
+  warningDark: $warningDark;
+
+  buttonDefault: $button-default;
+
+  //request colors
+  requestAccepted: $rAccepted;
+  requested: $rRequested;
+  requestScheduled: $rScheduled;
+  requestProcess: $rPickingUp;
+  requestPickedUp: $rPickedUp;
+  requestCompleted: $rCompleted;
+
+  //=============================DARK MODE=//
+
+  darkPaper: $darkPaper;
+  darkBackground: $darkBackground;
+
+  // dark 800 & 900
+  darkLevel1: $darkLevel1;
+  darkLevel2: $darkLevel2;
+
+  // text variants
+  darkTextTitle: $darkTextTitle;
+  darkTextPrimary: $darkTextPrimary;
+  darkTextSecondary: $darkTextSecondary;
+
+  // primary dark
+  darkPrimaryLight: $darkPrimaryLight;
+  darkPrimaryMain: $darkPrimaryMain;
+  darkPrimaryDark: $darkPrimaryDark;
+  darkPrimary200: $darkPrimary200;
+  darkPrimary800: $darkPrimary800;
+
+  // secondary dark
+  darkSecondaryLight: $darkSecondaryLight;
+  darkSecondaryMain: $darkSecondaryMain;
+  darkSecondaryDark: $darkSecondaryDark;
+  darkSecondary200: $darkSecondary200;
+  darkSecondary800: $darkSecondary800;
 }
