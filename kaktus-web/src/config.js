@@ -1,6 +1,6 @@
 const config = {
   basename: '/',
-  defaultPath: '/auth/login',
+  defaultPath: '/',
   fontFamily: `'Montserrat', sans-serif`,
   borderRadius: 12
 };

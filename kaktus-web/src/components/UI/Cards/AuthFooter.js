@@ -1,5 +1,5 @@
-import { Link, Typography, Stack } from '@mui/material';
-
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 // ==============================|| FOOTER - AUTHENTICATION 2 & 3 ||============================== //
 
 const AuthFooter = () => (

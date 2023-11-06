@@ -160,7 +160,7 @@ const NotificationComponent = () => {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh-205px)', overflowX: 'hidden' }}>
+                      <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflowX: 'hidden' }}>
                         <Grid container direction="column" spacing={2}>
                           <Grid item xs={12}>
                             <Box sx={{ px: 2, pt: 0.25 }}>

@@ -3,8 +3,8 @@ import { lazy } from 'react';
 import Loadable from '../components/UI/Loading/Loadable';
 import AuthLayout from '../layout/AuthLayout/AuthLayout';
 
-const Login = Loadable(lazy(() => import('views/Authentication/Login')));
-const Register = Loadable(lazy(() => import('views/Authentication/Register')));
+const AuthLogin = Loadable(lazy(() => import('views/Authentication/Login')));
+const AuthRegister = Loadable(lazy(() => import('views/Authentication/Register')));
 
 const Authlinks = {
   path: '/auth',
@@ -12,11 +12,11 @@ const Authlinks = {
   children: [
     {
       path: 'login',
-      element: <Login />
+      element: <AuthLogin />
     },
     {
       path: 'register',
-      element: <Register />
+      element: <AuthRegister />
     }
   ]
 };

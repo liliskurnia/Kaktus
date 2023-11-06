@@ -9,7 +9,11 @@ const Dashboard = () => {
   // useEffect(() => {
   //   setLoading(false);
   // }, []);
-  return <Grid container spacing={gridSpacing}></Grid>;
+  return (
+    <Grid container spacing={gridSpacing}>
+      <h2>Dashboard</h2>
+    </Grid>
+  );
 };
 
 export default Dashboard;

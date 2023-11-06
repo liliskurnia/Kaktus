@@ -4,7 +4,7 @@ const icons = { IconLogin2, IconUserPlus };
 
 const authentication = {
   id: 'authentication',
-  title: 'Auth',
+  title: 'Authentication',
   type: 'group',
   children: [
     {
@@ -12,16 +12,14 @@ const authentication = {
       title: 'Login',
       type: 'item',
       url: '/auth/login',
-      icon: icons.IconLogin2,
-      breadcrumbs: false
+      icon: icons.IconLogin2
     },
     {
       id: 'register',
       title: 'Register',
       type: 'item',
       url: '/auth/register',
-      icon: icons.IconUserPlus,
-      breadcrumbs: false
+      icon: icons.IconUserPlus
     }
   ]
 };
