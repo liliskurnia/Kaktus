@@ -55,6 +55,13 @@ $rPickingUp: #3ba5e1;
 $rPickedUp: #08d6d6;
 $rCompleted: #00ba6c;
 
+//password strength
+$pwPoor: #d41717;
+$pwWeak: #eb8d35;
+$pwNormal: #e2ce18;
+$pwGood: #39df5d;
+$pwStrong: #10e6c2;
+
 //=============================DARK MODE=//
 
 $darkBackground: #1a223f; // level 3
@@ -140,6 +147,12 @@ $darkTextSecondary: #8492c4;
   requestProcess: $rPickingUp;
   requestPickedUp: $rPickedUp;
   requestCompleted: $rCompleted;
+
+  poorPassword: $pwPoor;
+  weakPassword: $pwWeak;
+  normalPassword: $pwNormal;
+  goodPassword: $pwGood;
+  strongPassword: $pwStrong;
 
   //=============================DARK MODE=//
 

@@ -74,6 +74,12 @@ export default function themeTypography(theme) {
       '& > div > input': {
         padding: '30.5px 14px 11.5px !important'
       },
+      '& > div > div[role=combobox]': {
+        padding: '30.5px 14px 11.5px !important'
+      },
+      '& > div > textarea': {
+        padding: '30.5px 14px 11.5px !important'
+      },
       '& legend': {
         display: 'none'
       },

@@ -23,6 +23,7 @@ import Typography from '@mui/material/Typography';
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import axios from 'axios';
 
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
@@ -31,12 +32,15 @@ import AnimateButton from 'components/UI/Extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useNavigate } from 'react-router-dom';
 
 // import Google from 'assets/images/social-google.svg';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = ({ ...others }) => {
+  const dbUrl = `http://localhost:8000/api/v1/auth/login`;
+  const navigate = useNavigate();
   const theme = useTheme();
   const scriptedRef = useScriptRef();
   // const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -58,6 +62,7 @@ const AuthLogin = ({ ...others }) => {
 
   return (
     <>
+      {/* google login button below */}
       {/* <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12}>
           <AnimateButton>
@@ -119,16 +124,28 @@ const AuthLogin = ({ ...others }) => {
 
       <Formik
         initialValues={{
-          email: null,
+          username: null,
           password: null,
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          username: Yup.string().max(255).required('Email / Username / Phone No. / NIK is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            //login logic here
+            await axios
+              .post(dbUrl, values)
+              .then((res) => {
+                console.log(res);
+                localStorage.setItem('token', res.data.access.token);
+                localStorage.setItem('access', JSON.stringify(res.data.access));
+                navigate('/dashboard');
+              })
+              .catch((error) => {
+                console.error(error);
+              });
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -145,21 +162,21 @@ const AuthLogin = ({ ...others }) => {
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
-            <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+            <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-username-login">Email / Username / Phone No. / NIK</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-email-login"
-                type="email"
-                value={values.email}
-                name="email"
+                id="outlined-adornment-username-login"
+                type="text"
+                value={values.username}
+                name="username"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                label="Email Address / Username"
+                label="Username"
                 inputProps={{}}
               />
-              {touched.email && errors.email && (
-                <FormHelperText error id="standard-weight-helper-text-email-login">
-                  {errors.email}
+              {touched.username && errors.username && (
+                <FormHelperText error id="standard-weight-helper-text-username-login">
+                  {errors.username}
                 </FormHelperText>
               )}
             </FormControl>
@@ -202,7 +219,11 @@ const AuthLogin = ({ ...others }) => {
                 }
                 label="Remember me"
               />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+              <Typography
+                variant="subtitle1"
+                color="secondary"
+                sx={{ textDecoration: 'none', cursor: 'pointer', ':hover': { color: theme.palette.secondary.dark } }}
+              >
                 Forgot Password?
               </Typography>
             </Stack>

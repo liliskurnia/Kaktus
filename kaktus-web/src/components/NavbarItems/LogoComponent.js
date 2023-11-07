@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ButtonBase } from '@mui/material';
 
 import config from 'config';
-import Logo from '../UI/Logo';
+import Logo from '../UI/logos/Logo';
 import { MENU_OPEN } from 'redux/actions';
 
 const LogoComponent = () => {

@@ -49,6 +49,8 @@ const ProfileComponent = () => {
     //remove token and access data tokens
     //from the local storage here
     navigate('/auth/login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('access');
     console.log('logout');
   };
 

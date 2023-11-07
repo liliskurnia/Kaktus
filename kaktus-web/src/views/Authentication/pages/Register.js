@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import AuthWrapper from '../AuthWrapper';
 import AuthCardWrapper from '../AuthCardWrapper';
-import Logo from 'components/UI/Logo';
+import Logo from 'components/UI/logos/AuthLogo';
 import AuthRegister from '../forms/AuthRegister';
 import AuthFooter from 'components/UI/Cards/AuthFooter';
 
@@ -53,7 +53,12 @@ const Register = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/auth/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                      <Typography
+                        component={Link}
+                        to="/auth/login"
+                        variant="subtitle1"
+                        sx={{ textDecoration: 'none', ':hover': { color: theme.palette.primary.main } }}
+                      >
                         Already have an account?
                       </Typography>
                     </Grid>
