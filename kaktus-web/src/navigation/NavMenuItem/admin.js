@@ -11,7 +11,7 @@ const admin = {
       id: 'users',
       title: 'Manage Users',
       type: 'item',
-      url: '/admin/manage-user',
+      url: '/admin/manage-users',
       icon: icons.IconUserCog,
       breadcrumbs: false
     },

@@ -20,7 +20,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import SubCard from 'components/UI/Cards/SubCard';
 import AnimateButton from 'components/UI/Extended/AnimateButton';
 
-import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from 'redux/actions';
+import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from 'redux/actions/actions';
 import { gridSpacing } from 'redux/constant';
 
 //concat 'px'

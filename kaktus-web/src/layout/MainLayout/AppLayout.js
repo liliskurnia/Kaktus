@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+// import { useAuth } from 'hooks/useAuth';
 
 import { styled, useTheme } from '@mui/material/styles';
 
@@ -15,7 +16,7 @@ import NavSidebar from 'components/Sidebar/NavSidebar';
 // import Customization from '../Customization';
 import Mainlinks from 'navigation/Mainlinks';
 import { drawerWidth } from 'redux/constant';
-import { SET_MENU } from 'redux/actions';
+import { SET_MENU } from 'redux/actions/actions';
 
 import { IconChevronRight } from '@tabler/icons-react';
 
@@ -53,6 +54,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 }));
 
 const AppLayout = () => {
+  // const navigate = useNavigate();
+  // const { isAuthenticated } = useAuth();
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 

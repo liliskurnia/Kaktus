@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { MENU_OPEN, SET_MENU } from 'redux/actions';
+import { MENU_OPEN, SET_MENU } from 'redux/actions/actions';
 
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 

@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
+import { useAuth } from 'hooks/useAuth';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -23,11 +24,12 @@ import Typography from '@mui/material/Typography';
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import axios from 'axios';
+// import axios from 'axios';
 
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'components/UI/Extended/AnimateButton';
+import AuthService from 'utils/AuthService';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
@@ -39,7 +41,8 @@ import { useNavigate } from 'react-router-dom';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = ({ ...others }) => {
-  const dbUrl = `http://localhost:8000/api/v1/auth/login`;
+  const { login } = useAuth();
+  // const dbUrl = `http://localhost:8000/api/v1/auth/login`;
   const navigate = useNavigate();
   const theme = useTheme();
   const scriptedRef = useScriptRef();
@@ -135,17 +138,9 @@ const AuthLogin = ({ ...others }) => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             //login logic here
-            await axios
-              .post(dbUrl, values)
-              .then((res) => {
-                console.log(res);
-                localStorage.setItem('token', res.data.access.token);
-                localStorage.setItem('access', JSON.stringify(res.data.access));
-                navigate('/dashboard');
-              })
-              .catch((error) => {
-                console.error(error);
-              });
+            AuthService.login(values);
+            login();
+            navigate('/dashboard/default');
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);

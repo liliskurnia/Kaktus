@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
+import { useAuth } from 'hooks/useAuth';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -32,12 +33,13 @@ import Transitions from 'components/UI/Extended/Transitions';
 
 import { IconLogout, IconSettings } from '@tabler/icons-react';
 // import axios from 'axios'
+import AuthService from 'utils/AuthService';
 
 const ProfileComponent = () => {
   const theme = useTheme();
+  const { logout } = useAuth();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-
   // const [sdm, setSdm] = useState(true);
   // const [value, setValue] = useState('');
   // const [notification, setNotification] = useState(false);
@@ -48,10 +50,11 @@ const ProfileComponent = () => {
   const handleLogout = async () => {
     //remove token and access data tokens
     //from the local storage here
-    navigate('/auth/login');
-    localStorage.removeItem('token');
-    localStorage.removeItem('access');
+
+    AuthService.logout();
+    logout();
     console.log('logout');
+    navigate('/auth/login');
   };
 
   const handleClose = (event) => {
