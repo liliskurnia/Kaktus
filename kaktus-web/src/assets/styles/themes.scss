@@ -1,23 +1,121 @@
 $paper: #fff;
 
 //primary
-$primaryLight: #daf0eb;
-$primaryMain: #4ca895;
-$primaryDark: #1e836d;
-$primary200: #c5e9e2;
-$primary800: #2c806f;
+$primaryLight: #d7fbf3;
+$primary100: #aae6d7;
+$primary200: #7ad1bc;
+$primaryMain: #3cbba0;
+$primary400: #20ab8d;
+$primary500: #009b7b;
+$primary600: #008d6e;
+$primaryDark: #087f60;
+$primary800: #006f53;
+$primary900: #005137;
+
+//primary accent
+$primaryA100: #aaffdf;
+$primaryA200: #76ffc5;
+$primaryA400: #4cec9c;
+$primaryA700: #2cc493;
 
 //secondary
-$secondaryLight: #f5eed6;
-$secondaryMain: #d4c27f;
-$secondaryDark: #cead36;
-$secondary200: #e7e0c8;
-$secondary800: #ebc84b;
+$secondary200: #e0ddd8;
+$secondaryLight: #e8d2aa;
+$secondary400: #e8c88f;
+$secondary500: #e8c183;
+$secondaryMain: #e3b77d;
+$secondary700: #dba774;
+$secondary800: #dba774;
+$secondaryDark: #d0835d;
+
+//secondary accent
+$secondaryA100: #e7e2d8;
+$secondaryA200: #edd5a3;
+$secondaryA400: #ebc483;
+$secondaryA700: #e0b07a;
+
+//secondary variant
+$secondaryVLight: #fff1e2;
+$secondaryV100: #fbddbf;
+$secondaryV200: #f0c89a;
+$secondaryVMain: #e3b77d;
+$secondaryV400: #d9ab6d;
+$secondaryV500: #cca564;
+$secondaryV600: #bb9559;
+$secondaryV700: #a78250;
+$secondaryVDark: #937145;
+$secondaryV900: #725032;
+
+//secondary accent variant
+$secondaryVA100: #ffddad;
+$secondaryVA200: #ffd193;
+$secondaryVA400: #fbc97d;
+$secondaryVA700: #c5a461;
+
+//complementary/Tertiary
+$tertiary100: #d4c2c6;
+$tertiaryLight: #d398a7;
+$tertiary300: #d17089;
+$tertiary400: #cf5572;
+$tertiary500: #cc425d;
+$tertiaryMain: #bb3c58;
+$tertiary700: #a73954;
+$tertiary800: #92324e;
+$tertiaryDark: #702944;
+
+//tertiary accent
+$tertiaryA100: #de8ba0;
+$tertiaryA200: #e35979;
+$tertiaryA400: #d73c54;
+$tertiaryA700: #aa3658;
+
+//complementary/Tertiary Variant
+$tertiaryV50: #f0d0d7;
+$tertiaryVLight: #ebc0c9;
+$tertiaryV200: #e4abb7;
+$tertiaryV300: #db8f9f;
+$tertiaryV400: #cf6a80;
+$tertiaryVMain: #bb3c58;
+$tertiaryV600: #9f334a;
+$tertiaryV700: #872b3f;
+$tertiaryV800: #732536;
+$tertiaryVDark: #621f2e;
 
 //grey with slight primary color
-$accentGrayLight: #9ebcb6;
-$accentGrayMain: #819994;
-$accentGrayDark: #607773;
+$neutralW50: #eaf7f5;
+$neutralW100: #cddeda;
+$neutralW200: #adc3bf;
+$neutralW300: #8caaa4;
+$neutralW400: #759892;
+$neutralW500: #5c847e;
+$neutralW600: #50746e;
+$neutralW700: #43605a;
+$neutralW800: #334c48;
+$neutralW900: #243634;
+
+//neutral gray variant
+$neutralA50: #f6f7f7;
+$neutralA100: #d8dfdd;
+$neutralA200: #b8c4c1;
+$neutralA300: #97aaa6;
+$neutralA400: #819994;
+$neutralA500: #68857f;
+$neutralA600: #5c7570;
+$neutralA700: #4c615c;
+$neutralA800: #3e4d4a;
+$neutralA900: #2d3735;
+
+//neutral gray variant 2
+$neutralR50: #bde2d8;
+$neutralR100: #b8dcd2;
+$neutralR200: #b2d6cc;
+$neutralR300: #a4c8bf;
+$neutralR400: #82a59c;
+$neutralR500: #66887f;
+$neutralR600: #3f6057;
+$neutralR700: #2d4d45;
+$neutralR800: #0f2f28;
+$neutralR900: #001104;
 
 //grey
 $grey50: #f8fafc;
@@ -30,30 +128,49 @@ $grey700: #364152;
 $grey900: #121926;
 
 //danger/error
-$errorLight: #e26363;
-$errorMain: #dc3838;
-$errorDark: #dc3838;
+$error100: #e9d5d7;
+$errorLight: #dca1a3;
+$error300: #d57c7f;
+$error400: #e55f5f;
+$error500: #eb4f48;
+$errorMain: #db4746;
+$error700: #c83c3e;
+$error800: #bc3737;
+$errorDark: #af2d2b;
 
 //success
-$successLight: #82e0ca;
-$successMain: #38caa7;
-$successDark: #118066;
-$success200: #9cebd8;
+$success50: #dffbcb;
+$success100: #c8f0ab;
+$successLight: #ade388;
+$success300: #94d863;
+$successMain: #81ce45;
+$success500: #6bc523;
+$success600: #5ab419;
+$success700: #47a00e;
+$success800: #308e05;
+$successDark: #006c00;
 
 //warning
-$warningLight: #eecaa9;
-$warningMain: #e9a465;
-$warningDark: #aa6423;
+$warningLight: #ede9db;
+$warning200: #ecddac;
+$warningMain: #edd47c;
+$warning400: #ecca60;
+$warning500: #ecc252;
+$warningDark: #ebb74c;
+$warning700: #e6a545;
+$warning800: #e69840;
+$warning900: #e27b32;
 
-$button-default: #3cb9e0;
-
-//request colors
-$rAccepted: #b760cd;
-$rRequested: #a8a8a8;
-$rScheduled: #80c63a;
-$rPickingUp: #3ba5e1;
-$rPickedUp: #08d6d6;
-$rCompleted: #00ba6c;
+//caution
+$caution100: #e4e0d9;
+$cautionLight: #e4cca7;
+$caution300: #e3b874;
+$caution400: #e2aa54;
+$caution500: #e39e40;
+$cautionMain: #de943c;
+$caution700: #d88636;
+$caution800: #d17930;
+$cautionDark: #c86327;
 
 //password strength
 $pwPoor: #d41717;
@@ -64,12 +181,12 @@ $pwStrong: #10e6c2;
 
 //=============================DARK MODE=//
 
-$darkBackground: #1a223f; // level 3
-$darkPaper: #111936; // level 4
+$darkBackground: #2b3331; // level 3
+$darkPaper: #1e2322; // level 4
 
 // dark 800 & 900
-$darkLevel1: #29314f; // level 1
-$darkLevel2: #212946; // level 2
+$darkLevel1: #1b3f37; // level 1
+$darkLevel2: #0f2f28; // level 2
 
 // primary dark
 $darkPrimaryLight: #eef2f6;
@@ -95,22 +212,117 @@ $darkTextSecondary: #8492c4;
 
   //primary
   primaryLight: $primaryLight;
-  primaryMain: $primaryMain;
-  primaryDark: $primaryDark;
+  primary100: $primary100;
   primary200: $primary200;
+  primaryMain: $primaryMain;
+  primary400: $primary400;
+  primary500: $primary500;
+  primary600: $primary600;
+  primaryDark: $primaryDark;
   primary800: $primary800;
+  primary900: $primary900;
+
+  primaryA100: $primaryA100;
+  primaryA200: $primaryA200;
+  primaryA400: $primaryA400;
+  primaryA700: $primaryA700;
 
   //secondary
-  secondaryLight: $secondaryLight;
-  secondaryMain: $secondaryMain;
-  secondaryDark: $secondaryDark;
+
   secondary200: $secondary200;
+  secondaryLight: $secondaryLight;
+  secondary400: $secondary400;
+  secondary500: $secondary500;
+  secondaryMain: $secondaryMain;
+  secondary700: $secondary700;
   secondary800: $secondary800;
+  secondaryDark: $secondaryDark;
+
+  secondaryA100: $secondaryA100;
+  secondaryA200: $secondaryA200;
+  secondaryA400: $secondaryA400;
+  secondaryA700: $secondaryA700;
+
+  //secondary variant
+  secondaryVLight: $secondaryVLight;
+  secondaryV100: $secondaryV100;
+  secondaryV200: $secondaryV200;
+  secondaryVMain: $secondaryVMain;
+  secondaryV400: $secondaryV400;
+  secondaryV500: $secondaryV500;
+  secondaryV600: $secondaryV600;
+  secondaryV700: $secondaryV700;
+  secondaryVDark: $secondaryVDark;
+  secondaryV900: $secondaryV900;
+
+  secondaryVA100: $secondaryVA100;
+  secondaryVA200: $secondaryVA200;
+  secondaryVA400: $secondaryVA400;
+  secondaryVA700: $secondaryVA700;
+
+  //tertiary
+  tertiary100: $tertiary100;
+  tertiaryLight: $tertiaryLight;
+  tertiary300: $tertiary300;
+  tertiary400: $tertiary400;
+  tertiary500: $tertiary500;
+  tertiaryMain: $tertiaryMain;
+  tertiary700: $tertiary700;
+  tertiary800: $tertiary800;
+  tertiaryDark: $tertiaryDark;
+
+  tertiaryA100: $tertiaryA100;
+  tertiaryA200: $tertiaryA200;
+  tertiaryA400: $tertiaryA400;
+  tertiaryA700: $tertiaryA700;
+
+  //tertiary variant
+  tertiaryV50: $tertiaryV50;
+  tertiaryVLight: $tertiaryVLight;
+  tertiaryV200: $tertiaryV200;
+  tertiaryV300: $tertiaryV300;
+  tertiaryV400: $tertiaryV400;
+  tertiaryVMain: $tertiaryVMain;
+  tertiaryV600: $tertiaryV600;
+  tertiaryV700: $tertiaryV700;
+  tertiaryV800: $tertiaryV800;
+  tertiaryVDark: $tertiaryVDark;
 
   //grey with slight primary color
-  primaryGreyLight: $accentGrayLight;
-  primaryGreyMain: $accentGrayMain;
-  primaryGreyDark: $accentGrayDark;
+  neutralW50: $neutralW50;
+  neutralW100: $neutralW100;
+  neutralW200: $neutralW200;
+  neutralW300: $neutralW300;
+  neutralW400: $neutralW400;
+  neutralW500: $neutralW500;
+  neutralW600: $neutralW600;
+  neutralW700: $neutralW700;
+  neutralW800: $neutralW800;
+  neutralW900: $neutralW900;
+
+  //neutral gray variant
+  neutralA50: $neutralA50;
+  neutralA100: $neutralA100;
+  neutralA200: $neutralA200;
+  neutralA300: $neutralA300;
+  neutralA400: $neutralA400;
+  neutralA500: $neutralA500;
+  neutralA600: $neutralA600;
+  neutralA700: $neutralA700;
+  neutralA800: $neutralA800;
+  neutralA900: $neutralA900;
+
+  //neutral gray variant 2
+  neutralR50: $neutralR50;
+  neutralR100: $neutralR100;
+  neutralR200: $neutralR200;
+  neutralR300: $neutralR300;
+  neutralR400: $neutralR400;
+  neutralR500: $neutralR500;
+  neutralR600: $neutralR600;
+  neutralR700: $neutralR700;
+  neutralR800: $neutralR800;
+  neutralR900: $neutralR900;
 
   //grey
   grey50: $grey50;
@@ -123,30 +335,49 @@ $darkTextSecondary: #8492c4;
   grey900: $grey900;
 
   //danger/error
+  error100: $error100;
   errorLight: $errorLight;
+  error300: $error300;
+  error400: $error400;
+  error500: $error500;
   errorMain: $errorMain;
+  error700: $error700;
+  error800: $error800;
   errorDark: $errorDark;
 
   //success
+  success50: $success50;
+  success100: $success100;
   successLight: $successLight;
+  success300: $success300;
   successMain: $successMain;
+  success500: $success500;
+  success600: $success600;
+  success700: $success700;
+  success800: $success800;
   successDark: $successDark;
-  success200: $success200;
 
   //warning
   warningLight: $warningLight;
+  warning200: $warning200;
   warningMain: $warningMain;
+  warning400: $warning400;
+  warning500: $warning500;
   warningDark: $warningDark;
+  warning700: $warning700;
+  warning800: $warning800;
+  warning900: $warning900;
 
-  buttonDefault: $button-default;
-
-  //request colors
-  requestAccepted: $rAccepted;
-  requested: $rRequested;
-  requestScheduled: $rScheduled;
-  requestProcess: $rPickingUp;
-  requestPickedUp: $rPickedUp;
-  requestCompleted: $rCompleted;
+  //caution
+  caution100: $caution100;
+  cautionLight: $cautionLight;
+  caution300: $caution300;
+  caution400: $caution400;
+  caution500: $caution500;
+  cautionMain: $cautionMain;
+  caution700: $caution700;
+  caution800: $caution800;
+  cautionDark: $cautionDark;
 
   poorPassword: $pwPoor;
   weakPassword: $pwWeak;

@@ -21,7 +21,7 @@ const ListItemWrapper = styled('div')(({ theme }) => ({
   cursor: 'pointer',
   padding: 16,
   '&:hover': {
-    background: theme.palette.primary.light
+    background: theme.palette.neutral[50]
   },
   '& .MuiListItem-root': {
     padding: 0
@@ -43,8 +43,8 @@ const NotificationList = () => {
   };
   const chipWarningSX = {
     ...chipSX,
-    color: theme.palette.warning.dark,
-    backgroundColor: theme.palette.warning.light
+    color: theme.palette.warning[800],
+    backgroundColor: theme.palette.warning[200]
   };
   const chipSuccessSX = {
     ...chipSX,

@@ -96,11 +96,11 @@ const NotificationComponent = () => {
               ...theme.typography.commonAvatar,
               ...theme.typography.mediumAvatar,
               transition: 'all .2s ease-in-out',
-              background: theme.palette.secondary.light,
-              color: theme.palette.secondary.dark,
+              background: theme.palette.secondary.variant.light,
+              color: theme.palette.secondary.variant.dark,
               '&[aria-controls="menu-list-grow"],&:hover': {
                 background: theme.palette.secondary.dark,
-                color: theme.palette.secondary.light
+                color: theme.palette.secondary.variant.light
               }
             }}
             ref={anchorRef}

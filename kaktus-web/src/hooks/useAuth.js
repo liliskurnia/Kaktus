@@ -10,7 +10,8 @@ const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setAuthenticated] = useState(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [isAuthenticated, setAuthenticated] = useState(user);
 
   const login = async () => {
     setAuthenticated(true);

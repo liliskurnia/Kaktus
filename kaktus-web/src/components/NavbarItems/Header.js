@@ -39,8 +39,8 @@ const Header = ({ handleLeftDrawerToggle }) => {
               ...theme.typography.commonAvatar,
               ...theme.typography.mediumAvatar,
               transition: 'all .2s ease-in-out',
-              background: theme.palette.secondary.light,
-              color: theme.palette.secondary.dark,
+              background: theme.palette.secondary.variant.light,
+              color: theme.palette.secondary.variant.dark,
               '&:hover': {
                 background: theme.palette.secondary.dark,
                 color: theme.palette.secondary.light
@@ -49,7 +49,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
             onClick={handleLeftDrawerToggle}
             color="inherit"
           >
-            <IconMenu2 stroke={1.5} size="1.3rem" />
+            <IconMenu2 stroke={2} size="1.3rem" />
           </Avatar>
         </ButtonBase>
       </Box>

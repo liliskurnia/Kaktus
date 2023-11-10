@@ -11,16 +11,20 @@ export const theme = (customization) => {
 
   const themeOption = {
     colors: color,
-    heading: color.grey900,
+    heading: color.tertiaryMain,
     paper: color.paper,
     backgroundDefault: color.paper,
-    background: color.primaryLight,
-    darkTextPrimary: color.grey700,
-    darkTextSecondary: color.grey500,
-    textDark: color.grey900,
-    menuSelected: color.secondaryDark,
-    menuSelectedBack: color.secondaryLight,
-    divider: color.grey200,
+    background: color.neutralW100,
+    darkTextPrimary: color.neutralW700,
+    darkTextSecondary: color.neutralA400,
+    textDark: color.neutralW900,
+    subtitleTextDark: color.neutralW700,
+    subtitleTextLight: color.neutralA400,
+    captionText: color.neutralW800,
+    overlineText: color.neutralA300,
+    menuSelected: color.tertiaryDark,
+    menuSelectedBack: color.secondaryVLight,
+    divider: color.neutralA100,
     customization
   };
 

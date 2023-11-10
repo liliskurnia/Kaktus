@@ -40,10 +40,6 @@ const ProfileComponent = () => {
   const { logout } = useAuth();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-  // const [sdm, setSdm] = useState(true);
-  // const [value, setValue] = useState('');
-  // const [notification, setNotification] = useState(false);
-  // const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
 
   const anchorRef = useRef(null);
@@ -92,14 +88,14 @@ const ProfileComponent = () => {
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
-          borderColor: theme.palette.primary.light,
-          backgroundColor: theme.palette.primary.light,
+          borderColor: theme.palette.neutral[50],
+          backgroundColor: theme.palette.neutral[50],
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
             color: theme.palette.primary.light,
             '& svg': {
-              stroke: theme.palette.primary.light
+              stroke: theme.palette.background.paper
             }
           },
           '& .MuiChip-label': {
@@ -113,7 +109,7 @@ const ProfileComponent = () => {
               ...theme.typography.mediumAvatar,
               margin: '8px 0 8px 8px !important',
               cursor: 'pointer',
-              backgroundColor: theme.palette.primary.light,
+              backgroundColor: theme.palette.neutral.main,
               color: '#fff'
             }}
             ref={anchorRef}
@@ -180,51 +176,9 @@ const ProfileComponent = () => {
                         }
                       }}
                     >
-                      {/* <ListItemButton
-                          sx={{ borderRadius: `${customization.borderRadius}px` }}
-                          selected={selectedIndex === 0}
-                          onClick={(event) => handleListItemClick(event, 0, '#')}
-                        >
-                          <ListItemIcon>
-                            <IconSettings stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                        </ListItemButton> */}
-                      {/* <ListItemButton
-                          sx={{ borderRadius: `${customization.borderRadius}px` }}
-                          selected={selectedIndex === 1}
-                          onClick={(event) => handleListItemClick(event, 1, '#')}
-                        >
-                          <ListItemIcon>
-                            <IconUser stroke={1.5} size="1.3rem" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Grid container spacing={1} justifyContent="space-between">
-                                <Grid item>
-                                  <Typography variant="body2">Social Profile</Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Chip
-                                    label="02"
-                                    size="small"
-                                    sx={{
-                                      bgcolor: theme.palette.warning.dark,
-                                      color: theme.palette.background.default
-                                    }}
-                                  />
-                                </Grid>
-                              </Grid>
-                            }
-                          />
-                        </ListItemButton> */}
-                      <ListItemButton
-                        sx={{ borderRadius: `${customization.borderRadius}px` }}
-                        // selected={selectedIndex === 4}
-                        onClick={handleLogout}
-                      >
+                      <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={handleLogout}>
                         <ListItemIcon>
-                          <IconLogout stroke={1.5} size="1.3rem" />
+                          <IconLogout stroke={2} size="1.3rem" />
                         </ListItemIcon>
                         <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
                       </ListItemButton>

@@ -1,6 +1,7 @@
 export default function themeTypography(theme) {
   return {
     fontFamily: theme?.customization?.fontFamily,
+
     h6: {
       fontWeight: 500,
       color: theme.heading,
@@ -24,26 +25,28 @@ export default function themeTypography(theme) {
     h2: {
       fontSize: '1.5rem',
       color: theme.heading,
-      fontWeight: 700
+      fontWeight: 700,
+      letterSpacing: '-2%'
     },
     h1: {
       fontSize: '2.125rem',
       color: theme.heading,
-      fontWeight: 700
+      fontWeight: 700,
+      letterSpacing: '-2%'
     },
     subtitle1: {
       fontSize: '0.875rem',
       fontWeight: 500,
-      color: theme.textDark
+      color: theme.subtitleTextDark
     },
     subtitle2: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      color: theme.darkTextSecondary
+      color: theme.subtitleTextLight
     },
     caption: {
       fontSize: '0.75rem',
-      color: theme.darkTextSecondary,
+      color: theme.captionText,
       fontWeight: 400
     },
     body1: {

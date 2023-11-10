@@ -8,6 +8,7 @@ class AuthService {
       .then((res) => {
         if (res.data.access.token) {
           localStorage.setItem('user', JSON.stringify(res.data.access));
+          // localStorage.setItem('previllage', res.data.access.previllage);
         }
         return res.data.access;
       })
@@ -18,6 +19,7 @@ class AuthService {
 
   logout = () => {
     localStorage.removeItem('user');
+    // localStorage.removeItem('previllage');
   };
 
   register = (data) => {
