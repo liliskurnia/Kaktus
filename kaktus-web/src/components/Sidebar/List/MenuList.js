@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import MenuGroup from './MenuGroup';
 import navMenuItem from 'navigation/NavMenuItem/';
 
+//need to add previllage check here
 const MenuList = () => {
   const navItems = navMenuItem.items.map((item) => {
     switch (item.type) {

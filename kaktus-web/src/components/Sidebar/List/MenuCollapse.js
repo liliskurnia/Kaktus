@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useTheme } from '@mui/material/styles';
 
@@ -20,7 +20,7 @@ import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 const MenuCollapse = ({ menu, level }) => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -28,9 +28,9 @@ const MenuCollapse = ({ menu, level }) => {
   const handleClick = () => {
     setOpen(!open);
     setSelected(!selected ? menu.id : null);
-    if (menu?.id !== 'authentication') {
-      navigate(menu.children[0]?.url);
-    }
+    // if (menu?.id !== 'authentication') {
+    //   navigate(menu.children[0]?.url);
+    // }
   };
 
   const { pathname } = useLocation();
@@ -60,7 +60,7 @@ const MenuCollapse = ({ menu, level }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, menu.children]);
 
-  const menus = menu.childeren?.map((item) => {
+  const menus = menu.children?.map((item) => {
     switch (item.type) {
       case 'collapse':
         return <MenuCollapse key={item.id} menu={item} level={level + 1} />;
@@ -77,7 +77,7 @@ const MenuCollapse = ({ menu, level }) => {
 
   const Icon = menu.icon;
   const menuIcon = menu.icon ? (
-    <Icon strokeWidth={1.5} size="1.3rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
+    <Icon strokeWidth={2} size="1.3rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
   ) : (
     <FiberManualRecordIcon
       sx={{
@@ -118,9 +118,9 @@ const MenuCollapse = ({ menu, level }) => {
           }
         />
         {open ? (
-          <IconChevronUp stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
+          <IconChevronUp stroke={2} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
         ) : (
-          <IconChevronDown stroke={1.5} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
+          <IconChevronDown stroke={2} size="1rem" style={{ marginTop: 'auto', marginBottom: 'auto' }} />
         )}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
@@ -137,7 +137,7 @@ const MenuCollapse = ({ menu, level }) => {
               height: '100%',
               width: '1px',
               opacity: 1,
-              background: theme.palette.primary.light
+              background: theme.palette.neutral[100]
             }
           }}
         >

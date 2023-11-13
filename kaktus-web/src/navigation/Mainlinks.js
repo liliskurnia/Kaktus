@@ -49,7 +49,71 @@ const Mainlinks = {
       ]
     },
     {
-      path: 'operator'
+      path: 'operator',
+      children: [
+        {
+          path: 'admin',
+          children: [
+            {
+              path: 'overview',
+              element: <Dashboard />
+            },
+            {
+              path: 'manage-operator',
+              element: <Dashboard />
+            },
+            {
+              path: 'manage-tps',
+              element: <Dashboard />
+            }
+          ]
+        },
+        {
+          path: 'manage-sampah',
+          element: <Dashboard />
+        },
+        {
+          path: 'manage-schedule',
+          element: <Dashboard />
+        },
+        {
+          path: 'manage-request',
+          children: [
+            {
+              path: 'overview',
+              element: <Dashboard />
+            },
+            {
+              path: 'tracking',
+              element: <Dashboard />
+            },
+            {
+              path: 'history',
+              element: <Dashboard />
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: 'customer',
+      children: [
+        {
+          path: 'request'
+        },
+        {
+          path: 'history'
+        },
+        {
+          path: 'track'
+        },
+        {
+          path: 'voucher'
+        },
+        {
+          path: 'profile'
+        }
+      ]
     }
   ]
 };

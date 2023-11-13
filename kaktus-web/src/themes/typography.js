@@ -3,65 +3,76 @@ export default function themeTypography(theme) {
     fontFamily: theme?.customization?.fontFamily,
 
     h6: {
-      fontWeight: 500,
+      fontWeight: 600,
       color: theme.heading,
-      fontSize: '0.75rem'
+      fontSize: '0.875rem'
     },
     h5: {
-      fontSize: '0.875rem',
-      color: theme.heading,
-      fontWeight: 500
-    },
-    h4: {
       fontSize: '1rem',
       color: theme.heading,
       fontWeight: 600
     },
-    h3: {
+    h4: {
       fontSize: '1.25rem',
       color: theme.heading,
       fontWeight: 600
     },
-    h2: {
+    h3: {
       fontSize: '1.5rem',
+      color: theme.heading,
+      fontWeight: 600
+    },
+    h2: {
+      fontSize: '2.125rem',
       color: theme.heading,
       fontWeight: 700,
       letterSpacing: '-2%'
     },
     h1: {
-      fontSize: '2.125rem',
+      fontSize: '3rem',
       color: theme.heading,
       fontWeight: 700,
       letterSpacing: '-2%'
     },
     subtitle1: {
       fontSize: '0.875rem',
-      fontWeight: 500,
+      fontWeight: 600,
       color: theme.subtitleTextDark
     },
     subtitle2: {
       fontSize: '0.75rem',
-      fontWeight: 400,
+      fontWeight: 500,
+      letterSpacing: '2%',
       color: theme.subtitleTextLight
     },
     caption: {
       fontSize: '0.75rem',
       color: theme.captionText,
+      letterSpacing: '2%',
+      lineHeight: '140%',
       fontWeight: 400
     },
     body1: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: '1.334em'
+      lineHeight: '140%'
     },
     body2: {
       letterSpacing: '0em',
       fontWeight: 400,
-      lineHeight: '1.5em',
+      lineHeight: '140%',
       color: theme.darkTextPrimary
     },
     button: {
-      textTransform: 'capitalize'
+      textTransform: 'capitalize',
+      fontWeight: 600
+    },
+    overline: {
+      fontSize: '0.625rem',
+      fontWeight: 600,
+      lineHeight: '140%',
+      letterSpacing: '10%',
+      textTransform: 'uppercase'
     },
     customInput: {
       marginTop: 1,

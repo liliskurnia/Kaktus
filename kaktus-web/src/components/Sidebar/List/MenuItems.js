@@ -26,7 +26,7 @@ const MenuItems = ({ item, level }) => {
 
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
-    <Icon stroke={1.5} size="1.3rem" />
+    <Icon stroke={2} size="1.3rem" />
   ) : (
     <FiberManualRecordIcon
       sx={{
@@ -51,11 +51,14 @@ const MenuItems = ({ item, level }) => {
 
   const itemHandler = (id) => {
     dispatch({ type: MENU_OPEN, id });
-    if (matchesSM) dispatch({ type: SET_MENU, open: false });
+    if (matchesSM) dispatch({ type: SET_MENU, opened: false });
   };
 
   useEffect(() => {
-    const currentIndex = document.location.pathname.toString().split('/');
+    const currentIndex = document.location.pathname
+      .toString()
+      .split('/')
+      .findIndex((id) => id === item.id);
     if (currentIndex > -1) {
       dispatch({ type: MENU_OPEN, id: item.id });
     }

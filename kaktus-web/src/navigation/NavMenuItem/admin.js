@@ -5,6 +5,7 @@ const icons = { IconUsers, IconUserCog, IconKey };
 const admin = {
   id: 'admin',
   title: 'Admin Tools',
+  previllages: ['System Admin', 'User Admin'],
   type: 'group',
   children: [
     {
@@ -28,6 +29,23 @@ const admin = {
       title: 'Manage Access',
       type: 'item',
       url: '/admin/manage-access',
+      icon: icons.IconKey,
+      breadcrumbs: false
+    },
+    {
+      id: 'menus',
+      title: 'Manage Menus',
+      type: 'item',
+      url: '/admin/manage-menus',
+      previllage: 'System Admin',
+      icon: icons.IconKey,
+      breadcrumbs: false
+    },
+    {
+      id: 'role-menus',
+      title: 'Manage Role Menus',
+      type: 'item',
+      url: '/admin/manage-role-menu',
       icon: icons.IconKey,
       breadcrumbs: false
     }
