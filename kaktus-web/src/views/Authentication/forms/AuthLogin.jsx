@@ -29,7 +29,7 @@ import { Formik } from 'formik';
 // project imports
 import useScriptRef from 'hooks/useScriptRef';
 import AnimateButton from 'components/UI/Extended/AnimateButton';
-import AuthService from 'utils/AuthService';
+import AuthService from 'utils/db/services/AuthService';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';

@@ -33,7 +33,7 @@ import Transitions from 'components/UI/Extended/Transitions';
 
 import { IconLogout, IconSettings } from '@tabler/icons-react';
 // import axios from 'axios'
-import AuthService from 'utils/AuthService';
+import AuthService from 'utils/db/services/AuthService';
 
 const ProfileComponent = () => {
   const theme = useTheme();
