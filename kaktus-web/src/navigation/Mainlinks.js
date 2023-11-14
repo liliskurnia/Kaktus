@@ -9,6 +9,8 @@ const ManageUser = Loadable(lazy(() => import('views/Admin/userManager')));
 const ManageRole = Loadable(lazy(() => import('views/Admin/roleManager')));
 const ManageAccess = Loadable(lazy(() => import('views/Admin/accessManager')));
 
+const OpDashboard = Loadable(lazy(() => import('views/Operator/Dashboard')));
+
 const Mainlinks = {
   path: '/',
   element: (
@@ -67,6 +69,10 @@ const Mainlinks = {
               element: <Dashboard />
             }
           ]
+        },
+        {
+          path: 'dashboard',
+          element: <OpDashboard />
         },
         {
           path: 'manage-sampah',

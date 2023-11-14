@@ -65,6 +65,13 @@ const operator = {
       ]
     },
     {
+      id: 'operator-dashboard',
+      title: 'Dashboard',
+      type: 'item',
+      url: '/operator/dashboard',
+      icon: icons.IconLayoutDashboard
+    },
+    {
       id: 'manage-sampah',
       title: 'Manage Tempat Sampah',
       type: 'item',
